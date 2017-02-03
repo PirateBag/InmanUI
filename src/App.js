@@ -3,8 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 
 
-class ShoppingList extends React.Component {
-  render() {
+var ShoppingList = React.createClass( {
+  render: function() {
     return (
       <div className="shopping-list">
         <h1>Shopping List for {this.props.name}</h1>
@@ -16,14 +16,18 @@ class ShoppingList extends React.Component {
       </div>
     );
   }
-}
+})
 
-var LoginPlease = React.createClass( {
-		
-	  updateInputValue: function(evt) {
+
+var LoginPlease = React.createClass( { 
+  getInitialState : function() {
+    return { user : '', password : '' };
+  },  
+
+  updateInputValue: function(evt) {
     this.setState({ inputValue: evt.target.value });
-		},
-		
+   },
+
 
   render : function() {
     return (
@@ -32,7 +36,7 @@ var LoginPlease = React.createClass( {
 				<table>
 					<tr>
 						<td>User</td>
-						<td><input type="text" onChange={this.updateInputValue} /></td>
+						<td><input type="text"  /></td>
 					</tr>
 					<tr>
 						<td>Password</td>
@@ -41,9 +45,6 @@ var LoginPlease = React.createClass( {
 					<tr>
 						<td><button type="button">Login</button></td>
 					</tr>
-					<tr>
-						<td>{this.state.user}</td>
-					</tr>
 				</table>
       </div>
     );
@@ -51,23 +52,21 @@ var LoginPlease = React.createClass( {
 } );
 
 
+
+
 class App extends Component {
   render() {
+    
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to Inman</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit fff <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-				<ShoppingList name="Mark" />
-				<LoginPlease/>
+          <ShoppingList name="Mark" />
+        	<LoginPlease/>
+
           But first, you must die Mr. Bond!
-        </p>
-	
       </div>
     );
   }

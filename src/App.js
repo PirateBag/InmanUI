@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Item from './model/item.js';
+
+class Item {
+  constructor( id, summary, quantity ) {
+    this.id = id;
+    this.summary = summary;
+    this.quantity = quantity;
+  }
+}
+
+    
 
 var ShoppingList = React.createClass( {
   render: function() {
@@ -9,29 +18,30 @@ var ShoppingList = React.createClass( {
       <div className="shopping-list">
         <h1>Shopping List for {this.props.name}</h1>
         <ul>
-          <li>Instagram</li>
           <li>WhatsApp</li>
           <li>Oculus</li>
+          <li>Twitter</li>
         </ul>
       </div>
     );
   }
 })
+
+
 
 var SingleItem = React.createClass( {
   render: function() {
     return (
       <div className="shopping-list">
-        <h1>Shopping List for {this.props.id}</h1>
+        <h1>Shopping List for {this.props.item.id}</h1>
         <ul>
           <li>{this.props.item.summary}</li>
-          <li>{this.props.item.quanity}</li>
+          <li>{this.props.item.quantity}</li>
         </ul>
       </div>
     );
   }
 })
-
 
 var LoginPlease = React.createClass( { 
   getInitialState : function() {
@@ -76,21 +86,23 @@ var LoginPlease = React.createClass( {
 
 
 
-
 class App extends Component {
   render() {
-    var itemToShow = new Item( 1, "W-001", 1 );
+	var itemToShow = new Item( "abc", "W-001", 2 );
     return (
-
-
       <div className="App">
         <div className="App-header">
+					<div class='mainLayout'>
           <img src={logo} className="App-logo" alt="logo" />
+					</div>
+					<div class='mainLayout'>
           <h2>Welcome to Inman</h2>
+					</div>
         </div>
           <ShoppingList name="Mark" />
-        	<LoginPlease/>
-          <SingleItem item={itemToShow} />      
+          <LoginPlease/>
+	
+          <SingleItem item={itemToShow} />
 
           But first, you must die Mr. Bond!
       </div>

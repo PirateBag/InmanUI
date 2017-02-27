@@ -9,8 +9,8 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
-  padding: 20px;
+  height: 75px;
+  padding: 10px;
   color: white;
 }
 
@@ -24,4 +24,6 @@
 }
 
 
-.div.mainLayout{float:left;width:50%}
+.leftLayout{float:left;width:30%}
+
+.rightLayout{float:Right;width:50%}

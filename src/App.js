@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Item from './Item';
+import CredentialPropertyPage from './Credentials.js'
 
-class Item {
-  constructor( id, summary, quantity ) {
-    this.id = id;
-    this.summary = summary;
-    this.quantity = quantity;
-  }
-}
-
-    
+  
 
 var ShoppingList = React.createClass( {
   render: function() {
@@ -43,67 +36,36 @@ var SingleItem = React.createClass( {
   }
 })
 
-var LoginPlease = React.createClass( { 
-  getInitialState : function() {
-    return { username : '', password : '' };
-  },  
-
-  handleChangeUsername: function(evt) {
-    this.setState({ username: evt.target.value });
-   },
-
-  handleChangePassword: function(evt) {
-    this.setState({ password: evt.target.value });
-   },
-
-  handleClickLogin: function(evt) {
-		alert( "credentials=" + this.state.username + " " + this.state.password + "!" );
-   },
-
-
-
-  render : function() {
-    return (
-      <div className="login-please">
-        <h1>Please enter your credentials:</h1>
-				<table>
-					<tr>
-						<td>User</td>
-						<td><input type="text" onChange={this.handleChangeUsername}/></td>
-					</tr>
-					<tr>
-						<td>Password</td>
-						<td><input type="password" onChange={this.handleChangePassword}/></td>
-					</tr>
-					<tr>
-						<td><button type="button" onClick={this.handleClickLogin} >Login</button></td>
-					</tr>
-				</table>
-      </div>
-    );
-  }
-} );
 
 
 
 class App extends Component {
+
+	uiEvent( sender, object ) {
+		alert( "This is a change by " + sender  );
+		if ( sender === "CredentialPropertyPage" ) {
+			alert( "Checking Credentials " + object.state.username + ":" + object.state.password  );
+			
+			}
+	}
+	
   render() {
 	var itemToShow = new Item( "abc", "W-001", 2 );
-    return (
+	    return (
       <div className="App">
         <div className="App-header">
-					<div class='mainLayout'>
-          <img src={logo} className="App-logo" alt="logo" />
+					<div className='leftLayout'>
+          <img className='App-logo' src={require('./logo.png')} alt="logoPoop" />
 					</div>
-					<div class='mainLayout'>
+					<div className='rightLayout'>
           <h2>Welcome to Inman</h2>
 					</div>
         </div>
           <ShoppingList name="Mark" />
-          <LoginPlease/>
+          <CredentialPropertyPage eventHandler={this.uiEvent} />
 	
           <SingleItem item={itemToShow} />
-
+  
           But first, you must die Mr. Bond!
       </div>
     );

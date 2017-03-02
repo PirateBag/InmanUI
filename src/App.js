@@ -4,10 +4,50 @@ import Item from './Item';
 import CredentialPropertyPage from './Credentials.js'
 import Button from './Button.js'
 
+/*
 var CheckCreds = function () {
-    response = fetch( 'http://localhost ')
+    var abc = fetch( 'http://10.1.20.128:8080/status', { mode: 'no-cors' })
+        .then( function(response) { return response.json(); } );
+        //.then( function(responseJson) { return responseJson.status; } );
+
+
+    alert( "Respe " + abc + abc.status );
+    return "inman lives";
+};
+*/
+
+function success( response ) {
+    let temp  = response;
+    return temp;
 }
-  
+
+function failure( response ) {
+    let temp = response;
+    return temp;
+}
+
+var myHeaders = new Headers();
+
+var myInit = { method: 'GET',
+    headers: myHeaders,
+    mode: 'no-cors',
+    cache: 'default' };
+
+function getInmanStatus() {
+    /*return fetch('http://10.1.20.128:8080/status', { mode: 'no-cors' })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            return responseJson.movies;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+        */
+    let obj = fetch('http://10.1.20.128:8080/status', myInit ).then( success, failure );
+    //let obj = "{status: ok }";
+    return obj;
+}
+
 
 var ShoppingList = React.createClass( {
   render: function() {
@@ -74,6 +114,7 @@ class App extends Component {
   render() {
 	var itemToShow = new Item( "abc", "W-001", 2 );
     var dateOfRender = new Date().toTimeString();
+    var inmanStatus = getInmanStatus();
 
     return (
       <div className="App">
@@ -86,13 +127,13 @@ class App extends Component {
 		    </div>
         </div>
           <h6>Last Update: {dateOfRender}</h6>
+          <h2>Inman Server Status: {inmanStatus}</h2>
 
          <ShoppingList name="Mark" visible={this.state.showCredentials} />
          <CredentialPropertyPage eventHandler={this.uiEvent} visible={this.state.showCredentials} />
          <SingleItem item={itemToShow} visible={this.state.showCredentials} />
-          <Button label="Logoff" eventHandler={this.uiEvent} visible={!this.state.showCredentials} eventName="LogoffButton" />
+         <Button label="Logoff" eventHandler={this.uiEvent} visible={!this.state.showCredentials} eventName="LogoffButton" ></Button>
       </div>
-
     );
   }
 }

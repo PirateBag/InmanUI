@@ -6,7 +6,7 @@ import React from 'react';
 var Button = React.createClass( {
 
     handleClickLogin: function(evt) {
-        this.props.eventHandler( "LogoffButton", this );
+        this.props.eventHandler( this.props.eventName, this );
     },
     render: function() {
         if ( !this.props.visible ) {

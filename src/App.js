@@ -43,7 +43,7 @@ function getInmanStatus() {
             console.error(error);
         });
         */
-    let obj = fetch('http://10.1.20.128:8080/status', myInit ).then( success, failure );
+    let obj = fetch('http://10.1.20.136:8080/status', myInit ).then( success, failure );
     //let obj = "{status: ok }";
     return obj;
 }
@@ -97,7 +97,8 @@ class App extends Component {
         this.credentials = new CredentialPropertyPage();
 		this.uiEvent = this.uiEvent.bind( this );
 		this.showShopping = true;
-		this.state = { showCredentials : true };
+		this.state = { showCredentials : true,
+                       serverStatus : "unknown" };
 		this.showItem = true;
 	}
 
@@ -107,14 +108,15 @@ class App extends Component {
         } else if ( sender ==="LogoffButton")
         {
             this.setState( {showCredentials : true } );
+        } else if ( sender === "Status" ) {
+		    this.setState( {serverStatus : getInmanStatus() });
         }
         this.render();
 	}
 	
   render() {
-	var itemToShow = new Item( "abc", "W-001", 2 );
+	var itemToShow = new Item( "abc", "W-0001", 2 );
     var dateOfRender = new Date().toTimeString();
-    var inmanStatus = getInmanStatus();
 
     return (
       <div className="App">
@@ -123,16 +125,17 @@ class App extends Component {
                 <img className='App-logo' src={require('./logo.png')} alt="logoPoop" />
 			</div>
 		    <div className='rightLayout'>
-                <h2>Welcome to Inman</h2>
+                <h2>Welcome to Inman For You</h2>
 		    </div>
         </div>
           <h6>Last Update: {dateOfRender}</h6>
-          <h2>Inman Server Status: {inmanStatus}</h2>
+          <h2>Inman Server Status: {this.state.serverStatus}</h2>
 
          <ShoppingList name="Mark" visible={this.state.showCredentials} />
          <CredentialPropertyPage eventHandler={this.uiEvent} visible={this.state.showCredentials} />
          <SingleItem item={itemToShow} visible={this.state.showCredentials} />
          <Button label="Logoff" eventHandler={this.uiEvent} visible={!this.state.showCredentials} eventName="LogoffButton" ></Button>
+         <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
       </div>
     );
   }

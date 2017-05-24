@@ -4,50 +4,6 @@ import Item from './Item';
 import CredentialPropertyPage from './Credentials.js'
 import Button from './Button.js'
 
-/*
-var CheckCreds = function () {
-    var abc = fetch( 'http://10.1.20.128:8080/status', { mode: 'no-cors' })
-        .then( function(response) { return response.json(); } );
-        //.then( function(responseJson) { return responseJson.status; } );
-
-
-    alert( "Respe " + abc + abc.status );
-    return "inman lives";
-};
-*/
-
-function success( response ) {
-    let temp  = response;
-    return temp;
-}
-
-function failure( response ) {
-    let temp = response;
-    return temp;
-}
-
-var myHeaders = new Headers();
-
-var myInit = { method: 'GET',
-    headers: myHeaders,
-    mode: 'no-cors',
-    cache: 'default' };
-
-function getInmanStatus() {
-    /*return fetch('http://10.1.20.128:8080/status', { mode: 'no-cors' })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            return responseJson.movies;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        */
-    let obj = fetch('http://10.1.20.136:8080/status', myInit ).then( success, failure );
-    //let obj = "{status: ok }";
-    return obj;
-}
-
 
 var ShoppingList = React.createClass( {
   render: function() {
@@ -102,19 +58,40 @@ class App extends Component {
 		this.showItem = true;
 	}
 
-	uiEvent( sender, object ) {
+    myInit = {
+    method: 'GET',
+    mode: 'cors',
+    }
+
+    getInmanStatus() {
+        const main = this;
+        fetch('http://10.1.20.66:8080/status', this.myInit)
+            .then(function (response) {
+                main.setState( { serverStatus : 'sending' } );
+                return response
+            })
+            .then( function( response ) {
+                /*setTimeout( function() {
+                main.setState( { serverStatus : 'waiting' } ); }, 300 ); */
+                return response.json();
+            })
+            .then( function(data)
+                { main.setState( { serverStatus : data.status } ); })
+            .catch( function() { main.setState( { serverStatus : 'error' } ); } );
+    }
+
+    uiEvent( sender, object ) {
 		if ( sender === "CredentialPropertyPage" ) {
             this.setState( {showCredentials : false } );
         } else if ( sender ==="LogoffButton")
         {
             this.setState( {showCredentials : true } );
         } else if ( sender === "Status" ) {
-		    this.setState( {serverStatus : getInmanStatus() });
+		    this.getInmanStatus();
         }
         this.render();
 	}
-	
-  render() {
+    render() {
 	var itemToShow = new Item( "abc", "W-0001", 2 );
     var dateOfRender = new Date().toTimeString();
 
@@ -129,8 +106,7 @@ class App extends Component {
 		    </div>
         </div>
           <h6>Last Update: {dateOfRender}</h6>
-          <h2>Inman Server Status: {this.state.serverStatus}</h2>
-
+          <h6>Inman Server Status: {this.state.serverStatus}</h6>
          <ShoppingList name="Mark" visible={this.state.showCredentials} />
          <CredentialPropertyPage eventHandler={this.uiEvent} visible={this.state.showCredentials} />
          <SingleItem item={itemToShow} visible={this.state.showCredentials} />

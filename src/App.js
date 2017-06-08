@@ -56,6 +56,8 @@ class App extends Component {
 		this.state = { showCredentials : true,
                        serverStatus : "unknown" };
 		this.showItem = true;
+
+		this.getInmanStatus();
 	}
 
     myInit = {
@@ -65,7 +67,7 @@ class App extends Component {
 
     getInmanStatus() {
         const main = this;
-        fetch('http://10.1.20.66:8080/status', this.myInit)
+        fetch('http://10.1.20.230:8080/status', this.myInit)
             .then(function (response) {
                 main.setState( { serverStatus : 'sending' } );
                 return response
@@ -91,6 +93,7 @@ class App extends Component {
         }
         this.render();
 	}
+
     render() {
 	var itemToShow = new Item( "abc", "W-0001", 2 );
     var dateOfRender = new Date().toTimeString();

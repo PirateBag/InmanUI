@@ -1,12 +1,29 @@
 import React from 'react';
+import * as Constants from './Constants.js'
 
 var CredentialPropertyPage = React.createClass( { 
   getInitialState : function() {
     return { username : '', password : '' };
 
-  },  
+  },
+    getValidateCredentials( objectWithStatus ) {
+        let url = Constants.INMAN_SERVER_IP + ':8080/verifyCredentials';
+        let corps = JSON.stringify( objectWithStatus.getInitialState() );
+        fetch( url, { method: 'post', body: corps, mode: 'cors' })
+            .then(function (response) {
+                objectWithStatus.setState( { validateCredentialsResponse : 'sending' } );
+                return response
+            })
+            .then( function( response ) {
+                return response.json();
+            })
+            .then( function(data)
+            { objectWithStatus.setState( { validateCredentialsResponse : data.status } ); })
+            .catch( function() { objectWithStatus.setState( { validateCredentialsResponse : 'error' } ); } );
+    },
 
-  handleChangeUsername: function(evt) {
+
+    handleChangeUsername: function(evt) {
     this.setState({ username: evt.target.value });
    },
 
@@ -15,8 +32,11 @@ var CredentialPropertyPage = React.createClass( {
    },
 
   handleClickLogin: function(evt) {
+        this.getValidateCredentials( this );
 		this.props.eventHandler( "CredentialPropertyPage", this );
    },
+
+
 
   render : function() {
 

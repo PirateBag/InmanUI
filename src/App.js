@@ -3,6 +3,7 @@ import './App.css';
 import Item from './Item';
 import CredentialPropertyPage from './Credentials.js'
 import Button from './Button.js'
+import * as Constants from './Constants.js'
 
 
 var ShoppingList = React.createClass( {
@@ -57,7 +58,7 @@ class App extends Component {
                        serverStatus : "unknown" };
 		this.showItem = true;
 
-		this.getInmanStatus();
+		this.getInmanStatus(this);
 	}
 
     myInit = {
@@ -65,31 +66,29 @@ class App extends Component {
     mode: 'cors',
     }
 
-    getInmanStatus() {
-        const main = this;
-        fetch('http://10.1.20.230:8080/status', this.myInit)
+    getInmanStatus( objectWithStatus ) {
+        let url = Constants.INMAN_SERVER_IP + ':8080/status';
+        fetch( url, Constants.fetchParameters )
             .then(function (response) {
-                main.setState( { serverStatus : 'sending' } );
+                objectWithStatus.setState( { serverStatus : 'sending' } );
                 return response
             })
             .then( function( response ) {
-                /*setTimeout( function() {
-                main.setState( { serverStatus : 'waiting' } ); }, 300 ); */
                 return response.json();
             })
             .then( function(data)
-                { main.setState( { serverStatus : data.status } ); })
-            .catch( function() { main.setState( { serverStatus : 'error' } ); } );
+                { objectWithStatus.setState( { serverStatus : data.status } ); })
+            .catch( function() { objectWithStatus.setState( { serverStatus : 'error' } ); } );
     }
 
     uiEvent( sender, object ) {
 		if ( sender === "CredentialPropertyPage" ) {
-            this.setState( {showCredentials : false } );
+               this.setState( {showCredentials : false } );
         } else if ( sender ==="LogoffButton")
         {
             this.setState( {showCredentials : true } );
         } else if ( sender === "Status" ) {
-		    this.getInmanStatus();
+		    this.getInmanStatus(this);
         }
         this.render();
 	}
@@ -105,16 +104,17 @@ class App extends Component {
                 <img className='App-logo' src={require('./logo.png')} alt="logoPoop" />
 			</div>
 		    <div className='rightLayout'>
-                <h2>Welcome to Inman For You</h2>
+                <h2>Welcome to Inman</h2>
+                <h6>Inman Server Status: {this.state.serverStatus}</h6>
 		    </div>
         </div>
           <h6>Last Update: {dateOfRender}</h6>
-          <h6>Inman Server Status: {this.state.serverStatus}</h6>
          <ShoppingList name="Mark" visible={this.state.showCredentials} />
          <CredentialPropertyPage eventHandler={this.uiEvent} visible={this.state.showCredentials} />
          <SingleItem item={itemToShow} visible={this.state.showCredentials} />
          <Button label="Logoff" eventHandler={this.uiEvent} visible={!this.state.showCredentials} eventName="LogoffButton" ></Button>
          <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
+          <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
       </div>
     );
   }

@@ -8,11 +8,15 @@ import * as Constants from './Constants.js'
 
 var ShoppingList = React.createClass( {
   render: function() {
-      if ( !this.props.visible )
+      if ( this.props.credentialsState.token === Constants.NO_TOKEN ) {
           return null;
+      }
     return (
+
       <div className="shopping-list">
+
         <h1>Shopping List for {this.props.name}</h1>
+          <h2>Token Time: |{this.props.credentialsState.token}|</h2>
         <ul>
           <li>WhatsApp</li>
           <li>Oculus</li>
@@ -28,7 +32,7 @@ var ShoppingList = React.createClass( {
 var SingleItem = React.createClass( {
     render: function() {
 
-        if ( !this.props.visible )
+        if ( this.props.credentialsState.token === Constants.NO_TOKEN )
             return null;
 
         return (
@@ -54,17 +58,16 @@ class App extends Component {
         this.credentials = new CredentialPropertyPage();
 		this.uiEvent = this.uiEvent.bind( this );
 		this.showShopping = true;
-		this.state = { showCredentials : true,
-                       serverStatus : "unknown" };
+		this.state = { serverStatus : "unknown",
+                       validateCredentialsResponse : {
+                            token : Constants.NO_TOKEN,
+                            message : 'please login' } };
 		this.showItem = true;
 
 		this.getInmanStatus(this);
-	}
+		this.updateCredentialsState = this.updateCredentialsState.bind(this);
+        }
 
-    myInit = {
-    method: 'GET',
-    mode: 'cors',
-    }
 
     getInmanStatus( objectWithStatus ) {
         let url = Constants.INMAN_SERVER_IP + ':8080/status';
@@ -84,6 +87,7 @@ class App extends Component {
     uiEvent( sender, object ) {
 		if ( sender === "CredentialPropertyPage" ) {
                this.setState( {showCredentials : false } );
+               this.setState( object.state.validateCredentialsResponse );
         } else if ( sender ==="LogoffButton")
         {
             this.setState( {showCredentials : true } );
@@ -93,9 +97,14 @@ class App extends Component {
         this.render();
 	}
 
+	updateCredentialsState( validateCredentialsResponse ) {
+        this.setState( { "validateCredentialsResponse" : validateCredentialsResponse } );
+    }
+
     render() {
 	var itemToShow = new Item( "abc", "W-0001", 2 );
     var dateOfRender = new Date().toTimeString();
+
 
     return (
       <div className="App">
@@ -108,11 +117,12 @@ class App extends Component {
                 <h6>Inman Server Status: {this.state.serverStatus}</h6>
 		    </div>
         </div>
-          <h6>Last Update: {dateOfRender}</h6>
-         <ShoppingList name="Mark" visible={this.state.showCredentials} />
-         <CredentialPropertyPage eventHandler={this.uiEvent} visible={this.state.showCredentials} />
-         <SingleItem item={itemToShow} visible={this.state.showCredentials} />
-         <Button label="Logoff" eventHandler={this.uiEvent} visible={!this.state.showCredentials} eventName="LogoffButton" ></Button>
+         <CredentialPropertyPage
+            eventHandler={this.uiEvent}
+            updateCredentialsState={this.updateCredentialsState}
+            credentialsState={this.state.validateCredentialsResponse}/>
+         <ShoppingList name="Mark" credentialsState={this.state.validateCredentialsResponse} />
+         <SingleItem item={itemToShow} credentialsState={this.state.validateCredentialsResponse} />
          <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
           <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
       </div>

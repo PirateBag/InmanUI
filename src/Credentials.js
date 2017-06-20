@@ -4,8 +4,10 @@ import * as Constants from './Constants.js'
 var CredentialPropertyPage = React.createClass( {
   getInitialState : function() {
     return { username : '', password : '',
-        validateCredentialsResponse : { token : Constants.NO_TOKEN,
-            message : 'please login' } };
+        validateCredentialsResponse : {
+            'token' : Constants.NO_TOKEN,
+            'message' : 'Please login',
+            'status' : 'communication error'} };
 
   },
     getValidateCredentials( objectWithStatus ) {
@@ -23,8 +25,13 @@ var CredentialPropertyPage = React.createClass( {
             })
             .then( function(data) {
                 objectWithStatus.setState( { validateCredentialsResponse : data } );
+                objectWithStatus.props.updateCredentialsState( data );
             })
-            .catch( function() { objectWithStatus.setState( { validateCredentialsResponse : 'error' } ); } );
+            .catch( function() { objectWithStatus.setState( { validateCredentialsResponse :
+                {
+                'message' : 'error',
+                'token' : Constants.NO_TOKEN,
+                'status' : "communication error" } } ) } );
     },
 
 
@@ -38,17 +45,21 @@ var CredentialPropertyPage = React.createClass( {
 
   handleClickLogin: function(evt) {
         this.getValidateCredentials( this );
-		this.props.eventHandler( "CredentialPropertyPage", this );
    },
+   handleClickLogout: function(evt) {
+    this.state = this.getInitialState();
+    this.props.updateCredentialsState(  this.state.validateCredentialsResponse );
+    },
 
 
 
-  render : function() {
 
-      if (this.state.validateCredentialsResponse.token === Constants.NO_TOKEN) {
+    render : function() {
+
+      if ( this.state.validateCredentialsResponse.token === Constants.NO_TOKEN ) {
           return (
               <div >
-                  <h1>Please enter your credentials:</h1>
+                  <h2>{this.state.validateCredentialsResponse.message}</h2>
                   <table>
                       <tbody>
                       <tr>
@@ -68,14 +79,22 @@ var CredentialPropertyPage = React.createClass( {
                   </table>
               </div>
           );
-      }
-
-      if (!this.state.validateCredentialsResponse.token === Constants.NO_TOKEN) {
+      } else {
           return (
-              <h6>{this.state.validateCredentialsResponse.message}</h6>
+                <div  className='leftLayout'>
+                  <table>
+                      <tbody>
+                      <tr>
+                          <td>User {this.state.validateCredentialsResponse.message}</td>
+                          <td>
+                              <button type="button" onClick={this.handleClickLogout}>logout</button>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+                </div>
           )
       }
-      return ( <h4>Huh? {this.state.validateCredentialsResponse}</h4>);
   }
 
 } );

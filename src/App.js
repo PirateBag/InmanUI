@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Item from './Item';
-import CredentialPropertyPage from './Credentials.js'
+import {CredentialStatus,CredentialPropertyPage} from './Credentials.js'
 import Button from './Button.js'
 import * as Constants from './Constants.js'
 
@@ -16,7 +16,6 @@ var ShoppingList = React.createClass( {
       <div className="shopping-list">
 
         <h1>Shopping List for {this.props.name}</h1>
-          <h2>Token Time: |{this.props.credentialsState.token}|</h2>
         <ul>
           <li>WhatsApp</li>
           <li>Oculus</li>
@@ -55,17 +54,16 @@ class App extends Component {
     constructor(props) {
 		super(props)
 
-        this.credentials = new CredentialPropertyPage();
-		this.uiEvent = this.uiEvent.bind( this );
-		this.showShopping = true;
+
 		this.state = { serverStatus : "unknown",
                        validateCredentialsResponse : {
                             token : Constants.NO_TOKEN,
                             message : 'please login' } };
-		this.showItem = true;
 
 		this.getInmanStatus(this);
+
 		this.updateCredentialsState = this.updateCredentialsState.bind(this);
+        this.uiEvent = this.uiEvent.bind( this );
         }
 
 
@@ -85,13 +83,7 @@ class App extends Component {
     }
 
     uiEvent( sender, object ) {
-		if ( sender === "CredentialPropertyPage" ) {
-               this.setState( {showCredentials : false } );
-               this.setState( object.state.validateCredentialsResponse );
-        } else if ( sender ==="LogoffButton")
-        {
-            this.setState( {showCredentials : true } );
-        } else if ( sender === "Status" ) {
+        if ( sender === "Status" ) {
 		    this.getInmanStatus(this);
         }
         this.render();
@@ -115,10 +107,12 @@ class App extends Component {
 		    <div className='rightLayout'>
                 <h2>Welcome to Inman</h2>
                 <h6>Inman Server Status: {this.state.serverStatus}</h6>
-		    </div>
+                <h6><CredentialStatus
+                    updateCredentialsState={this.updateCredentialsState}
+                    credentialsState={this.state.validateCredentialsResponse}/></h6>
+            </div>
         </div>
          <CredentialPropertyPage
-            eventHandler={this.uiEvent}
             updateCredentialsState={this.updateCredentialsState}
             credentialsState={this.state.validateCredentialsResponse}/>
          <ShoppingList name="Mark" credentialsState={this.state.validateCredentialsResponse} />

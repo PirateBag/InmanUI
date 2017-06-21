@@ -4,9 +4,17 @@
 
 export const INMAN_SERVER_IP = "http://10.1.20.230";
 export const NO_TOKEN  = "No Token";
+export const NO_STATUS  = "off line.";
+export const NO_MESSAGE  = "Please login.";
 export const fetchParameters = {
         method: 'GET',
         mode: 'cors' };
 export const postParameters = {
     method: 'POST',
     mode: 'cors' };
+
+export const NoCredentials = {
+    status : NO_STATUS,
+    message : NO_MESSAGE,
+    token : NO_TOKEN
+};

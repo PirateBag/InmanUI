@@ -1,51 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import Item from './Item';
 import {CredentialStatus,CredentialPropertyPage} from './Credentials.js'
+import {SearchAndDisplay} from './SearchAndDisplay.js'
 import Button from './Button.js'
 import * as Constants from './Constants.js'
-
-
-var ShoppingList = React.createClass( {
-  render: function() {
-      if ( this.props.credentialsState.token === Constants.NO_TOKEN ) {
-          return null;
-      }
-    return (
-
-      <div className="shopping-list">
-
-        <h1>Shopping List for {this.props.name}</h1>
-        <ul>
-          <li>WhatsApp</li>
-          <li>Oculus</li>
-          <li>Twitter</li>
-        </ul>
-      </div>
-    );
-  }
-})
-
-
-
-var SingleItem = React.createClass( {
-    render: function() {
-
-        if ( this.props.credentialsState.token === Constants.NO_TOKEN )
-            return null;
-
-        return (
-            <div className="shopping-list">
-                <h1>Shopping List for {this.props.item.id}</h1>
-                <ul>
-                    <li>{this.props.item.summary}</li>
-                    <li>{this.props.item.quantity}</li>
-                </ul>
-            </div>
-        );
-    }
-})
-
 
 
 
@@ -94,7 +52,7 @@ class App extends Component {
     }
 
     render() {
-	var itemToShow = new Item( "abc", "W-0001", 2 );
+
     var dateOfRender = new Date().toTimeString();
 
 
@@ -115,8 +73,7 @@ class App extends Component {
          <CredentialPropertyPage
             updateCredentialsState={this.updateCredentialsState}
             credentialsState={this.state.validateCredentialsResponse}/>
-         <ShoppingList name="Mark" credentialsState={this.state.validateCredentialsResponse} />
-         <SingleItem item={itemToShow} credentialsState={this.state.validateCredentialsResponse} />
+         <SearchAndDisplay credentialsState={this.state.validateCredentialsResponse}/>
          <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
           <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
       </div>

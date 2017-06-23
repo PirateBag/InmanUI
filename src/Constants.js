@@ -18,3 +18,10 @@ export const NoCredentials = {
     message : NO_MESSAGE,
     token : NO_TOKEN
 };
+
+export const NoItem = {
+    id: 0,
+    SummaryId : '',
+    description: '',
+    unitCost: 0.0
+}

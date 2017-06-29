@@ -19,7 +19,6 @@ class App extends Component {
                             message : 'please login' } };
 
 		this.getInmanStatus(this);
-
 		this.updateCredentialsState = this.updateCredentialsState.bind(this);
         this.uiEvent = this.uiEvent.bind( this );
         }
@@ -47,8 +46,8 @@ class App extends Component {
         this.render();
 	}
 
-	updateCredentialsState( validateCredentialsResponse ) {
-        this.setState( { "validateCredentialsResponse" : validateCredentialsResponse } );
+	updateCredentialsState( newCredentials ) {
+        this.setState( {validateCredentialsResponse: newCredentials } );
     }
 
     render() {

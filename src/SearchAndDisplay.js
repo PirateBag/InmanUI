@@ -9,14 +9,15 @@ export var SearchAndDisplay= React.createClass( {
         return { ItemId : '',
                  SummaryId : '',
                  Description: '',
-                 MessageState: ''}
+                 MessageState: '',
+                 ItemResponse : null }
     },
-    getItem( objectWithStatus, itemId ) {
+    getItem( objectWithStatus ) {
         let params = queryString.stringify(
-            { 'itemId' : this.state.ItemId,
+            { 'id' : this.state.ItemId,
               'summaryId' : this.state.SummaryId,
               'description' : this.state.Description })
-        let url = Constants.INMAN_SERVER_IP + ':8080/item/search/'+itemId;
+        let url = Constants.INMAN_SERVER_IP + ':8080/item/query?'+ params;
         let header = new Headers( { 'Content-Type' : 'application/json'});
         fetch( url, { method: 'get', mode: 'cors', headers : header })
             .then(function (response) {
@@ -28,7 +29,8 @@ export var SearchAndDisplay= React.createClass( {
                 return response.json();
             })
             .then( function(data) {
-                objectWithStatus.setState( { item : data } );
+                objectWithStatus.setState( { MessageState : 'completed' } );
+                objectWithStatus.setState( { ItemResponse : data } );
             })
             .catch( function() {
                 objectWithStatus.setState( { MessageState: 'Error' } );
@@ -47,7 +49,7 @@ export var SearchAndDisplay= React.createClass( {
 
 
     handleSearch: function(evt) {
-        this.getItem( this, this.state.ItemId );
+        this.getItem( this );
     },
 
     render : function() {
@@ -76,7 +78,7 @@ export var SearchAndDisplay= React.createClass( {
                         </tr>
                         </tbody>
                     </table>
-                    <SearchResults item={this.state.item}/>
+                    <SearchResults ItemResponse={this.state.ItemResponse}/>
                 </div>
             )
         } else {
@@ -87,9 +89,26 @@ export var SearchAndDisplay= React.createClass( {
 
 } );
 
-function ItemLister( items ) {
-     return ( items.map( (anItem ) =>
-        <tr key="anItem.id">
+function ItemLister( itemResponse ) {
+    if ( itemResponse.errors != null && itemResponse.errors.length >0 )  {
+            return ( itemResponse.errors.map( ( anError ) =>
+                <tr key={anError.key}>
+                    <td>{anError.message}</td>
+                </tr>
+                )
+            )
+    }
+
+    if ( itemResponse.data == null || itemResponse.data.length === 0 )
+
+            return (
+            <tr>
+                <td>These query parameters did not match any data.</td>
+            </tr>
+        )
+
+     return ( itemResponse.data.map( ( anItem ) =>
+        <tr key={anItem.id}>
             <td>{anItem.id}</td>
             <td>{anItem.summaryId}</td>
             <td>{anItem.description}</td>
@@ -101,7 +120,8 @@ function ItemLister( items ) {
 export var SearchResults = React.createClass( {
 
 render : function() {
-        if ( typeof this.props.item === 'undefined' ) {
+        if ( typeof this.props.ItemResponse === 'undefined'
+        || this.props.ItemResponse == null ) {
             return(
                 <h4>No items for you.</h4>
             )
@@ -110,7 +130,7 @@ render : function() {
             <div >
                 <table>
                     <tbody>
-                    {ItemLister(this.props.item)}
+                    {ItemLister(this.props.ItemResponse )}
                     </tbody>
                 </table>
             </div>

@@ -3,13 +3,7 @@ import * as Constants from './Constants.js'
 
 export var CredentialPropertyPage = React.createClass( {
   getInitialState : function() {
-    return { username : '', password : ''
-        /*,
-        validateCredentialsResponse : {
-            'token' : Constants.NO_TOKEN,
-            'message' : 'Please login',
-            'status' : 'communication error'} */ };
-
+    return { username : '', password : '', serverState : '' }
   },
     getValidateCredentials( objectWithStatus ) {
         let url = Constants.INMAN_SERVER_IP + ':8080/verifyCredentials';
@@ -18,22 +12,26 @@ export var CredentialPropertyPage = React.createClass( {
         let header = new Headers( { 'Content-Type' : 'application/json'});
         fetch( url, { method: 'post', body: JSON.stringify( corps ), mode: 'cors', headers : header })
             .then(function (response) {
-                /*  objectWithStatus.setState( { validateCredentialsResponse : 'sending' } );  */
-                objectWithStatus.props.updateCredentialsState( { validateCredentialsResponse : { 'message' :'sending' } } );
-                return response
+                objectWithStatus.setState( { serverState : "waiting"})
+                return response;
             })
             .then( function( response ) {
+                objectWithStatus.setState( { serverState : "pending"})
                 return response.json();
             })
             .then( function(data) {
-                /*  objectWithStatus.setState( { validateCredentialsResponse : data } );  */
+                objectWithStatus.setState( { serverState : "success"})
                 objectWithStatus.props.updateCredentialsState( data );
-            })
-            .catch( function() { objectWithStatus.props.updateCredentialsState(
+            });
+        /*
+            .catch( function() {
+                objectWithStatus.props.updateCredentialsState(
                 {
                 'message' : 'error',
                 'token' : Constants.NO_TOKEN,
-                'status' : "communication error" } ) } );
+                'status' : "communication error" } );
+                objectWithStatus.setState( { serverState : "error"})} );
+                */
     },
 
 

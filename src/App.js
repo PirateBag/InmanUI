@@ -7,6 +7,7 @@ import * as Constants from './Constants.js'
 
 
 
+
 class App extends Component {
 
     constructor(props) {
@@ -69,10 +70,13 @@ class App extends Component {
                     credentialsState={this.state.validateCredentialsResponse}/></h6>
             </div>
         </div>
+
          <CredentialPropertyPage
             updateCredentialsState={this.updateCredentialsState}
             credentialsState={this.state.validateCredentialsResponse}/>
+
          <SearchAndDisplay credentialsState={this.state.validateCredentialsResponse}/>
+
          <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
           <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
       </div>

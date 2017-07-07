@@ -3,7 +3,7 @@ import * as Constants from './Constants.js'
 
 export var CredentialPropertyPage = React.createClass( {
   getInitialState : function() {
-    return { username : '', password : '', serverState : '' }
+    return { username : 'fred', password : 'dilban', serverState : '' }
   },
     getValidateCredentials( objectWithStatus ) {
         let url = Constants.INMAN_SERVER_IP + ':8080/verifyCredentials';
@@ -59,11 +59,11 @@ export var CredentialPropertyPage = React.createClass( {
                       <tbody>
                       <tr>
                           <td>User</td>
-                          <td><input type="text" onChange={this.handleChangeUsername}/></td>
+                          <td><input type="text" onChange={this.handleChangeUsername} value={this.state.username}/></td>
                       </tr>
                       <tr>
                           <td>Password</td>
-                          <td><input type="password" onChange={this.handleChangePassword}/></td>
+                          <td><input type="password" onChange={this.handleChangePassword} value={this.state.password}/></td>
                       </tr>
                       <tr>
                           <td>

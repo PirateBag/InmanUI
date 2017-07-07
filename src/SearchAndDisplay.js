@@ -4,13 +4,16 @@
 import React from 'react';
 import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
+import AddItem from './AddItem.js'
+
 export var SearchAndDisplay= React.createClass( {
     getInitialState : function() {
         return { ItemId : '',
                  SummaryId : '',
                  Description: '',
                  MessageState: '',
-                 ItemResponse : null }
+                 ItemResponse : null,
+                 Mode : 'query' }
     },
     getItem( objectWithStatus ) {
         let params = queryString.stringify(
@@ -49,7 +52,12 @@ export var SearchAndDisplay= React.createClass( {
 
 
     handleSearch: function(evt) {
+        this.setState( { Mode : 'query'} );
         this.getItem( this );
+    },
+
+    handleAdd: function(evt) {
+        this.setState( { Mode : 'add'} );
     },
 
     render : function() {
@@ -73,12 +81,15 @@ export var SearchAndDisplay= React.createClass( {
 
                         <tr>
                             <td>
+                                <button type="button" onClick={this.handleAdd}>New</button>
+                            </td>
+                            <td>
                                 <button type="button" onClick={this.handleSearch}>Search</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <SearchResults ItemResponse={this.state.ItemResponse}/>
+                    <SearchResults Mode={this.state.Mode} ItemResponse={this.state.ItemResponse}/>
                 </div>
             )
         } else {
@@ -126,14 +137,25 @@ render : function() {
                 <h4>No items for you.</h4>
             )
         }
-        return (
-            <div >
-                <table>
-                    <tbody>
-                    {ItemLister(this.props.ItemResponse )}
-                    </tbody>
-                </table>
-            </div>
+
+        if ( this.props.Mode === 'query') {
+            return (
+                <div >
+                    <table>
+                        <tbody>
+                        {ItemLister(this.props.ItemResponse)}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        if ( this.props.Mode === 'add') {
+            return(
+                <AddItem></AddItem> );
+        }
+        return(
+            <h4>I have nothing to say.</h4>
         );
     }
 

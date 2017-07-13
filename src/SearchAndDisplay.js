@@ -130,15 +130,16 @@ function ItemLister( itemResponse ) {
 
 export var SearchResults = React.createClass( {
 
-render : function() {
-        if ( typeof this.props.ItemResponse === 'undefined'
-        || this.props.ItemResponse == null ) {
-            return(
-                <h4>No items for you.</h4>
-            )
-        }
+    render : function() {
 
-        if ( this.props.Mode === 'query') {
+        if ( this.props.ItemResponse == null) {
+            return (
+                <div>
+                    <h4>Query criteria specified no results.</h4>
+                    <AddItem Mode={this.props.Mode}/>
+                </div>
+            )
+        } else {
             return (
                 <div >
                     <table>
@@ -146,18 +147,9 @@ render : function() {
                         {ItemLister(this.props.ItemResponse)}
                         </tbody>
                     </table>
+                    <AddItem Mode={this.props.Mode}/>
                 </div>
             );
         }
-
-        if ( this.props.Mode === 'add') {
-            return(
-                <AddItem></AddItem> );
-        }
-        return(
-            <h4>I have nothing to say.</h4>
-        );
-    }
-
-
-} );
+    } }
+)

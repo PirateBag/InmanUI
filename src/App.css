@@ -3,7 +3,6 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
@@ -18,13 +17,30 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-
 .leftLayout{float:left;width:30%}
 
 .rightLayout{float:Right;width:50%}
 
+.propertyForm {
+  border: solid;
+  width: 450px;
+  align: center;
+  padding: 10px;
+  margin: 0 auto 0 auto;
+  border-radius: 5px;
+}
+
+input, label {
+  display: block;
+  text-align: left;
+}
+input {
+  width: 400px;
+  margin-bottom: 25px;
+}
+label {
+  font-size: 10px;
+}
+button {
+  border-radius: 5px;
+}

@@ -22,12 +22,13 @@ function ItemLister( itemResponse ) {
             </tr>
         )
 
-    return ( itemResponse.data.map( ( anItem ) =>
+    return (
+        itemResponse.data.map( ( anItem ) =>
         <tr key={anItem.id}>
-            <td>{anItem.id}</td>
-            <td>{anItem.summaryId}</td>
-            <td>{anItem.description}</td>
-            <td>{anItem.unitCost}</td>
+            <td className="cellNumeric">{anItem.id}</td>
+            <td className="cellText">{anItem.summaryId}</td>
+            <td className="cellText">{anItem.description}</td>
+            <td className="cellNumeric">{anItem.unitCost}</td>
         </tr>
     ) )
 }
@@ -47,6 +48,15 @@ export var ItemList = React.createClass( {
             return (
                 <div >
                     <table  className="propertyForm">
+                        <thead>
+                            <tr>
+                                <td className="cellNumeric">Item Id</td>
+                                <td className="cellText">Summary Id</td>
+                                <td className="cellText">Description</td>
+                                <td className="cellNumeric">Unit Cost</td>
+                            </tr>
+                        </thead>
+
                         <tbody>
                         {ItemLister(this.props.ItemResponse)}
                         </tbody>

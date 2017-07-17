@@ -3,16 +3,15 @@
  */
 import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
-
 import React from "react";
 
 export var AddItem = React.createClass({
     getInitialState: function () {
         return {
-            summaryId: '',
+            summaryId: 'W-0',
             description: '',
             unitCost: '0.0',
-            save: 'Not Yet'
+            save: 'Not Yetti'
         }
     },
 
@@ -38,6 +37,7 @@ export var AddItem = React.createClass({
             .then( function(data) {
                 theObject.setState( { MessageState : 'completed' } );
                 theObject.setState( { ItemResponse : data } );
+                theObject.props.doneWithAdding( data );
             })
             .catch( function() {
                 theObject.setState( { MessageState: 'Error' } );
@@ -63,13 +63,8 @@ export var AddItem = React.createClass({
     },
     handleClickCancel: function (evt) {
         this.setState({save: evt.target.value});
-
-    },
-    handleClickDone: function (evt) {
-        this.setState({save: evt.target.value});
         this.props.doneWithAdding(evt);
     },
-
 
     render: function () {
         if ( this.props.Mode !== 'add') {
@@ -78,16 +73,15 @@ export var AddItem = React.createClass({
         return (
             <div >
                 <form className='propertyForm'>
-                    <h2>Save: {this.state.save}</h2>
+                    <h2>Add Multiple Items</h2>
                     <label htmlFor='summaryId'>Summary</label>
                     <input id='summaryId' type="text" onChange={this.handleSummaryId} value={this.state.summaryId}/>
                     <label htmlFor='description'>Description</label>
                     <input id='description' type="text" onChange={this.handleDescription} value={this.state.description}/>
                     <label htmlFor='unitCost'>Unit Cost</label>
                     <input id='unitCost' type="text" onChange={this.handleCost} value={this.state.unitCost}/>
-                    <button type="button" onClick={this.handleClickSave} value='save'>Save New Item</button>
-                    <button type="button" onClick={this.handleClickCancel} value='cancel'>Cancel</button>
-                    <button type="button" onClick={this.handleClickDone} value='done'>Done with Adding</button>
+                    <button type="button" onClick={this.handleClickSave} value='save' >Save, Add Another</button>
+                    <button type="button" onClick={this.handleClickCancel} value='cancel'>Cancel and Return</button>
                 </form>
             </div>
         );

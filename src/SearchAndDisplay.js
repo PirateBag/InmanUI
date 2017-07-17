@@ -62,7 +62,18 @@ export var SearchAndDisplay= React.createClass( {
     },
 
     handleDoneWithAdding : function(evt) {
-        this.setState( { Mode : 'query'} )
+        let evtType = typeof evt.data;
+        if ( evtType === 'object') {
+            if ( evt.errors.length === 0 && evt.data.length === 1) {
+                let items = this.state.ItemResponse;
+                let anItem = evt.data[ 0 ];
+                let count = items.push( anItem );
+                this.setState( { ItemResponse : items });
+            }
+        } else
+        {
+            this.setState({Mode: 'query'});
+        }
     },
 
     render : function() {

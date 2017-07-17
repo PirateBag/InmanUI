@@ -54,24 +54,13 @@ export var CredentialPropertyPage = React.createClass( {
       if ( this.props.credentialsState.token === Constants.NO_TOKEN ) {
           return (
               <div className="propertyForm" >
-                  <h2>{this.props.credentialsState.message}</h2>
-                  <table>
-                      <tbody>
-                      <tr>
-                          <td>User</td>
-                          <td><input type="text" onChange={this.handleChangeUsername} value={this.state.username}/></td>
-                      </tr>
-                      <tr>
-                          <td>Password</td>
-                          <td><input type="password" onChange={this.handleChangePassword} value={this.state.password}/></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <button type="button" onClick={this.handleClickLogin}>Login</button>
-                          </td>
-                      </tr>
-                      </tbody>
-                  </table>
+
+                  <label htmlFor="username">User</label>
+                  <input id='username' type="text" onChange={this.handleChangeUsername} value={this.state.username}/>
+
+                  <label htmlFor="password">Password</label>
+                  <input id='password' type="text" onChange={this.handleChangeItemId} value={this.state.password}/>
+                  <button type="button" onClick={this.handleClickLogin}>Login</button>
               </div>
           );
       }

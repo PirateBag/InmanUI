@@ -4,7 +4,8 @@
 import React from 'react';
 import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
-import AddItem from './AddItem.js'
+import ItemList from './ItemList.js'
+
 
 export var SearchAndDisplay= React.createClass( {
     getInitialState : function() {
@@ -60,96 +61,30 @@ export var SearchAndDisplay= React.createClass( {
         this.setState( { Mode : 'add'} );
     },
 
+    handleDoneWithAdding : function(evt) {
+        this.setState( { Mode : 'query'} )
+    },
+
     render : function() {
         if ( this.props.credentialsState.token !== Constants.NO_TOKEN ) {
             return (
-                <div >
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>Item Id</td>
-                            <td><input type="text" onChange={this.handleChangeItemId} value={this.state.ItemId}/></td>
-                        </tr>
-                        <tr>
-                            <td>Summary Id</td>
-                            <td><input type="text" onChange={this.handleChangeSummaryId} value={this.state.SummaryId}/></td>
-                        </tr>
-                        <tr>
-                            <td>Description (mentions)</td>
-                            <td><input name='Description' type="text" onChange={this.handleChangeDescription} value={this.state.Description}/></td>
-                        </tr>
+                <div className="propertyForm" >
+                    <label htmlFor="itemId>">Item Id</label>
+                    <input id='itemId' type="text" onChange={this.handleChangeItemId} value={this.state.ItemId}/>
+                    <label htmlFor="summaryId>">Item Id</label>
+                    <input id='summaryId' type="text" onChange={this.handleChangeSummaryId} value={this.state.SummaryId}/>
+                    <label htmlFor="description>">Description</label>
+                    <input id='description' name='Description' type="text" onChange={this.handleChangeDescription} value={this.state.Description}/>
 
-                        <tr>
-                            <td>
-                                <button type="button" onClick={this.handleAdd}>New</button>
-                            </td>
-                            <td>
-                                <button type="button" onClick={this.handleSearch}>Search</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <SearchResults Mode={this.state.Mode} ItemResponse={this.state.ItemResponse}/>
+                    <button type="button" onClick={this.handleAdd}>Create New Item</button>
+                    <button type="button" onClick={this.handleSearch}>Search for Items</button>
+                    <ItemList Mode={this.state.Mode} ItemResponse={this.state.ItemResponse}
+                                   DoneWithAdding={this.handleDoneWithAdding}/>
                 </div>
             )
         } else {
             return null;
         }
     }
-
-
 } );
 
-function ItemLister( itemResponse ) {
-    if ( itemResponse.errors != null && itemResponse.errors.length >0 )  {
-            return ( itemResponse.errors.map( ( anError ) =>
-                <tr key={anError.key}>
-                    <td>{anError.message}</td>
-                </tr>
-                )
-            )
-    }
-
-    if ( itemResponse.data == null || itemResponse.data.length === 0 )
-
-            return (
-            <tr>
-                <td>These query parameters did not match any data.</td>
-            </tr>
-        )
-
-     return ( itemResponse.data.map( ( anItem ) =>
-        <tr key={anItem.id}>
-            <td>{anItem.id}</td>
-            <td>{anItem.summaryId}</td>
-            <td>{anItem.description}</td>
-            <td>{anItem.unitCost}</td>
-        </tr>
-    ) )
-}
-
-export var SearchResults = React.createClass( {
-
-    render : function() {
-
-        if ( this.props.ItemResponse == null) {
-            return (
-                <div>
-                    <h4>Query criteria specified no results.</h4>
-                    <AddItem Mode={this.props.Mode}/>
-                </div>
-            )
-        } else {
-            return (
-                <div >
-                    <table>
-                        <tbody>
-                        {ItemLister(this.props.ItemResponse)}
-                        </tbody>
-                    </table>
-                    <AddItem Mode={this.props.Mode}/>
-                </div>
-            );
-        }
-    } }
-)

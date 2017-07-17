@@ -53,7 +53,7 @@ export var CredentialPropertyPage = React.createClass( {
     render : function() {
       if ( this.props.credentialsState.token === Constants.NO_TOKEN ) {
           return (
-              <div >
+              <div className="propertyForm" >
                   <h2>{this.props.credentialsState.message}</h2>
                   <table>
                       <tbody>

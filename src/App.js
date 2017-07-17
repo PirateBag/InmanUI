@@ -17,7 +17,7 @@ class App extends Component {
 		this.state = { serverStatus : "unknown",
                        validateCredentialsResponse : {
                             token : Constants.NO_TOKEN,
-                            message : 'please login' } };
+                            message : 'Please login' } };
 
 		this.getInmanStatus(this);
 		this.updateCredentialsState = this.updateCredentialsState.bind(this);
@@ -71,15 +71,17 @@ class App extends Component {
             </div>
         </div>
 
-         <CredentialPropertyPage
-            updateCredentialsState={this.updateCredentialsState}
-            credentialsState={this.state.validateCredentialsResponse}/>
-
-         <SearchAndDisplay credentialsState={this.state.validateCredentialsResponse}/>
-
-         <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
-          <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
+        <div className="mainForm">
+            <CredentialPropertyPage
+                updateCredentialsState={this.updateCredentialsState}
+                credentialsState={this.state.validateCredentialsResponse}/>
+            <br/>
+            <SearchAndDisplay credentialsState={this.state.validateCredentialsResponse} />
+            <p>Are you really ure</p>
+            <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
+            <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
       </div>
+    </div>
     );
   }
 }

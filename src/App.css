@@ -56,3 +56,36 @@ button {
   padding-left: 2%;
   padding-right: 2%
 }
+
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.cellNumeric {
+  text-align: right;
+}
+.cellText {
+  text-align: left;
+}
+
+thead {
+  font-weight: bold;
+}
+
+.selected {
+  color: gray;
+}
+.unSelected {
+  color: black;
+}
+.selected:hover {
+  background-color: antiquewhite;
+}
+.unSelected:hover {
+  background-color: white
+}

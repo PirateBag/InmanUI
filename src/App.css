@@ -81,11 +81,11 @@ thead {
   color: gray;
 }
 .unSelected {
-  color: black;
+  color: blue;
 }
 .selected:hover {
-  background-color: antiquewhite;
+  background-color: white;
 }
 .unSelected:hover {
-  background-color: white
+  background-color: grey;
 }

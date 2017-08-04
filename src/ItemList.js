@@ -1,23 +1,32 @@
 /**
  * Created by osboxes on 17/07/17.
  */
-import React from 'react';
-import AddItem from './AddItem.js'
+import React from "react";
+import AddItem from "./AddItem.js";
 
 
-export var ItemList = React.createClass( {
-    handleFlipSelect : function ( anItem ) {
-        if (typeof anItem.selectClass === 'undefined' || anItem.selectClass === 'selected' )
-        {
-            anItem.selectClass = 'unSelected';
+class ItemList extends React.Component {
+    constructor( props, context ) {
+        super( props, context );
+        this.handleFlipSelect = this.handleFlipSelect.bind(this);
+    }
+
+    handleFlipSelect( e ) {
+
+
+        let trLine = e.target;
+        trLine = trLine.parentNode;
+        if ( trLine.className === 'unSelected' ) {
+            trLine.addClass( "selected");
+            trLine.removeClass( "unSelected");
         } else {
-            anItem.selectClass = 'selected';
+            this.selectClass = 'selected';
         }
-    },
+    }
 
-    ItemLister : function( itemResponse ) {
-        if ( itemResponse.errors != null && itemResponse.errors.length >0 )  {
-            return ( itemResponse.errors.map( ( anError ) =>
+    ItemLister(itemResponse) {
+        if (itemResponse.errors != null && itemResponse.errors.length > 0) {
+            return ( itemResponse.errors.map((anError) =>
                     <tr key={anError.key}>
                         <td>{anError.message}</td>
                     </tr>
@@ -25,7 +34,7 @@ export var ItemList = React.createClass( {
             )
         }
 
-        if ( itemResponse.data == null || itemResponse.data.length === 0 )
+        if (itemResponse.data == null || itemResponse.data.length === 0)
 
             return (
                 <tr>
@@ -33,28 +42,27 @@ export var ItemList = React.createClass( {
                 </tr>
             )
 
-        for ( let i = 0; i < itemResponse.data.length; i++ ) {
-            let anItem = itemResponse.data[ i ];
-            if (typeof anItem.selectClass === 'undefined' )
-            {
+        for (let i = 0; i < itemResponse.data.length; i++) {
+            let anItem = itemResponse.data[i];
+            if (typeof anItem.selectClass === 'undefined') {
                 anItem.selectClass = 'unSelected';
             }
         }
 
         return (
-            itemResponse.data.map( ( anItem ) =>
-                <tr key={anItem.id} className={anItem.selectClass} onClick='handleFlipSelect({anItem.id})'>
+            itemResponse.data.map((anItem) =>
+                <tr key={anItem.id} itemInQuestion={anItem.id} className={anItem.selectClass} onClick={this.handleFlipSelect}>
                     <td className="cellNumeric">{anItem.id}</td>
                     <td className="cellText">{anItem.summaryId}</td>
                     <td className="cellText">{anItem.description}</td>
                     <td className="cellNumeric">{anItem.unitCost}</td>
                 </tr>
             ) )
-        },
+    }
 
-    render : function() {
+    render() {
 
-        if ( this.props.ItemResponse == null) {
+        if (this.props.ItemResponse == null) {
             return (
                 <div>
                     <h4>Query criteria specified no results.</h4>
@@ -64,14 +72,14 @@ export var ItemList = React.createClass( {
         } else {
             return (
                 <div >
-                    <table  className="propertyForm">
+                    <table className="propertyForm">
                         <thead>
-                            <tr>
-                                <td className="cellNumeric">Item Id</td>
-                                <td className="cellText">Summary Id</td>
-                                <td className="cellText">Description</td>
-                                <td className="cellNumeric">Unit Cost</td>
-                            </tr>
+                        <tr>
+                            <td className="cellNumeric">Item Id</td>
+                            <td className="cellText">Summary Id</td>
+                            <td className="cellText">Description</td>
+                            <td className="cellNumeric">Unit Cost</td>
+                        </tr>
                         </thead>
 
                         <tbody>
@@ -82,7 +90,8 @@ export var ItemList = React.createClass( {
                 </div>
             );
         }
-    } }
-)
+    }
+}
 
 export default ItemList;
+

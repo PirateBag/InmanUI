@@ -56,10 +56,10 @@ export var CredentialPropertyPage = React.createClass( {
               <div className="propertyForm" >
 
                   <label htmlFor="username">User</label>
-                  <input id='username' type="text" onChange={this.handleChangeUsername} value={this.state.username}/>
+                  <input id='username' type="text" onChange={this.handleChangeUsername} defaultValue={this.state.username}/>
 
                   <label htmlFor="password">Password</label>
-                  <input id='password' type="text" onChange={this.handleChangeItemId} value={this.state.password}/>
+                  <input id='password' type="text" onChange={this.handleChangeItemId} defaultValue={this.state.password}/>
                   <button type="button" onClick={this.handleClickLogin}>Login</button>
               </div>
           );

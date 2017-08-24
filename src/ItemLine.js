@@ -5,7 +5,7 @@ import React from "react";
 import AddItem from "./AddItem.js";
 
 
-class ItemList extends React.Component {
+class ItemLine extends React.Component {
     constructor( props, context ) {
         super( props, context );
         this.handleFlipSelect = this.handleFlipSelect.bind(this);
@@ -21,6 +21,8 @@ class ItemList extends React.Component {
             this.selectClass = 'selected';
         }
     }
+
+
 
     ItemLister(itemResponse) {
         if (itemResponse.errors != null && itemResponse.errors.length > 0) {
@@ -59,36 +61,24 @@ class ItemList extends React.Component {
     }
 
     render() {
+        return (
+            <tr key={anItem.id} itemInQuestion={anItem.id} className={anItem.selectClass} onClick={this.handleFlipSelect}>
+                <td className="cellNumeric">{anItem.id}</td>
+                <td className="cellText">{anItem.summaryId}</td>
+                <td className="cellText">{anItem.description}</td>
+                <td className="cellNumeric">{anItem.unitCost}</td>
+            </tr>
 
-        if (this.props.ItemResponse == null) {
-            return (
-                <div>
-                    <h4>Query criteria specified no results.</h4>
-                    <AddItem Mode={this.props.Mode} doneWithAdding={this.props.DoneWithAdding}/>
-                </div>
-            )
-        } else {
-            return (
-                <div >
-                    <table className="propertyForm">
-                        <thead>
-                        <tr>
-                            <td className="cellNumeric">Item Id</td>
-                            <td className="cellText">Summary Id</td>
-                            <td className="cellText">Description</td>
-                            <td className="cellNumeric">Unit Cost</td>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {this.ItemLister(this.props.ItemResponse)}
-                        </tbody>
-                    </table>
-                    <AddItem Mode={this.props.Mode} doneWithAdding={this.props.DoneWithAdding}/>
-                </div>
             );
         }
     }
+
+}
+
+ItemLine.propTypes = {
+    item: React.PropTypes.object.isRequired,
+    selectState : React.PropTypes.bool.isRequired,
+    setSelectState: React.PropTypes.func.isRequired
 }
 
 export default ItemList;

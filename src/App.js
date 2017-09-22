@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {CredentialStatus,CredentialPropertyPage} from './Credentials.js'
 import {SearchAndDisplay} from './SearchAndDisplay.js'
+import {SearchAndDisplayTable} from './SearchAndDisplayTable.js'
 import Button from './Button.js'
 import * as Constants from './Constants.js'
 
@@ -76,7 +77,7 @@ class App extends Component {
                 updateCredentialsState={this.updateCredentialsState}
                 credentialsState={this.state.validateCredentialsResponse}/>
             <br/>
-            <SearchAndDisplay credentialsState={this.state.validateCredentialsResponse} />
+            <SearchAndDisplayTable credentialsState={this.state.validateCredentialsResponse} />
             <p>Are you really ure</p>
             <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
             <h6 className="rightLayout">Last Update: {dateOfRender}</h6>

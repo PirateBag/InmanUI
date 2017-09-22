@@ -3,23 +3,13 @@
  */
 import React from "react";
 import AddItem from "./AddItem.js";
+import ItemLine from "./ItemLine.js"
 
 
 class ItemList extends React.Component {
     constructor( props, context ) {
         super( props, context );
         this.handleFlipSelect = this.handleFlipSelect.bind(this);
-    }
-
-    handleFlipSelect( e ) {
-        let trLine = e.target;
-        trLine = trLine.parentNode;
-        if ( trLine.className === 'unSelected' ) {
-            trLine.addClass( "selected");
-            trLine.removeClass( "unSelected");
-        } else {
-            this.selectClass = 'selected';
-        }
     }
 
     ItemLister(itemResponse) {
@@ -40,21 +30,9 @@ class ItemList extends React.Component {
                 </tr>
             )
 
-        for (let i = 0; i < itemResponse.data.length; i++) {
-            let anItem = itemResponse.data[i];
-            if (typeof anItem.selectClass === 'undefined') {
-                anItem.selectClass = 'unSelected';
-            }
-        }
-
         return (
             itemResponse.data.map((anItem) =>
-                <tr key={anItem.id} itemInQuestion={anItem.id} className={anItem.selectClass} onClick={this.handleFlipSelect}>
-                    <td className="cellNumeric">{anItem.id}</td>
-                    <td className="cellText">{anItem.summaryId}</td>
-                    <td className="cellText">{anItem.description}</td>
-                    <td className="cellNumeric">{anItem.unitCost}</td>
-                </tr>
+                <ItemLine item={anItem} isSelected={false} setSelectState={null}/>
             ) )
     }
 
@@ -81,7 +59,11 @@ class ItemList extends React.Component {
                         </thead>
 
                         <tbody>
-                        {this.ItemLister(this.props.ItemResponse)}
+                        {this.props.itemResponse.data.map((anItem) =>
+                            <ItemLine item={anItem} isSelected={false} setSelectState={null}/>
+                        ) }
+
+                        //  {this.ItemLister(this.props.ItemResponse)}
                         </tbody>
                     </table>
                     <AddItem Mode={this.props.Mode} doneWithAdding={this.props.DoneWithAdding}/>

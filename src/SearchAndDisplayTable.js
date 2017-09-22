@@ -2,12 +2,11 @@
  * Created by osboxes on 22/06/17.
  */
 import React from 'react';
+import Reactable from 'reactable';
 import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
-import ItemList from './ItemList.js'
 
-
-export var SearchAndDisplay= React.createClass( {
+export var SearchAndDisplayTable= React.createClass( {
     getInitialState : function() {
         return { ItemId : '',
                  SummaryId : '',
@@ -16,6 +15,7 @@ export var SearchAndDisplay= React.createClass( {
                  ItemResponse : null,
                  Mode : 'query' }
     },
+
     getItem( objectWithStatus ) {
         let params = queryString.stringify(
             { 'id' : this.state.ItemId,
@@ -76,7 +76,16 @@ export var SearchAndDisplay= React.createClass( {
     },
 
     render : function() {
-        if ( this.props.credentialsState.token !== Constants.NO_TOKEN ) {
+        var columns = [
+            { key: "id", label: "Id" },
+            { key: "summaryId", label: "Summary" },
+            { key: "description", label: "Description" },
+            { key: "unitCost",  label: "Unit Cost" } ];
+
+        if ( this.props.credentialsState.token === Constants.NO_TOKEN )
+            return null;
+
+        if ( this.state.ItemResponse == null ) {
             return (
                 <div className="propertyForm" >
                     <label htmlFor="itemId>">Item Id</label>
@@ -88,12 +97,28 @@ export var SearchAndDisplay= React.createClass( {
 
                     <button type="button" onClick={this.handleAdd}>Create New Item</button>
                     <button type="button" onClick={this.handleSearch}>Search for Items</button>
-                    <ItemList Mode={this.state.Mode} ItemResponse={this.state.ItemResponse}
-                                   DoneWithAdding={this.handleDoneWithAdding}/>
                 </div>
             )
         } else {
-            return null;
+            return (
+                <div className="propertyForm" >
+                    <label htmlFor="itemId>">Item Id</label>
+                    <input id='itemId' type="text" onChange={this.handleChangeItemId} value={this.state.ItemId}/>
+                    <label htmlFor="summaryId>">Item Id</label>
+                    <input id='summaryId' type="text" onChange={this.handleChangeSummaryId} value={this.state.SummaryId}/>
+                    <label htmlFor="description>">Description</label>
+                    <input id='description' name='Description' type="text" onChange={this.handleChangeDescription} value={this.state.Description}/>
+
+                    <button type="button" onClick={this.handleAdd}>Create New Item</button>
+                    <button type="button" onClick={this.handleSearch}>Search for Items</button>
+
+                    <Reactable.Table className="table" id="table"
+                                     data={this.state.ItemResponse.data}
+                                     columns={columns}
+                    noDataText="No matching records" />
+                </div>
+            )
+
         }
     }
 } );

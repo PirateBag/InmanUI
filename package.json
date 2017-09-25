@@ -8,7 +8,9 @@
   "dependencies": {
     "material-components-web": "^0.12.1",
     "react": "^15.6.1",
-    "react-dom": "^15.4.2"
+    "react-bootstrap-table": "^4.0.5",
+    "react-dom": "^15.4.2",
+    "react-intl": "^2.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

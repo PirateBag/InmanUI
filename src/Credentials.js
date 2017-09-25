@@ -1,10 +1,19 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import * as Constants from './Constants.js'
 
-export var CredentialPropertyPage = React.createClass( {
-  getInitialState : function() {
-    return { username : 'fred', password : 'dilban', serverState : '' }
-  },
+export class CredentialPropertyPage extends Component  {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            username : 'fred', password : 'dilban', serverState : '' };
+
+        this.handleClickLogin  = this.handleClickLogin.bind( this );
+        this.handleClickLogout = this.handleClickLogout.bind(this);
+    }
+
     getValidateCredentials( objectWithStatus ) {
         let url = Constants.INMAN_SERVER_IP + ':8080/verifyCredentials';
         let corps = { username : objectWithStatus.state.username,
@@ -32,25 +41,24 @@ export var CredentialPropertyPage = React.createClass( {
                 'status' : "communication error" } );
                 objectWithStatus.setState( { serverState : "error"})} );
                 */
-    },
+    }
 
-
-    handleChangeUsername: function(evt) {
+    handleChangeUsername(evt) {
     this.setState({ username: evt.target.value });
-   },
+   }
 
-  handleChangePassword: function(evt) {
+    handleChangePassword(evt) {
     this.setState({ password: evt.target.value });
-   },
+   }
 
-  handleClickLogin: function(evt) {
+    handleClickLogin(evt) {
         this.getValidateCredentials( this );
-   },
-   handleClickLogout: function(evt) {
+   }
+   handleClickLogout(evt) {
     this.props.updateCredentialsState(  Constants.NoCredentials );
-    },
+    }
 
-    render : function() {
+    render() {
       if ( this.props.credentialsState.token === Constants.NO_TOKEN ) {
           return (
               <div className="propertyForm" >
@@ -66,20 +74,19 @@ export var CredentialPropertyPage = React.createClass( {
       }
       return null;
   }
-
-} );
+}
 
 
 /**
  * **********************************************************************
  */
-export var CredentialStatus = React.createClass( {
+export class CredentialStatus extends Component {
 
-    handleClickLogout: function(evt) {
+    handleClickLogout(evt) {
         this.props.updateCredentialsState(  Constants.NoCredentials );
-    },
+    }
 
-    render : function() {
+    render() {
         if ( this.props.credentialsState.token === Constants.NO_TOKEN ) {
             return (
                 <div >
@@ -103,6 +110,6 @@ export var CredentialStatus = React.createClass( {
             )
         }
     }
+}
 
-} );
 

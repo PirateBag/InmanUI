@@ -2,8 +2,6 @@
  * Created by osboxes on 17/07/17.
  */
 import React from "react";
-import AddItem from "./AddItem.js";
-
 
 class ItemLine extends React.Component {
     constructor( props, context ) {

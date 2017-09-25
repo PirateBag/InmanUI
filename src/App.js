@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import {CredentialStatus,CredentialPropertyPage} from './Credentials.js'
-import {SearchAndDisplay} from './SearchAndDisplay.js'
-import {SearchAndDisplayTable} from './SearchAndDisplayTable.js'
-import Button from './Button.js'
+import {Button} from './Button'
 import * as Constants from './Constants.js'
-
-
+import SearchAndDisplayBsTable from "./SearchAndDisplayBsTable";
 
 
 class App extends Component {
@@ -77,7 +74,7 @@ class App extends Component {
                 updateCredentialsState={this.updateCredentialsState}
                 credentialsState={this.state.validateCredentialsResponse}/>
             <br/>
-            <SearchAndDisplayTable credentialsState={this.state.validateCredentialsResponse} />
+            <SearchAndDisplayBsTable credentialsState={this.state.validateCredentialsResponse} />
             <p>Are you really ure</p>
             <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
             <h6 className="rightLayout">Last Update: {dateOfRender}</h6>

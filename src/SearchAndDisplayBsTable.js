@@ -7,7 +7,7 @@ import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
 import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
-import FormattedNumber from 'react-intl';
+import NumberFormat from 'react-number-format';
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -23,18 +23,19 @@ class SearchAndDisplayBsTable extends React.Component {
             Mode : 'query' };
 
         this.getItem = this.getItem.bind( this );
+        this.handleAdd = this.handleAdd.bind( this );
         this.handleSearch = this.handleSearch.bind( this );
+        this.handleChangeItemId = this.handleChangeItemId.bind(this);
+        this.handleChangeSummaryId = this.handleChangeSummaryId.bind(this);
+        this.handleChangeDescription = this.handleChangeDescription.bind(this);
+        this.handleDoneWithAdding = this.handleDoneWithAdding.bind(this);
     }
 
-    /*
-    priceFormatter( cell, row ) {
-        return `$ ${cell}`;
-    }
-    */
 
     activeFormatter( cell, row ) {
         return(
-            <FormattedNumber value={cell}  format='USD'/>
+            <NumberFormat value={cell} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
+            displayType='text'/>
         );
     }
 

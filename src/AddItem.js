@@ -4,16 +4,24 @@
 import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
 import React from "react";
+import PropTypes from 'prop-types';
 
-export var AddItem = React.createClass({
-    getInitialState: function () {
-        return {
-            summaryId: 'W-0',
-            description: '',
-            unitCost: '0.0',
-            save: 'Not Yetti'
-        }
-    },
+export class AddItem extends React.Component {
+    constructor(props) {
+    super(props)
+
+    this.state = {
+        summaryId: 'W-0',
+        description: '',
+        unitCost: '0.0',
+        save: 'Not Yetti' };
+
+        this.handleSummaryId = this.handleSummaryId.bind(this);
+        this.handleDescription = this.handleDescription.bind(this);
+        this.handleCost = this.handleCost.bind(this);
+        this.handleClickSave = this.handleClickSave.bind(this);
+        this.handleClickCancel = this.handleClickCancel.bind(this);
+    }
 
     addItem( theObject ) {
         let params = {
@@ -42,31 +50,29 @@ export var AddItem = React.createClass({
             .catch( function() {
                 theObject.setState( { MessageState: 'Error' } );
             } );
-    },
+    }
 
-
-
-    handleSummaryId: function (evt) {
+    handleSummaryId(evt) {
         this.setState({summaryId: evt.target.value});
-    },
+    }
 
-    handleDescription: function (evt) {
+    handleDescription(evt) {
         this.setState({description: evt.target.value});
-    },
-    handleCost: function (evt) {
+    }
+    handleCost(evt) {
         this.setState({unitCost: evt.target.value});
-    },
+    }
 
-    handleClickSave: function (evt) {
+    handleClickSave(evt) {
         this.setState({save: evt.target.value});
         this.addItem( this );
-    },
-    handleClickCancel: function (evt) {
+    }
+    handleClickCancel(evt) {
         this.setState({save: evt.target.value});
         this.props.doneWithAdding(evt);
-    },
+    }
 
-    render: function () {
+    render() {
         if ( this.props.Mode !== 'add') {
             return( null );
         }
@@ -86,6 +92,11 @@ export var AddItem = React.createClass({
             </div>
         );
     }
-});
+}
+
+AddItem.propTypes = {
+    Mode: PropTypes.string,
+    doneWithAdding : PropTypes.func
+}
 
 export default AddItem;

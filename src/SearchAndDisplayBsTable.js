@@ -8,6 +8,7 @@ import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
 import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import NumberFormat from 'react-number-format';
+import AddItem from "./AddItem.js";
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -20,7 +21,8 @@ class SearchAndDisplayBsTable extends React.Component {
             Description: '',
             MessageState: '',
             ItemResponse : null,
-            Mode : 'query' };
+            Mode : 'query'
+            };
 
         this.getItem = this.getItem.bind( this );
         this.handleAdd = this.handleAdd.bind( this );
@@ -101,20 +103,26 @@ class SearchAndDisplayBsTable extends React.Component {
         if ( this.props.credentialsState.token === Constants.NO_TOKEN )
             return null;
 
-        if ( this.state.ItemResponse == null ) {
+        if ( this.state.Mode === 'add') {
             return (
-                <div className="propertyForm" >
-                    <label htmlFor="itemId>">Item Id</label>
-                    <input id='itemId' type="text" onChange={this.handleChangeItemId} value={this.state.ItemId}/>
-                    <label htmlFor="summaryId>">Item Id</label>
-                    <input id='summaryId' type="text" onChange={this.handleChangeSummaryId} value={this.state.SummaryId}/>
-                    <label htmlFor="description>">Description</label>
-                    <input id='description' name='Description' type="text" onChange={this.handleChangeDescription} value={this.state.Description}/>
-
-                    <button type="button" onClick={this.handleAdd}>Create New Item</button>
-                    <button type="button" onClick={this.handleSearch}>Search for Items</button>
+                <div>
+                    <AddItem Mode={this.state.Mode} doneWithAdding={this.handleDoneWithAdding}/>
                 </div>
-            )
+            ) }
+        else if ( this.state.ItemResponse == null ) {
+            return (
+            <div className="propertyForm" >
+                <label htmlFor="itemId>">Item Id</label>
+                <input id='itemId' type="text" onChange={this.handleChangeItemId} value={this.state.ItemId}/>
+                <label htmlFor="summaryId>">Summary</label>
+                <input id='summaryId' type="text" onChange={this.handleChangeSummaryId} value={this.state.SummaryId}/>
+                <label htmlFor="description>">Description</label>
+                <input id='description' name='Description' type="text" onChange={this.handleChangeDescription} value={this.state.Description}/>
+
+                <button type="button" onClick={this.handleAdd}>Create New Item</button>
+                <button type="button" onClick={this.handleSearch}>Search for Items</button>
+            </div>
+        )
         } else {
             return (
                 <div className="propertyForm" >

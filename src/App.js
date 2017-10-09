@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import AppBar from 'material-ui/AppBar';
 import './App.css';
-import {CredentialStatus,CredentialPropertyPage} from './Credentials.js'
+import {CredentialPropertyPage} from './Credentials.js'
+import {CredentialsModal} from './CredentialsModal.js'
+import {LoginLogoff} from './LoginLogoff.js'
 import {Button} from './Button'
 import * as Constants from './Constants.js'
 import SearchAndDisplayBsTable from "./SearchAndDisplayBsTable";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 
 class App extends Component {
@@ -53,24 +57,21 @@ class App extends Component {
 
     var dateOfRender = new Date().toTimeString();
 
-
     return (
+        <MuiThemeProvider>
       <div className="App">
-        <div className="App-header">
-			<div className='leftLayout'>
-                <img className='App-logo' src={require('./logo.png')} alt="logoPoop" />
-			</div>
-		    <div className='rightLayout'>
-                <h2>Welcome to Inman</h2>
-                <h6>Inman Server Status: {this.state.serverStatus}</h6>
-                <h6><CredentialStatus
-                    updateCredentialsState={this.updateCredentialsState}
-                    credentialsState={this.state.validateCredentialsResponse}/></h6>
-            </div>
-        </div>
+          <AppBar title="Inman"
+                  iconElementRight={<LoginLogoff
+                      clickLogout={this.updateCredentialsState}
+                      credentialsState={this.state.validateCredentialsResponse.message}
+                      serverStatus={this.state.serverStatus}/> } >
 
-        <div className="mainForm">
-            <CredentialPropertyPage
+
+          </AppBar>
+          <div className="mainForm">
+
+
+            <CredentialsModal
                 updateCredentialsState={this.updateCredentialsState}
                 credentialsState={this.state.validateCredentialsResponse}/>
             <br/>
@@ -80,8 +81,15 @@ class App extends Component {
             <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
       </div>
     </div>
+        </MuiThemeProvider>
     );
   }
 }
 
+
+/*LoginLogoff.propTypes = {
+    credentialsState: PropTypes.string,
+    clickLogout : PropTypes.func
+}
+*/
 export default App;

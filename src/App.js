@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
 import './App.css';
-import {CredentialPropertyPage} from './Credentials.js'
 import {CredentialsModal} from './CredentialsModal.js'
 import {LoginLogoff} from './LoginLogoff.js'
-import {Button} from './Button'
 import * as Constants from './Constants.js'
 import SearchAndDisplayBsTable from "./SearchAndDisplayBsTable";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
 
 class App extends Component {
 
@@ -59,25 +56,20 @@ class App extends Component {
 
     return (
         <MuiThemeProvider>
-      <div className="App">
+      <div >
           <AppBar title="Inman"
                   iconElementRight={<LoginLogoff
                       clickLogout={this.updateCredentialsState}
                       credentialsState={this.state.validateCredentialsResponse.message}
                       serverStatus={this.state.serverStatus}/> } >
-
-
           </AppBar>
           <div className="mainForm">
-
 
             <CredentialsModal
                 updateCredentialsState={this.updateCredentialsState}
                 credentialsState={this.state.validateCredentialsResponse}/>
             <br/>
             <SearchAndDisplayBsTable credentialsState={this.state.validateCredentialsResponse} />
-            <p>Are you really ure</p>
-            <Button label="Status" eventHandler={this.uiEvent} visible={true} eventName="Status" ></Button>
             <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
       </div>
     </div>
@@ -86,10 +78,4 @@ class App extends Component {
   }
 }
 
-
-/*LoginLogoff.propTypes = {
-    credentialsState: PropTypes.string,
-    clickLogout : PropTypes.func
-}
-*/
 export default App;

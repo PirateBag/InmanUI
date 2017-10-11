@@ -2,13 +2,15 @@
  * Created by osboxes on 22/06/17.
  */
 import React from 'react';
-
-import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as Constants from './Constants.js'
 import * as queryString from 'query-string'
 import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
-import NumberFormat from 'react-number-format';
 import AddItem from "./AddItem.js";
+import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import ItemGrid from "./ItemGrid.js";
+import NumberFormat from 'react-number-format';
+import ServicePoster from "./ServicePoster.js";
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -24,61 +26,47 @@ class SearchAndDisplayBsTable extends React.Component {
             Mode : 'query'
             };
 
-        this.getItem = this.getItem.bind( this );
+        this.getItems = this.getItems.bind( this );
+        this.handleChange = this.handleChange.bind(this);
+        this.responseCallback = this.responseCallback.bind(this);
         this.handleAdd = this.handleAdd.bind( this );
         this.handleSearch = this.handleSearch.bind( this );
-        this.handleChangeItemId = this.handleChangeItemId.bind(this);
-        this.handleChangeSummaryId = this.handleChangeSummaryId.bind(this);
-        this.handleChangeDescription = this.handleChangeDescription.bind(this);
         this.handleDoneWithAdding = this.handleDoneWithAdding.bind(this);
     }
 
-
     activeFormatter( cell, row ) {
-        return(
+        return (
             <NumberFormat value={cell} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
-            displayType='text'/>
+                          displayType='text'/>
         );
     }
 
-    getItem( objectWithStatus ) {
-        let params = queryString.stringify(
-            { 'id' : this.state.ItemId,
-              'summaryId' : this.state.SummaryId,
-              'description' : this.state.Description })
-        let url = Constants.INMAN_SERVER_IP + ':8080/item/query?'+ params;
-        let header = new Headers( { 'Content-Type' : 'application/json'});
-        fetch( url, { method: 'get', mode: 'cors', headers : header })
-            .then(function (response) {
-                objectWithStatus.setState( { MessageState : 'sending' } );
-                return response
-            })
-            .then( function( response ) {
-                objectWithStatus.setState( { MessageState : 'waiting' } );
-                return response.json();
-            })
-            .then( function(data) {
-                objectWithStatus.setState( { MessageState : 'completed' } );
-                objectWithStatus.setState( { ItemResponse : data } );
-            })
-            .catch( function() {
-                objectWithStatus.setState( { MessageState: 'Error' } );
-            } )
+    handleChange( evt ) {
+        var  o = {  };
+        o[evt.target.id] = evt.target.value;
+        this.setState( o );
     }
 
-    handleChangeItemId(evt) {
-        this.setState({ ItemId : evt.target.value });
+    responseCallback( response ) {
+        this.setState( { ItemResponse : response });
     }
-    handleChangeSummaryId(evt) {
-        this.setState({ SummaryId : evt.target.value });
+
+    getItems( ) {
+        let params = queryString.stringify(
+            {
+                'id': this.state.ItemId,
+                'summaryId': this.state.SummaryId,
+                'description': this.state.Description
+            });
+        let servicePost = new ServicePoster(Constants.INMAN_SERVER_IP,
+            Constants.SERVER_REQUEST_TYPE_ITEM_QUERY );
+        servicePost.go(params, null, this.responseCallback);
     }
-    handleChangeDescription(evt) {
-        this.setState( { Description : evt.target.value } );
-    }
+
 
     handleSearch(evt) {
         this.setState( { Mode : 'query'} );
-        this.getItem( this );
+        this.getItems( );
     }
 
     handleAdd(evt) {
@@ -100,48 +88,42 @@ class SearchAndDisplayBsTable extends React.Component {
 
     render() {
 
-        if ( this.props.credentialsState.token === Constants.NO_TOKEN )
+        if (this.props.credentialsState.token === Constants.NO_TOKEN)
             return null;
 
-        if ( this.state.Mode === 'add') {
+        if (this.state.Mode === 'add') {
             return (
                 <div>
                     <AddItem Mode={this.state.Mode} doneWithAdding={this.handleDoneWithAdding}/>
                 </div>
-            ) }
-        else if ( this.state.ItemResponse == null ) {
+            );
+        }  else {
             return (
-            <div className="propertyForm" >
-                <label htmlFor="itemId>">Item Id</label>
-                <input id='itemId' type="text" onChange={this.handleChangeItemId} value={this.state.ItemId}/>
-                <label htmlFor="summaryId>">Summary</label>
-                <input id='summaryId' type="text" onChange={this.handleChangeSummaryId} value={this.state.SummaryId}/>
-                <label htmlFor="description>">Description</label>
-                <input id='description' name='Description' type="text" onChange={this.handleChangeDescription} value={this.state.Description}/>
-
-                <button type="button" onClick={this.handleAdd}>Create New Item</button>
-                <button type="button" onClick={this.handleSearch}>Search for Items</button>
-            </div>
-        )
-        } else {
-            return (
-                <div className="propertyForm" >
+                <div>
+                <Card>
+                    <CardHeader
+                        title="Item Search Criteria"
+                        avatar="./logo.png"
+                        actAsExpander={true}
+                        showExpandableButton={true}
+                    />
+                <CardText expandable={true}>
                     <label htmlFor="itemId>">Item Id</label>
-                    <input id='itemId' type="text" onChange={this.handleChangeItemId} value={this.state.ItemId}/>
-                    <label htmlFor="summaryId>">Item Id</label>
-                    <input id='summaryId' type="text" onChange={this.handleChangeSummaryId} value={this.state.SummaryId}/>
+                    <input id='ItemId' type="text" onChange={this.handleChange} value={this.state.ItemId}/>
+                    <label htmlFor="summaryId>">Summary Id</label>
+                    <input id='SummaryId' type="text" onChange={this.handleChange} value={this.state.SummaryId}/>
                     <label htmlFor="description>">Description</label>
-                    <input id='description' name='Description' type="text" onChange={this.handleChangeDescription} value={this.state.Description}/>
+                    <input id='Description' name='Description' type="text" onChange={this.handleChange} value={this.state.Description}/>
+                    <CardActions>
+                        <FlatButton label="Add" onClick={this.handleAdd}/>
+                        <FlatButton label="Search" onClick={this.handleSearch}/>
+                    </CardActions>
 
-                    <button type="button" onClick={this.handleAdd}>Create New Item</button>
-                    <button type="button" onClick={this.handleSearch}>Search for Items</button>
-
-                    <BootstrapTable  data={this.state.ItemResponse.data} version='4' striped hover condensed >
-                        <TableHeaderColumn  isKey dataField='id' width='50' dataAlign='right'>Id</TableHeaderColumn>
-                        <TableHeaderColumn dataField='summaryId' width='90'>Summary</TableHeaderColumn>
-                        <TableHeaderColumn dataField='description' width='200'>Description</TableHeaderColumn>
-                        <TableHeaderColumn dataField='unitCost' width='100' dataFormat={this.activeFormatter} dataAlign='right'>Unit Cost</TableHeaderColumn>
-                    </BootstrapTable>
+                </CardText>
+                </Card>
+                <Card>
+                    <ItemGrid ItemResponse={this.state.ItemResponse} />
+                </Card>
                 </div>
             )
            }

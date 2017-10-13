@@ -8,8 +8,7 @@ import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import AddItem from "./AddItem.js";
 import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import ItemGrid from "./ItemGrid.js";
-import NumberFormat from 'react-number-format';
+import MaterialItemGrid from "./MaterialItemGrid.js";
 import ServicePoster from "./ServicePoster.js";
 
 class SearchAndDisplayBsTable extends React.Component {
@@ -23,7 +22,8 @@ class SearchAndDisplayBsTable extends React.Component {
             Description: '',
             MessageState: '',
             ItemResponse : null,
-            Mode : 'query'
+            Mode : 'query',
+            expanded: true
             };
 
         this.getItems = this.getItems.bind( this );
@@ -32,13 +32,10 @@ class SearchAndDisplayBsTable extends React.Component {
         this.handleAdd = this.handleAdd.bind( this );
         this.handleSearch = this.handleSearch.bind( this );
         this.handleDoneWithAdding = this.handleDoneWithAdding.bind(this);
-    }
-
-    activeFormatter( cell, row ) {
-        return (
-            <NumberFormat value={cell} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
-                          displayType='text'/>
-        );
+        this.handleExpand = this.handleExpand.bind(this);
+        this.handleReduce = this.handleReduce.bind(this);
+        this.handleExpandedChange = this.handleExpandedChange.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
     }
 
     handleChange( evt ) {
@@ -63,6 +60,19 @@ class SearchAndDisplayBsTable extends React.Component {
         servicePost.go(params, null, this.responseCallback);
     }
 
+    handleExpand() {
+        this.setState({expanded: true});
+    }
+    handleReduce() {
+        this.setState( {expanded: false})
+    }
+    handleExpandedChange( expanded ) {
+        this.setState( {expanded: expanded });
+    }
+
+    handleToggle(event, toggle) {
+        this.setState({expanded: toggle});
+    };
 
     handleSearch(evt) {
         this.setState( { Mode : 'query'} );
@@ -98,16 +108,21 @@ class SearchAndDisplayBsTable extends React.Component {
                 </div>
             );
         }  else {
+            if ( this.state.ItemResponse == null ) {
+                this.getItems();
+            }
             return (
                 <div>
-                <Card>
+                <Card expanded={this.state.expanded }
+                      onExpandChange={this.handleExpandedChange} >
+
                     <CardHeader
                         title="Item Search Criteria"
                         avatar="./logo.png"
                         actAsExpander={true}
                         showExpandableButton={true}
                     />
-                <CardText expandable={true}>
+                    <CardText expandable={true}>
                     <label htmlFor="itemId>">Item Id</label>
                     <input id='ItemId' type="text" onChange={this.handleChange} value={this.state.ItemId}/>
                     <label htmlFor="summaryId>">Summary Id</label>
@@ -122,7 +137,7 @@ class SearchAndDisplayBsTable extends React.Component {
                 </CardText>
                 </Card>
                 <Card>
-                    <ItemGrid ItemResponse={this.state.ItemResponse} />
+                    <MaterialItemGrid ItemResponse={this.state.ItemResponse} />
                 </Card>
                 </div>
             )

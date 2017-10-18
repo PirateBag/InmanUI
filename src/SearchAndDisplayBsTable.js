@@ -9,6 +9,7 @@ import AddItem from "./AddItem.js";
 import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import MaterialItemGrid from "./MaterialItemGrid.js";
+import ItemsSelected from "./ItemsSelected.js";
 import ServicePoster from "./ServicePoster.js";
 
 class SearchAndDisplayBsTable extends React.Component {
@@ -23,7 +24,9 @@ class SearchAndDisplayBsTable extends React.Component {
             MessageState: '',
             ItemResponse : null,
             Mode : 'query',
-            expanded: true
+            expanded: true,
+            itemsSelected :  [],
+            itemsDeselected : []
             };
 
         this.getItems = this.getItems.bind( this );
@@ -35,7 +38,7 @@ class SearchAndDisplayBsTable extends React.Component {
         this.handleExpand = this.handleExpand.bind(this);
         this.handleReduce = this.handleReduce.bind(this);
         this.handleExpandedChange = this.handleExpandedChange.bind(this);
-        this.handleToggle = this.handleToggle.bind(this);
+        this.handleDeleteButton = this.handleDeleteButton.bind(this);
     }
 
     handleChange( evt ) {
@@ -70,10 +73,6 @@ class SearchAndDisplayBsTable extends React.Component {
         this.setState( {expanded: expanded });
     }
 
-    handleToggle(event, toggle) {
-        this.setState({expanded: toggle});
-    };
-
     handleSearch(evt) {
         this.setState( { Mode : 'query'} );
         this.getItems( );
@@ -94,6 +93,12 @@ class SearchAndDisplayBsTable extends React.Component {
         {
             this.setState({Mode: 'query'});
         }
+    }
+
+    handleDeleteButton( itemsSelected, itemsDeselected ) {
+        this.setState( { Mode: 'delete'} );
+        this.setState( { itemsSelected : itemsSelected } );
+        this.setState( { itemsDeselected : itemsDeselected });
     }
 
     render() {
@@ -137,10 +142,43 @@ class SearchAndDisplayBsTable extends React.Component {
                 </CardText>
                 </Card>
                 <Card>
-                    <MaterialItemGrid ItemResponse={this.state.ItemResponse} />
+                    <CardHeader
+                        title="Query Results."
+                        avatar="./logo.png"
+                        actAsExpander={true}
+                        showExpandableButton={true}
+                    />
+                    <CardText expandable={true}>
+                    <MaterialItemGrid ItemResponse={this.state.ItemResponse}
+                        deleteButton={this.handleDeleteButton}/>
+                    </CardText>
                 </Card>
+                <Card>
+                    <CardHeader
+                        title="Items selected for deletion."
+                        avatar="./logo.png"
+                        actAsExpander={true}
+                        showExpandableButton={true}
+                    />
+
+                    <CardText expandable={true}>
+                    <ItemsSelected items={this.state.itemsSelected}/>
+                    </CardText>
+                </Card>
+                    <Card>
+                        <CardHeader
+                            title="Items NOT selected for deletion."
+                            avatar="./logo.png"
+                            actAsExpander={true}
+                            showExpandableButton={true}
+                        />
+                        <CardText expandable={true}>
+                        <ItemsSelected items={this.state.itemsDeselected}/>
+                        </CardText>
+                    </Card>
+
                 </div>
-            )
+            );
            }
         }
 }

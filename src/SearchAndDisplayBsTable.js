@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import * as Constants from './Constants.js'
+import * as Utility   from './Utility.js'
 import * as queryString from 'query-string'
 import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import AddItem from "./AddItem.js";
@@ -10,6 +11,7 @@ import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import MaterialItemGrid from "./MaterialItemGrid.js";
 import ServicePoster from "./ServicePoster.js";
+import DeleteModal from './DeleteModal.js';
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -31,6 +33,7 @@ class SearchAndDisplayBsTable extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.responseCallback = this.responseCallback.bind(this);
         this.handleAdd = this.handleAdd.bind( this );
+        this.handleDelete = this.handleDelete.bind( this );
         this.handleSearch = this.handleSearch.bind( this );
         this.handleDoneWithAdding = this.handleDoneWithAdding.bind(this);
         this.handleExpand = this.handleExpand.bind(this);
@@ -38,6 +41,7 @@ class SearchAndDisplayBsTable extends React.Component {
         this.handleExpandedChange = this.handleExpandedChange.bind(this);
         this.handleMoveAvailableToSelected = this.handleMoveAvailableToSelected.bind(this);
         this.handleMoveSelectedToAvailable = this.handleMoveSelectedToAvailable.bind(this);
+        this.handleDeleteClose = this.handleDeleteClose.bind(this);
         this.idIsMemberOf = this.idIsMemberOf.bind(this);
     }
 
@@ -50,7 +54,13 @@ class SearchAndDisplayBsTable extends React.Component {
     responseCallback( response ) {
         this.setState( { ItemResponse : response });
         this.setState( { itemsAvailable  : response.data });
+        this.setState( { itemsSelected : [] })
     }
+
+    handleDeleteClose( ) {
+        this.setState( { Mode : "query"});
+    }
+
 
     getItems( ) {
         let params = queryString.stringify(
@@ -63,6 +73,15 @@ class SearchAndDisplayBsTable extends React.Component {
             Constants.SERVER_REQUEST_TYPE_ITEM_QUERY );
         servicePost.go(params, null, this.responseCallback);
     }
+
+    getDeleteItem( itemToDelete ) {
+        let params = { id : itemToDelete.id };
+        let paramsJson  = queryString.stringify( params );
+        let servicePost = new ServicePoster(Constants.INMAN_SERVER_IP,
+            Constants.SERVER_REQUEST_TYPE_ITEM_DELETE );
+        servicePost.go(paramsJson, null, this.responseCallbackDelete);
+    }
+
 
     handleExpand() {
         this.setState({expanded: true});
@@ -98,8 +117,8 @@ class SearchAndDisplayBsTable extends React.Component {
 
     idIsMemberOf( arrayOfItemsToSearch, id) {
         let indexOfItems = 0;
-        while ( indexOfItems) {
-            if ( arrayOfItemsToSearch.id === id ) {
+        while ( indexOfItems <  arrayOfItemsToSearch.length) {
+            if ( arrayOfItemsToSearch[ indexOfItems ].id === id ) {
                 return true;
             }
             indexOfItems++;
@@ -107,10 +126,27 @@ class SearchAndDisplayBsTable extends React.Component {
         return false;
     }
 
-    handleMoveAvailableToSelected( availableItems, selectedItems ) {
-        this.setState( { Mode: 'delete'} );
-        this.setState( { itemsAvailable : availableItems } );
-        this.setState( { itemsSelected : selectedItems });
+    handleMoveAvailableToSelected( itemSelected ) {
+        let newAvailable = Utility.removeById( this.state.itemsAvailable, itemSelected );
+        let newSelected = Utility.addById( this.state.itemsSelected, itemSelected );
+        this.setState( { itemsAvailable : newAvailable } );
+        this.setState( { itemsSelected : newSelected });
+    }
+
+    /**
+     * Handle the pressing of the delete button on the primary card.
+     *
+     *
+     */
+    handleDelete( ) {
+        let originalIndex = 0;
+        this.setState( { Mode : "delete"})
+        while ( originalIndex < this.state.itemsSelected.length ) {
+            let item = this.state.itemsSelected[ originalIndex ];
+            this.getDeleteItem( item );
+            originalIndex++;
+        }
+
     }
 
     /**
@@ -122,19 +158,18 @@ class SearchAndDisplayBsTable extends React.Component {
      * @param availableItems
      * @param selectedItems
      */
-    handleMoveSelectedToAvailable( availableItems, selectedItems ) {
-        this.setState( { Mode: 'delete'} );
+    handleMoveSelectedToAvailable( itemsRemainingInDeleteList, unused ) {
         let originalIndex = 0;
         let newAvailable = [];
         while ( originalIndex < this.state.ItemResponse.data.length ) {
             let item = this.state.ItemResponse.data[ originalIndex ];
-            if ( !this.idIsMemberOf( availableItems, item.id )) {
+            if ( !this.idIsMemberOf( itemsRemainingInDeleteList, item.id )) {
                 newAvailable.push( item )
             }
             originalIndex++;
         }
 
-        this.setState( { itemsSelected : availableItems  } );
+        this.setState( { itemsSelected : itemsRemainingInDeleteList } );
         this.setState( { itemsAvailable : newAvailable  });
     }
 
@@ -149,7 +184,15 @@ class SearchAndDisplayBsTable extends React.Component {
                     <AddItem Mode={this.state.Mode} doneWithAdding={this.handleDoneWithAdding}/>
                 </div>
             );
-        }  else {
+        }  else if ( this.state.Mode === 'delete') {
+            return (
+            <DeleteModal
+                itemsToDeleteRemaining={this.state.itemsSelected.length}
+                closeCallBack={this.handleDeleteClose}
+            />
+            );
+        }
+        else {
             if ( this.state.ItemResponse == null ) {
                 this.getItems();
             }
@@ -174,6 +217,7 @@ class SearchAndDisplayBsTable extends React.Component {
                     <CardActions>
                         <FlatButton label="Add" onClick={this.handleAdd}/>
                         <FlatButton label="Search" onClick={this.handleSearch}/>
+                        <FlatButton label="Delete" onClick={this.handleDelete}/>
                     </CardActions>
 
                 </CardText>
@@ -186,19 +230,22 @@ class SearchAndDisplayBsTable extends React.Component {
                     />
                     <CardText expandable={true}>
                     <MaterialItemGrid items={this.state.itemsAvailable }
-                        deleteButton={this.handleMoveAvailableToSelected}/>
+                        actionButtonHandler={this.handleMoveAvailableToSelected}
+                        actionButtonLabel={"Move to deleted."}
+                    />
                     </CardText>
                 </Card>
                 <Card expanded={true}>
                     <CardHeader
-                        title="Items selected"
+                        title="Items selected for deletion."
                         actAsExpander={true}
                         showExpandableButton={true}
                     />
 
                     <CardText expandable={true}>
                         <MaterialItemGrid items={this.state.itemsSelected }
-                                          deleteButton={this.handleMoveSelectedToAvailable}/>
+                                actionButtonHandler={this.handleMoveSelectedToAvailable}
+                                actionButtonLabel={"Move back to Items Available List."}/>
 
                     </CardText>
                 </Card>

@@ -9,6 +9,7 @@ export const NO_STATUS  = "off line.";
 export const NO_MESSAGE  = "Please login.";
 
 export const SERVER_REQUEST_TYPE_ITEM_QUERY = "item/query?";
+export const SERVER_REQUEST_TYPE_ITEM_DELETE = "item/delete?";
 
 export const fetchParameters = {
         method: 'GET',
@@ -29,3 +30,5 @@ export const NoItem = {
     description: '',
     unitCost: 0.0
 }
+
+export const tableRowHeightStyle       = { height: "12px", padding: "1px"};

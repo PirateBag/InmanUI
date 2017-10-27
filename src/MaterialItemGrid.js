@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import {
     Table,
     TableBody,
-    TableFooter,
     TableHeader,
     TableHeaderColumn,
     TableRow,
@@ -11,7 +10,6 @@ import {
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
-import FlatButton from 'material-ui/FlatButton';
 import * as Constants from './Constants.js'
 
 export class MaterialItemGrid extends Component {
@@ -35,7 +33,7 @@ export class MaterialItemGrid extends Component {
 
     onRowSelection( rows ) {
         let itemSelected = this.props.items[ rows[ 0 ]];
-        this.props.actionButtonHandler( itemSelected );
+        this.props.onSelectCallback( itemSelected );
     }
 
     render() {
@@ -70,19 +68,6 @@ export class MaterialItemGrid extends Component {
                         ); } ) }
                     }
                 </TableBody>
-
-                <TableFooter
-                    adjustForCheckbox={false}
-                    style={Constants.tableRowHeightStyle}>
-                <TableRow>
-                  <TableRowColumn colSpan="4" style={{textAlign: 'center'}}>
-                    <FlatButton
-                                label={this.props.actionButtonLabel}
-                                onClick={this.handleAction}/>
-                  </TableRowColumn>
-                </TableRow>
-                </TableFooter>
-
               </Table>
             </span> );
         }
@@ -90,8 +75,7 @@ export class MaterialItemGrid extends Component {
 
 MaterialItemGrid.propTypes = {
     items : PropTypes.array.isRequired,
-    actionButtonHandler : PropTypes.func.isRequired,
-    actionButtonLabel   : PropTypes.string.isRequired
+    onSelectCallback : PropTypes.func.isRequired
 };
 
 export default MaterialItemGrid;

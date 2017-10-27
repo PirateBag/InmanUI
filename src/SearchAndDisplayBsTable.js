@@ -9,9 +9,12 @@ import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import AddItem from "./AddItem.js";
 import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 import MaterialItemGrid from "./MaterialItemGrid.js";
 import ServicePoster from "./ServicePoster.js";
 import DeleteModal from './DeleteModal.js';
+import MetadataUnitTests from './MetadataUnitTests.js';
+import * as Field from './metadata/Field.js';
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -26,7 +29,9 @@ class SearchAndDisplayBsTable extends React.Component {
             ItemResponse : null,
             Mode : 'query',
             itemsAvailable : [],
-            itemsSelected : []
+            itemsSelected : [],
+            showSearchCard : true,
+            showSelectCard : false
             };
 
         this.getItems = this.getItems.bind( this );
@@ -36,19 +41,32 @@ class SearchAndDisplayBsTable extends React.Component {
         this.handleDelete = this.handleDelete.bind( this );
         this.handleSearch = this.handleSearch.bind( this );
         this.handleDoneWithAdding = this.handleDoneWithAdding.bind(this);
-        this.handleExpand = this.handleExpand.bind(this);
-        this.handleReduce = this.handleReduce.bind(this);
-        this.handleExpandedChange = this.handleExpandedChange.bind(this);
+        this.handleSearchCardExpandedChange = this.handleSearchCardExpandedChange.bind(this);
+        this.handleSelectCardExpandedChange = this.handleSelectCardExpandedChange.bind(this);
         this.handleMoveAvailableToSelected = this.handleMoveAvailableToSelected.bind(this);
         this.handleMoveSelectedToAvailable = this.handleMoveSelectedToAvailable.bind(this);
         this.handleDeleteClose = this.handleDeleteClose.bind(this);
+        this.handleUnitTest = this.handleUnitTest.bind(this);
         this.idIsMemberOf = this.idIsMemberOf.bind(this);
     }
 
     handleChange( evt ) {
         var  o = {  };
         o[evt.target.id] = evt.target.value;
-        this.setState( o );
+
+        if ( evt.target.id === "SummaryIdZZZZ" ) {
+            let f = new Field(
+                { fieldName : "SummaryId", tableName : "Item", lengthOf : 10 }
+            );
+
+            if ( evt.target.value.length <= f.lengthOf ) {
+                o[evt.target.id] = evt.target.value;
+                this.setState( o );
+            }
+        } else {
+            o[evt.target.id] = evt.target.value;
+            this.setState( o );
+        }
     }
 
     responseCallback( response ) {
@@ -57,8 +75,16 @@ class SearchAndDisplayBsTable extends React.Component {
         this.setState( { itemsSelected : [] })
     }
 
+
+    /** No-op until more robust error handling.  */
+    responseCallbackDelete( response ) {
+
+    }
+
+
     handleDeleteClose( ) {
         this.setState( { Mode : "query"});
+        this.setState( { itemsSelected : [] })
     }
 
 
@@ -83,15 +109,13 @@ class SearchAndDisplayBsTable extends React.Component {
     }
 
 
-    handleExpand() {
-        this.setState({expanded: true});
+    handleSearchCardExpandedChange( expanded ) {
+        this.setState( {showSearchCard: expanded });
     }
-    handleReduce() {
-        this.setState( {expanded: false})
+    handleSelectCardExpandedChange( expanded ) {
+        this.setState( {showSelectCard: expanded });
     }
-    handleExpandedChange( expanded ) {
-        this.setState( {expanded: expanded });
-    }
+
 
     handleSearch(evt) {
         this.setState( { Mode : 'query'} );
@@ -101,6 +125,11 @@ class SearchAndDisplayBsTable extends React.Component {
     handleAdd(evt) {
         this.setState( { Mode : 'add'} );
     }
+
+    handleUnitTest( evt ) {
+        this.setState( { Mode : 'unittest'})
+    }
+
 
     handleDoneWithAdding(evt) {
         let evtType = typeof evt.data;
@@ -129,9 +158,18 @@ class SearchAndDisplayBsTable extends React.Component {
     handleMoveAvailableToSelected( itemSelected ) {
         let newAvailable = Utility.removeById( this.state.itemsAvailable, itemSelected );
         let newSelected = Utility.addById( this.state.itemsSelected, itemSelected );
+        this.setState( { showSelectCard : true } );
         this.setState( { itemsAvailable : newAvailable } );
         this.setState( { itemsSelected : newSelected });
     }
+
+    handleMoveSelectedToAvailable( itemSelected ) {
+        let newAvailable = Utility.addById( this.state.itemsAvailable, itemSelected );
+        let newSelected = Utility.removeById( this.state.itemsSelected, itemSelected );
+        this.setState( { itemsAvailable : newAvailable } );
+        this.setState( { itemsSelected : newSelected });
+    }
+
 
     /**
      * Handle the pressing of the delete button on the primary card.
@@ -149,29 +187,6 @@ class SearchAndDisplayBsTable extends React.Component {
 
     }
 
-    /**
-     * Move selected items back into the available list.
-     *
-     * Create a new list of available items by copying the original
-     * list from props, excluding any item in the available list.
-     *
-     * @param availableItems
-     * @param selectedItems
-     */
-    handleMoveSelectedToAvailable( itemsRemainingInDeleteList, unused ) {
-        let originalIndex = 0;
-        let newAvailable = [];
-        while ( originalIndex < this.state.ItemResponse.data.length ) {
-            let item = this.state.ItemResponse.data[ originalIndex ];
-            if ( !this.idIsMemberOf( itemsRemainingInDeleteList, item.id )) {
-                newAvailable.push( item )
-            }
-            originalIndex++;
-        }
-
-        this.setState( { itemsSelected : itemsRemainingInDeleteList } );
-        this.setState( { itemsAvailable : newAvailable  });
-    }
 
     render() {
 
@@ -191,51 +206,66 @@ class SearchAndDisplayBsTable extends React.Component {
                 closeCallBack={this.handleDeleteClose}
             />
             );
-        }
-        else {
+        } else if ( this.state.Mode === 'unittest') {
+            return (
+                <MetadataUnitTests
+                    closeCallBack={this.handleDeleteClose}
+                />
+            );
+        } else {
             if ( this.state.ItemResponse == null ) {
                 this.getItems();
             }
             return (
                 <div>
-                <Card expanded={true}
-                      onExpandChange={this.handleExpandedChange} >
+                <Card expanded={this.state.showSearchCard}
+                      zDepth={2}
+                      onExpandChange={this.handleSearchCardExpandedChange} >
 
                     <CardHeader
-                        title="Item Search Criteria"
+                        title="Item Search Criteria."
                         avatar="./logo.png"
                         actAsExpander={true}
                         showExpandableButton={true}
                     />
                     <CardText expandable={true}>
-                    <label htmlFor="itemId>">Item Id</label>
-                    <input id='ItemId' type="text" onChange={this.handleChange} value={this.state.ItemId}/>
-                    <label htmlFor="summaryId>">Summary Id</label>
-                    <input id='SummaryId' type="text" onChange={this.handleChange} value={this.state.SummaryId}/>
-                    <label htmlFor="description>">Description</label>
-                    <input id='Description' name='Description' type="text" onChange={this.handleChange} value={this.state.Description}/>
-                    <CardActions>
-                        <FlatButton label="Add" onClick={this.handleAdd}/>
-                        <FlatButton label="Search" onClick={this.handleSearch}/>
-                        <FlatButton label="Delete" onClick={this.handleDelete}/>
-                    </CardActions>
-
+                        <TextField value={this.state.ItemId}
+                                   id={"ItemId"} floatingLabelText={"Item Id"}
+                                   onChange={this.handleChange}/>
+                        <br/>
+                        <TextField value={this.state.SummaryId}
+                                   id={"SummaryId"} floatingLabelText={"Summary Id"}
+                                   onChange={this.handleChange}/>
+                        <br/>
+                        <TextField value={this.state.Description}
+                                   id={"Description"} floatingLabelText={"Description"}
+                                   onChange={this.handleChange}/>
                 </CardText>
                 </Card>
-                <Card expanded={true}>
+                    <br/>
+                <Card expanded={true} zDepth={2}>
                     <CardHeader
                         title="Items available"
                         actAsExpander={true}
                         showExpandableButton={true}
                     />
                     <CardText expandable={true}>
-                    <MaterialItemGrid items={this.state.itemsAvailable }
-                        actionButtonHandler={this.handleMoveAvailableToSelected}
-                        actionButtonLabel={"Move to deleted."}
+                        <CardActions>
+                            <FlatButton label="Add" onClick={this.handleAdd}/>
+                            <FlatButton label="Search" onClick={this.handleSearch}/>
+                            <FlatButton label="Delete" onClick={this.handleDelete}/>
+                            <FlatButton label="Unit Tests" onClick={this.handleUnitTest}/>
+                        </CardActions>
+                        <MaterialItemGrid items={this.state.itemsAvailable }
+                                      onSelectCallback={this.handleMoveAvailableToSelected}
                     />
                     </CardText>
+
                 </Card>
-                <Card expanded={true}>
+                    <br/>
+                <Card expanded={this.state.showSelectCard}
+                      onExpandChange={this.handleSelectCardExpandedChange}
+                      zDepth={2}>
                     <CardHeader
                         title="Items selected for deletion."
                         actAsExpander={true}
@@ -244,8 +274,8 @@ class SearchAndDisplayBsTable extends React.Component {
 
                     <CardText expandable={true}>
                         <MaterialItemGrid items={this.state.itemsSelected }
-                                actionButtonHandler={this.handleMoveSelectedToAvailable}
-                                actionButtonLabel={"Move back to Items Available List."}/>
+                                          onSelectCallback={this.handleMoveSelectedToAvailable}
+                        />
 
                     </CardText>
                 </Card>

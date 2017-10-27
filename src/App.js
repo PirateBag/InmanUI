@@ -21,7 +21,7 @@ class App extends Component {
 		this.getInmanStatus(this);
 		this.updateCredentialsState = this.updateCredentialsState.bind(this);
         this.uiEvent = this.uiEvent.bind( this );
-        }
+       }
 
 
     getInmanStatus( objectWithStatus ) {

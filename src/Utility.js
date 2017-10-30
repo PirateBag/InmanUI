@@ -1,5 +1,3 @@
-
-
 /**
  * Accepts an array of objects, with a unique key of "id".
  * Returns a copy of the array with the item missing.
@@ -27,4 +25,8 @@ export function addById( itemArray, item ) {
     rValue.push( item );
     rValue.sort( compareItems )
     return rValue;
+}
+
+export function formatNumber( aNumber ) {
+    return ( aNumber );
 }

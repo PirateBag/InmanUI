@@ -28,7 +28,8 @@ export const NoItem = {
     id: 0,
     SummaryId : '',
     description: '',
-    unitCost: 0.0
+    unitCost: ''
 }
 
-export const tableRowHeightStyle       = { height: "12px", padding: "1px"};
+export const tableRowHeightStyle       = { border: "0px", height: "12px", padding: "1px"};
+export const tableRowHeightStyleRight  = { border: "0px", height: "12px", paddingRight: "20px", textAlign: "right" };

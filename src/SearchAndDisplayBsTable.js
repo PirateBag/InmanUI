@@ -6,7 +6,7 @@ import * as Constants from './Constants.js'
 import * as Utility   from './Utility.js'
 import * as queryString from 'query-string'
 import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
-import AddItem from "./AddItem.js";
+import ItemProperties from "./ItemProperties.js";
 import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -22,24 +22,24 @@ class SearchAndDisplayBsTable extends React.Component {
         super(props)
 
         this.state = {
-            ItemId : '',
-            SummaryId : '',
+            ItemId: '',
+            SummaryId: '',
             Description: '',
             MessageState: '',
-            ItemResponse : null,
-            Mode : 'query',
-            itemsAvailable : [],
-            itemsSelected : [],
-            showSearchCard : true,
-            showSelectCard : false
-            };
+            ItemResponse: null,
+            Mode: 'query',
+            itemsAvailable: [],
+            itemsSelected: [],
+            showSearchCard: true,
+            showSelectCard: false
+        };
 
-        this.getItems = this.getItems.bind( this );
-        this.handleChange = this.handleChange.bind(this);
+        this.emptyItem = Constants.NoItem;
+        this.getItems = this.getItems.bind(this);
         this.responseCallback = this.responseCallback.bind(this);
-        this.handleAdd = this.handleAdd.bind( this );
-        this.handleDelete = this.handleDelete.bind( this );
-        this.handleSearch = this.handleSearch.bind( this );
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
         this.handleDoneWithAdding = this.handleDoneWithAdding.bind(this);
         this.handleSearchCardExpandedChange = this.handleSearchCardExpandedChange.bind(this);
         this.handleSelectCardExpandedChange = this.handleSelectCardExpandedChange.bind(this);
@@ -48,25 +48,12 @@ class SearchAndDisplayBsTable extends React.Component {
         this.handleDeleteClose = this.handleDeleteClose.bind(this);
         this.handleUnitTest = this.handleUnitTest.bind(this);
         this.idIsMemberOf = this.idIsMemberOf.bind(this);
+        this.queryScreenClose = this.queryScreenClose.bind(this);
     }
 
-    handleChange( evt ) {
-        var  o = {  };
-        o[evt.target.id] = evt.target.value;
-
-        if ( evt.target.id === "SummaryIdZZZZ" ) {
-            let f = new Field(
-                { fieldName : "SummaryId", tableName : "Item", lengthOf : 10 }
-            );
-
-            if ( evt.target.value.length <= f.lengthOf ) {
-                o[evt.target.id] = evt.target.value;
-                this.setState( o );
-            }
-        } else {
-            o[evt.target.id] = evt.target.value;
-            this.setState( o );
-        }
+    queryScreenClose( queryCriteria ) {
+        this.setState( { Mode : "query"});
+        this.setState( { querCriteria : queryCriteria });
     }
 
     responseCallback( response ) {
@@ -196,7 +183,7 @@ class SearchAndDisplayBsTable extends React.Component {
         if (this.state.Mode === 'add') {
             return (
                 <div>
-                    <AddItem Mode={this.state.Mode} doneWithAdding={this.handleDoneWithAdding}/>
+                    <ItemProperties  mode={"read"} item={this.emptyItem}/>
                 </div>
             );
         }  else if ( this.state.Mode === 'delete') {
@@ -229,18 +216,10 @@ class SearchAndDisplayBsTable extends React.Component {
                         showExpandableButton={true}
                     />
                     <CardText expandable={true}>
-                        <TextField value={this.state.ItemId}
-                                   id={"ItemId"} floatingLabelText={"Item Id"}
-                                   onChange={this.handleChange}/>
-                        <br/>
-                        <TextField value={this.state.SummaryId}
-                                   id={"SummaryId"} floatingLabelText={"Summary Id"}
-                                   onChange={this.handleChange}/>
-                        <br/>
-                        <TextField value={this.state.Description}
-                                   id={"Description"} floatingLabelText={"Description"}
-                                   onChange={this.handleChange}/>
-                </CardText>
+                        <ItemProperties mode={'read'} item={this.emptyItem}
+                                        closeCallback={this.queryScreenClose}
+                                        closeLabel={"Close"}/>
+                    </CardText>
                 </Card>
                     <br/>
                 <Card expanded={true} zDepth={2}>

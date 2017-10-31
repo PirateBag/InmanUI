@@ -9,12 +9,11 @@ import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import ItemProperties from "./ItemProperties.js";
 import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 import MaterialItemGrid from "./MaterialItemGrid.js";
 import ServicePoster from "./ServicePoster.js";
 import DeleteModal from './DeleteModal.js';
 import MetadataUnitTests from './MetadataUnitTests.js';
-import * as Field from './metadata/Field.js';
+
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -31,11 +30,12 @@ class SearchAndDisplayBsTable extends React.Component {
             itemsAvailable: [],
             itemsSelected: [],
             showSearchCard: true,
-            showSelectCard: false
+            showSelectCard: false,
+            queryCriteria : Constants.NoItem
         };
 
         this.emptyItem = Constants.NoItem;
-        this.getItems = this.getItems.bind(this);
+        this.searchItems = this.searchItems.bind(this);
         this.responseCallback = this.responseCallback.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -48,13 +48,20 @@ class SearchAndDisplayBsTable extends React.Component {
         this.handleDeleteClose = this.handleDeleteClose.bind(this);
         this.handleUnitTest = this.handleUnitTest.bind(this);
         this.idIsMemberOf = this.idIsMemberOf.bind(this);
-        this.queryScreenClose = this.queryScreenClose.bind(this);
+        this.queryScreenCancel = this.queryScreenCancel.bind(this);
+        this.queryScreenSearch = this.queryScreenSearch.bind(this);
     }
 
-    queryScreenClose( queryCriteria ) {
+    queryScreenCancel( queryCriteria ) {
         this.setState( { Mode : "query"});
-        this.setState( { querCriteria : queryCriteria });
+        this.setState( { queryCriteria : queryCriteria });
     }
+    queryScreenSearch( queryCriteria ) {
+        this.setState( { Mode : "query"});
+        this.setState( { queryCriteria : queryCriteria });
+        this.searchItems( {itemSearchParameters: queryCriteria })
+    }
+
 
     responseCallback( response ) {
         this.setState( { ItemResponse : response });
@@ -86,6 +93,20 @@ class SearchAndDisplayBsTable extends React.Component {
             Constants.SERVER_REQUEST_TYPE_ITEM_QUERY );
         servicePost.go(params, null, this.responseCallback);
     }
+
+
+    searchItems( {itemSearchParameters: item } ) {
+        let params = queryString.stringify(
+            {
+                'id': item.id,
+                'summaryId': item.summaryId,
+                'description': item.description
+            });
+        let servicePost = new ServicePoster(Constants.INMAN_SERVER_IP,
+            Constants.SERVER_REQUEST_TYPE_ITEM_QUERY );
+        servicePost.go(params, null, this.responseCallback);
+    }
+
 
     getDeleteItem( itemToDelete ) {
         let params = { id : itemToDelete.id };
@@ -217,8 +238,11 @@ class SearchAndDisplayBsTable extends React.Component {
                     />
                     <CardText expandable={true}>
                         <ItemProperties mode={'read'} item={this.emptyItem}
-                                        closeCallback={this.queryScreenClose}
-                                        closeLabel={"Close"}/>
+                                        closeCallback={this.queryScreenCancel}
+                                        closeLabel={"Cancel"}
+                                        actionCallback={this.queryScreenSearch}
+                                        actionLabel={"Search"}
+                        />
                     </CardText>
                 </Card>
                     <br/>

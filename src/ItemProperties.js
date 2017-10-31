@@ -7,7 +7,6 @@ import React from "react";
 import {
     Table,
     TableBody,
-    TableHeader,
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
@@ -44,8 +43,11 @@ export class ItemProperties extends React.Component {
     }
 
     handleButtonActiviation( evt ) {
-        if ( evt.target.name === 'close') {
+        let name = evt.currentTarget.name;
+        if ( name === 'close') {
             this.props.closeCallback(this.state.item);
+        } else if ( name === 'action' ) {
+            this.props.actionCallback(this.state.item);
         }
     }
 
@@ -64,7 +66,10 @@ export class ItemProperties extends React.Component {
     handleChange( evt ) {
         var  o = this.state.item;
         o[evt.target.id] = evt.target.value;
-        this.setState( o );
+
+        let metaO =  {item: o}
+
+        this.setState( metaO );
     }
 
 

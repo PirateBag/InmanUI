@@ -24,9 +24,10 @@ export const NoCredentials = {
     token : NO_TOKEN
 };
 
+/*  The spelling of these tags should match the response from the server.  */
 export const NoItem = {
-    id: 0,
-    SummaryId : '',
+    id: '',
+    summaryId : '',
     description: '',
     unitCost: ''
 }

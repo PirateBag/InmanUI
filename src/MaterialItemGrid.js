@@ -23,6 +23,7 @@ export class MaterialItemGrid extends Component {
     utilityRenderColumnNames() {
         return(
             <TableRow style={Constants.tableRowHeightStyle}>
+                <TableHeaderColumn style={Constants.tableRowHeightStyle}></TableHeaderColumn>
             <TableHeaderColumn style={Constants.tableRowHeightStyle}>ID</TableHeaderColumn>
             <TableHeaderColumn style={Constants.tableRowHeightStyle}>Summary</TableHeaderColumn>
             <TableHeaderColumn style={Constants.tableRowHeightStyle}>Description</TableHeaderColumn>
@@ -57,6 +58,8 @@ export class MaterialItemGrid extends Component {
                         return(
                             <TableRow key={item.id}
                                       style={Constants.tableRowHeightStyle}>
+                                <TableRowColumn style={Constants.tableRowHeightStyle}>
+                                    {item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.description}</TableRowColumn>

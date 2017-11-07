@@ -2,12 +2,12 @@
  * Created by osboxes on 07/07/17.
  */
 import * as Constants from './Constants.js'
+import * as newItemProperties from './metadata/Domain.js'
 import * as queryString from 'query-string'
 import React from "react";
 import {
     Table,
     TableBody,
-    TableHeaderColumn,
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
@@ -24,22 +24,9 @@ export class ItemProperties extends React.Component {
             item : props.item
          };
 
-        this.handleSummaryId = this.handleSummaryId.bind(this);
-        this.handleDescription = this.handleDescription.bind(this);
-        this.handleCost = this.handleCost.bind(this);
-        this.handleClickSave = this.handleClickSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.presentButtons = this.presentButtons.bind( this );
         this.handleButtonActiviation = this.handleButtonActiviation.bind( this );
-    }
-
-    utilityRenderColumnNames() {
-        return(
-            <TableRow style={Constants.tableRowHeightStyle}>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>Property</TableHeaderColumn>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>Value</TableHeaderColumn>
-            </TableRow>
-        );
     }
 
     handleButtonActiviation( evt ) {
@@ -103,28 +90,7 @@ export class ItemProperties extends React.Component {
             } );
     }
 
-    handleSummaryId(evt) {
-        let itemToBeChanged = this.state.item;
-        itemToBeChanged.summaryId = evt.target.value;
-        this.setState({item: itemToBeChanged } );
-    }
 
-    handleDescription(evt) {
-        let itemToBeChanged = this.state.item;
-        itemToBeChanged.description = evt.target.value;
-        this.setState({item: itemToBeChanged } );
-
-    }
-    handleCost(evt) {
-        let itemToBeChanged = this.state.item;
-        itemToBeChanged.unitCost = evt.target.value;
-        this.setState({item: itemToBeChanged } );
-    }
-
-    handleClickSave(evt) {
-        this.setState({save: evt.target.value});
-        this.addItem( this );
-    }
     handleClickCancel(evt) {
         this.setState({save: evt.target.value});
         this.props.doneWithAdding(evt);
@@ -138,44 +104,14 @@ export class ItemProperties extends React.Component {
                                deselectOnClickaway={false}
                                displayRowCheckbox={false}>
                         return(
-                            <TableRow key={1} style={Constants.tableRowHeightStyle}>
-                                    <TableRowColumn style={Constants.tableRowHeightStyleRight}>Item Id</TableRowColumn>
-                                    <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                        <TextField
-                                            id="Id" hintText={"Unique identifier of this item"}
-                                        value={this.state.item.Id}
-                                        />
-                                    </TableRowColumn>
-                            </TableRow>
-                            <TableRow key={2}
-                                  style={Constants.tableRowHeightStyle}>
-                                <TableRowColumn style={Constants.tableRowHeightStyleRight}>SummaryId</TableRowColumn>
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <TextField
-                                        id="summaryId" hintText={"Summary ID of this item."}
-                                        value={this.state.item.summaryId} onChange={this.handleChange}  />
-                                </TableRowColumn>
-                            </TableRow>
-
-                            <TableRow key={3}
-                                  style={Constants.tableRowHeightStyle}>
-                                <TableRowColumn style={Constants.tableRowHeightStyleRight}>Description</TableRowColumn>
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <TextField
-                                        id="description" hintText={"Description of this item."}
-                                        value={this.state.item.description}  onChange={this.handleChange} />
-                                </TableRowColumn>
-                            </TableRow>
-                        <TableRow key={4}
-                                  style={Constants.tableRowHeightStyle}>
-                            <TableRowColumn style={Constants.tableRowHeightStyleRight}>Unit Cost</TableRowColumn>
-                            <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                <TextField
-                                    id="unitCost" hintText={"Unit Cost."} onChange={this.handleChange}
-                                    value={Utility.formatNumber( this.state.item.unitCost ) }>
-                                </TextField>
-                            </TableRowColumn>
-                        </TableRow>
+                        { newItemProperties.id.showRowHtml({ key : 1,
+                            value: this.state.item.id, onChange: this.handleChange })}
+                        { newItemProperties.summaryId.showRowHtml({ key : 2,
+                            value: this.state.item.summaryId, onChange: this.handleChange })}
+                        { newItemProperties.description.showRowHtml({ key : 3,
+                            value: this.state.item.description, onChange: this.handleChange })}
+                        { newItemProperties.unitCost.showRowHtml({ key : 4,
+                            value: this.state.item.unitCost, onChange: this.handleChange })}
                             ); } ) }
                         }
                     </TableBody>

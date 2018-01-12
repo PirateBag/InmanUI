@@ -2,7 +2,7 @@ import * as Constants from './Constants.js'
 
 export class ServerPoster {
 
-    constructor( url, typeOfRequest ) {
+    constructor( {url, typeOfRequest} ) {
         this.url = url;
         this.type = typeOfRequest
         this.fullUrl = url + Constants.IPPORT + '/' + typeOfRequest;
@@ -18,7 +18,7 @@ export class ServerPoster {
      *   Callback invoked when the response object arrives.
      *
      */
-    go( parameters, stateChangeCallback, responseCallback ) {
+    go( { parameters, stateChangeCallback, responseCallback } ) {
 
         let fullUrlPlusParams = this.fullUrl + parameters;
 

@@ -90,9 +90,9 @@ class SearchAndDisplayBsTable extends React.Component {
                 'summaryId': this.state.SummaryId,
                 'description': this.state.Description
             });
-        let servicePost = new ServicePoster(Constants.INMAN_SERVER_IP,
-            Constants.SERVER_REQUEST_TYPE_ITEM_QUERY );
-        servicePost.go(params, null, this.responseCallback);
+        let servicePost = new ServicePoster( { url: Constants.INMAN_SERVER_IP,
+            typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_QUERY } );
+        servicePost.go( { parameters: params, responseCallback: this.responseCallback } );
     }
 
 
@@ -103,18 +103,20 @@ class SearchAndDisplayBsTable extends React.Component {
                 'summaryId': item.summaryId,
                 'description': item.description
             });
-        let servicePost = new ServicePoster(Constants.INMAN_SERVER_IP,
-            Constants.SERVER_REQUEST_TYPE_ITEM_QUERY );
-        servicePost.go(params, null, this.responseCallback);
+        let servicePost = new ServicePoster(
+            { url: Constants.INMAN_SERVER_IP,
+                typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_QUERY }  );
+        servicePost.go( { parameters: params, responseCallback: this.responseCallback } );
     }
 
 
     getDeleteItem( itemToDelete ) {
         let params = { id : itemToDelete.id };
         let paramsJson  = queryString.stringify( params );
-        let servicePost = new ServicePoster(Constants.INMAN_SERVER_IP,
-            Constants.SERVER_REQUEST_TYPE_ITEM_DELETE );
-        servicePost.go(paramsJson, null, this.responseCallbackDelete);
+        let servicePost = new ServicePoster( { url: Constants.INMAN_SERVER_IP,
+            typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_DELETE } );
+
+        servicePost.go( { parameters: paramsJson, responseCallback: this.responseCallbackDelete } );
     }
 
 
@@ -208,7 +210,7 @@ class SearchAndDisplayBsTable extends React.Component {
                                     item={this.emptyItem}
                                     closeLabel={"Return"}
                                     closeCallback={this.handleDoneWithAdding}
-                                    actionLabel={"Save"}
+                                    actionLabel={"SAVE"}
                                     actionCallback={this.handleDoneWithAdding}/>
                 </div>
             );
@@ -227,7 +229,7 @@ class SearchAndDisplayBsTable extends React.Component {
             );
         } else {
             if ( this.state.ItemResponse == null ) {
-                this.getItems();
+                this.searchItems( { itemSearchParameters: Constants.NoItem } );
             }
             return (
                 <div>
@@ -242,7 +244,7 @@ class SearchAndDisplayBsTable extends React.Component {
                         showExpandableButton={true}
                     />
                     <CardText expandable={true}>
-                        <ItemProperties mode={'read'} item={this.emptyItem}
+                        <ItemProperties mode={'read'} item={this.state.queryCriteria }
                                         closeCallback={this.queryScreenCancel}
                                         closeLabel={"Cancel"}
                                         actionCallback={this.queryScreenSearch}

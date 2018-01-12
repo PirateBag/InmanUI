@@ -13,6 +13,7 @@ import {
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
+import ServicePoster from "./ServicePoster.js";
 
 export class ItemProperties extends React.Component {
     constructor(props) {
@@ -25,6 +26,7 @@ export class ItemProperties extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.presentButtons = this.presentButtons.bind( this );
         this.handleButtonActiviation = this.handleButtonActiviation.bind( this );
+        this.persistNewItem = this.persistNewItem.bind( this );
     }
 
     handleButtonActiviation( evt ) {
@@ -32,7 +34,9 @@ export class ItemProperties extends React.Component {
         if ( name === 'close') {
             this.props.closeCallback(this.state.item);
         } else if ( name === 'action' ) {
-            this.addItem(this);
+            if ( this.props.actionLabel === 'SAVE' ) {
+                this.persistNewItem(this);
+            }
         }
     }
 
@@ -58,8 +62,7 @@ export class ItemProperties extends React.Component {
     }
 
 
-
-    addItem( theObject ) {
+    persistNewItem(theObject ) {
         let params = {
                 summaryId : theObject.state.item.summaryId,
                 description : theObject.state.item.description,
@@ -67,25 +70,10 @@ export class ItemProperties extends React.Component {
 
         params = queryString.stringify( params );
 
-        let url = Constants.INMAN_SERVER_IP + ':8080/item/add?'+ params;
-        let header = new Headers( { 'Content-Type' : 'application/json'});
-        fetch( url, { method: 'get', mode: 'cors', headers : header })
-            .then(function (response) {
-                theObject.setState( { MessageState : 'sending' } );
-                return response
-            })
-            .then( function( response ) {
-                theObject.setState( { MessageState : 'waiting' } );
-                return response.json();
-            })
-            .then( function(data) {
-                theObject.setState( { MessageState : 'completed' } );
-                theObject.setState( { ItemResponse : data } );
-                theObject.props.doneWithAdding( data );
-            })
-            .catch( function() {
-                theObject.setState( { MessageState: 'Error' } );
-            } );
+        let servicePost = new ServicePoster( { url: Constants.INMAN_SERVER_IP,
+            typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_ADD } );
+        servicePost.go( { parameters: params, responseCallback: this.props.doneWithAdding } );
+
     }
 
 

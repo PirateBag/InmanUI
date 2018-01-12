@@ -11,7 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import * as Constants from './Constants.js'
-import FlatButton from 'material-ui/FlatButton';
 
 export class MaterialItemGrid extends Component {
     constructor ( props ) {
@@ -59,7 +58,6 @@ export class MaterialItemGrid extends Component {
                         return(
                             <TableRow key={item.id}
                                       style={Constants.tableRowHeightStyle}>
-                                <FlatButton name='edit' label={'edit'} onClick={this.handleButtonActiviation}/>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
                                     {item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
@@ -82,7 +80,7 @@ export class MaterialItemGrid extends Component {
 
 MaterialItemGrid.propTypes = {
     items : PropTypes.array.isRequired,
-    onSelectCallback : PropTypes.func.isRequired
+    onSelectCallback : PropTypes.func.isRequired,
 };
 
 export default MaterialItemGrid;

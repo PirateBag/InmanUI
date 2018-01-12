@@ -5,7 +5,6 @@ import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Rule from './metadata/Rule.js'
-import Field from './metadata/Field.js'
 
 export class MetadataUnitTests extends Component  {
 
@@ -37,12 +36,7 @@ export class MetadataUnitTests extends Component  {
             />
         ];
 
-        let f = new Field(
-            {   fieldName : "NumericWithLower" ,
-                tableName : "aTable",
-                lengthOf : 10,
-                isUpper : false,
-                decimalPlaces : 0, isCurrency : false });
+
         let lowNumericRule = new Rule(
             { isAnumber : true,
                 min : 0, errorMessage : "outof bounds", successMessage : "Success" } );

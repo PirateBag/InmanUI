@@ -13,6 +13,7 @@ import MaterialItemGrid from "./MaterialItemGrid.js";
 import ServicePoster from "./ServicePoster.js";
 import DeleteModal from './DeleteModal.js';
 import MetadataUnitTests from './MetadataUnitTests.js';
+import SelectedItemGrid from "./SelectedItemGrid";
 
 
 class SearchAndDisplayBsTable extends React.Component {
@@ -197,14 +198,18 @@ class SearchAndDisplayBsTable extends React.Component {
 
 
     render() {
-
         if (this.props.credentialsState.token === Constants.NO_TOKEN)
             return null;
 
         if (this.state.Mode === 'add') {
             return (
                 <div>
-                    <ItemProperties  mode={"read"} item={this.emptyItem}/>
+                    <ItemProperties mode={"read"}
+                                    item={this.emptyItem}
+                                    closeLabel={"Return"}
+                                    closeCallback={this.handleDoneWithAdding}
+                                    actionLabel={"Save"}
+                                    actionCallback={this.handleDoneWithAdding}/>
                 </div>
             );
         }  else if ( this.state.Mode === 'delete') {
@@ -214,7 +219,7 @@ class SearchAndDisplayBsTable extends React.Component {
                 closeCallBack={this.handleDeleteClose}
             />
             );
-        } else if ( this.state.Mode === 'unittest') {
+        } else if ( this.state.Mode === 'unit2test') {
             return (
                 <MetadataUnitTests
                     closeCallBack={this.handleDeleteClose}
@@ -244,8 +249,8 @@ class SearchAndDisplayBsTable extends React.Component {
                                         actionLabel={"Search"}
                         />
                     </CardText>
+
                 </Card>
-                    <br/>
                 <Card expanded={true} zDepth={2}>
                     <CardHeader
                         title="Items available"
@@ -256,32 +261,19 @@ class SearchAndDisplayBsTable extends React.Component {
                         <CardActions>
                             <FlatButton label="Add" onClick={this.handleAdd}/>
                             <FlatButton label="Search" onClick={this.handleSearch}/>
-                            <FlatButton label="Delete" onClick={this.handleDelete}/>
                             <FlatButton label="Unit Tests" onClick={this.handleUnitTest}/>
                         </CardActions>
                         <MaterialItemGrid items={this.state.itemsAvailable }
-                                      onSelectCallback={this.handleMoveAvailableToSelected}
-                    />
+                                      onSelectCallback={this.handleMoveAvailableToSelected}/>
                     </CardText>
 
                 </Card>
-                    <br/>
-                <Card expanded={this.state.showSelectCard}
-                      onExpandChange={this.handleSelectCardExpandedChange}
-                      zDepth={2}>
-                    <CardHeader
-                        title="Items selected for deletion."
-                        actAsExpander={true}
-                        showExpandableButton={true}
-                    />
 
-                    <CardText expandable={true}>
-                        <MaterialItemGrid items={this.state.itemsSelected }
-                                          onSelectCallback={this.handleMoveSelectedToAvailable}
-                        />
-
-                    </CardText>
-                </Card>
+                <SelectedItemGrid expanded={this.state.showSelectCard}
+                                  onExpandChange={this.handleSelectCardExpandedChange}
+                                  items={this.state.itemsSelected}
+                                  onSelectCallback={this.handleMoveSelectedToAvailable}
+                                  handleAdd={this.handleAdd}/>
                 </div>
             );
            }

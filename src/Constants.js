@@ -34,3 +34,4 @@ export const NoItem = {
 
 export const tableRowHeightStyle       = { border: "0px", height: "12px", padding: "1px"};
 export const tableRowHeightStyleRight  = { border: "0px", height: "12px", paddingRight: "20px", textAlign: "right" };
+export const zDepth = 2;

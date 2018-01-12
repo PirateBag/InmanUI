@@ -7,18 +7,16 @@ import * as queryString from 'query-string'
 import React from "react";
 import {
     Table,
-    TableBody,
-    TableRow,
-    TableRowColumn,
+    TableBody
+
+
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import * as Utility   from './Utility.js'
 import FlatButton from 'material-ui/FlatButton';
 
 export class ItemProperties extends React.Component {
     constructor(props) {
-    super(props)
+        super(props)
 
         this.state = {
             item : props.item
@@ -34,7 +32,7 @@ export class ItemProperties extends React.Component {
         if ( name === 'close') {
             this.props.closeCallback(this.state.item);
         } else if ( name === 'action' ) {
-            this.props.actionCallback(this.state.item);
+            this.addItem(this);
         }
     }
 
@@ -63,9 +61,9 @@ export class ItemProperties extends React.Component {
 
     addItem( theObject ) {
         let params = {
-                summaryId : theObject.state.summaryId,
-                description : theObject.state.description,
-                unitCost : theObject.state.unitCost };
+                summaryId : theObject.state.item.summaryId,
+                description : theObject.state.item.description,
+                unitCost : theObject.state.item.unitCost };
 
         params = queryString.stringify( params );
 

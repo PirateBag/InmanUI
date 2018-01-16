@@ -51,6 +51,19 @@ export class ItemProperties extends React.Component {
             </span>
         );
     }
+    presentButtons2() {
+        return (
+            <span>
+            { this.props.actionCallback !== undefined &&
+                <FlatButton name='action' label={this.props.actionLabel} onClick={this.handleButtonActiviation}/>
+            }
+            { this.props.closeCallback !== undefined &&
+                <FlatButton name='close' label={this.props.closeLabel} onClick={this.handleButtonActiviation}/>
+            }
+
+            </span>
+        );
+    }
 
     handleChange( evt ) {
         var  o = this.state.item;
@@ -72,14 +85,14 @@ export class ItemProperties extends React.Component {
 
         let servicePost = new ServicePoster( { url: Constants.INMAN_SERVER_IP,
             typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_ADD } );
-        servicePost.go( { parameters: params, responseCallback: this.props.doneWithAdding } );
+        servicePost.go( { parameters: params, responseCallback: this.props.closeCallback } );
 
     }
 
 
     handleClickCancel(evt) {
         this.setState({save: evt.target.value});
-        this.props.doneWithAdding(evt);
+        this.props.closeCallback(evt);
     }
 
     render() {
@@ -103,7 +116,7 @@ export class ItemProperties extends React.Component {
                     </TableBody>
                 </Table>
 
-                { this.presentButtons() }
+                { this.presentButtons2() }
 
             </div>
         );
@@ -113,8 +126,8 @@ export class ItemProperties extends React.Component {
 ItemProperties.propTypes = {
     mode: PropTypes.oneOf( ['read', 'write']).isRequired,
     item : PropTypes.object.isRequired,
-    closeLabel : PropTypes.string.isRequired,
-    closeCallback : PropTypes.func.isRequired,
+    closeLabel : PropTypes.string,
+    closeCallback : PropTypes.func,
     actionLabel : PropTypes.string,
     actionCallback : PropTypes.func
 }

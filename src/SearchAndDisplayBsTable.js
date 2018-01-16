@@ -9,12 +9,13 @@ import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import ItemProperties from "./ItemProperties.js";
 import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import Avatar from 'material-ui/Avatar';
 import MaterialItemGrid from "./MaterialItemGrid.js";
 import ServicePoster from "./ServicePoster.js";
 import DeleteModal from './DeleteModal.js';
 import MetadataUnitTests from './MetadataUnitTests.js';
 import SelectedItemGrid from "./SelectedItemGrid";
-
+import Item from "./model/Item.js";
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -83,19 +84,6 @@ class SearchAndDisplayBsTable extends React.Component {
     }
 
 
-    getItems( ) {
-        let params = queryString.stringify(
-            {
-                'id': this.state.ItemId,
-                'summaryId': this.state.SummaryId,
-                'description': this.state.Description
-            });
-        let servicePost = new ServicePoster( { url: Constants.INMAN_SERVER_IP,
-            typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_QUERY } );
-        servicePost.go( { parameters: params, responseCallback: this.responseCallback } );
-    }
-
-
     searchItems( {itemSearchParameters: item } ) {
         let params = queryString.stringify(
             {
@@ -130,7 +118,7 @@ class SearchAndDisplayBsTable extends React.Component {
 
     handleSearch(evt) {
         this.setState( { Mode : 'query'} );
-        this.getItems( );
+        this.searchItems( { itemSearchParameters: this.state.queryCriteria } );
     }
 
     handleAdd(evt) {
@@ -151,7 +139,7 @@ class SearchAndDisplayBsTable extends React.Component {
             }
         } else
         {
-            this.setState({Mode: 'query'});
+            this.setState({Mode: 'query', ItemResponse: null });
         }
     }
 
@@ -204,10 +192,11 @@ class SearchAndDisplayBsTable extends React.Component {
             return null;
 
         if (this.state.Mode === 'add') {
+            let newItem = new Item( {} );
             return (
                 <div>
                     <ItemProperties mode={"read"}
-                                    item={this.emptyItem}
+                                    item={newItem}
                                     closeLabel={"Return"}
                                     closeCallback={this.handleDoneWithAdding}
                                     actionLabel={"SAVE"}
@@ -239,16 +228,14 @@ class SearchAndDisplayBsTable extends React.Component {
 
                     <CardHeader
                         title="Item Search Criteria."
-                        avatar="./logo.png"
+                        avatar={
+                            <Avatar src="images/logo-128.png"/>
+                        }
                         actAsExpander={true}
                         showExpandableButton={true}
                     />
                     <CardText expandable={true}>
                         <ItemProperties mode={'read'} item={this.state.queryCriteria }
-                                        closeCallback={this.queryScreenCancel}
-                                        closeLabel={"Cancel"}
-                                        actionCallback={this.queryScreenSearch}
-                                        actionLabel={"Search"}
                         />
                     </CardText>
 

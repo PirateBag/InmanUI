@@ -16,6 +16,7 @@ import DeleteModal from './DeleteModal.js';
 import MetadataUnitTests from './MetadataUnitTests.js';
 import SelectedItemGrid from "./SelectedItemGrid";
 import Item from "./model/Item.js";
+import redWagonImage from "./images/logo.png"
 
 class SearchAndDisplayBsTable extends React.Component {
 
@@ -229,7 +230,7 @@ class SearchAndDisplayBsTable extends React.Component {
                     <CardHeader
                         title="Item Search Criteria."
                         avatar={
-                            <Avatar src="images/logo-128.png"/>
+                            <Avatar src={redWagonImage}/>
                         }
                         actAsExpander={true}
                         showExpandableButton={true}

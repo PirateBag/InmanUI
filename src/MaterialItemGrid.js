@@ -11,6 +11,21 @@ import {
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import * as Constants from './Constants.js'
+import FontIcon from 'material-ui/FontIcon';
+import {red500, yellow500, blue500, greenA200} from 'material-ui/styles/colors'
+import DoneIcon from 'material-ui/svg-icons/action/done'
+
+const iconStyles = {
+    marginRight: 24,
+};
+
+
+
+const FontIconExampleIcons = () => (
+    <div>
+        <DoneIcon style={iconStyles} color={greenA200} />
+    </div>
+);
 
 export class MaterialItemGrid extends Component {
     constructor ( props ) {
@@ -46,6 +61,8 @@ export class MaterialItemGrid extends Component {
 
         return (
             <span>
+                <FontIconExampleIcons/>
+                <br/>
                 <Table multiSelectable={false} onRowSelection={this.onRowSelection}>
                 <TableHeader adjustForCheckbox={false}
                              displaySelectAll={false}>
@@ -59,7 +76,8 @@ export class MaterialItemGrid extends Component {
                             <TableRow key={item.id}
                                       style={Constants.tableRowHeightStyle}>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    {item.id}</TableRowColumn>
+                                    <FontIcon className="material-icons" style={iconStyles}>home</FontIcon>
+                                    </TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
                                     {item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>

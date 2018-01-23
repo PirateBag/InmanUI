@@ -11,21 +11,42 @@ import {
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import * as Constants from './Constants.js'
-import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import {red500, yellow500, blue500, greenA200} from 'material-ui/styles/colors'
-import DoneIcon from 'material-ui/svg-icons/action/done'
+import DeleteIcon from 'material-ui/svg-icons/action/delete'
+import EditIcon from 'material-ui/svg-icons/image/edit'
+import HamburgIcon from 'material-ui/svg-icons/action/reorder'
 
-const iconStyles = {
-    marginRight: 24,
+const styles = {
+    smallIcon: {
+        width: 16,
+        height: 16,
+    },
+    mediumIcon: {
+        width: 48,
+        height: 48,
+    },
+    largeIcon: {
+        width: 60,
+        height: 60,
+    },
+    small: {
+        width: 32,
+        height: 32,
+        padding: 6,
+    },
+    medium: {
+        width: 96,
+        height: 96,
+        padding: 24,
+    },
+    large: {
+        width: 120,
+        height: 120,
+        padding: 30,
+    },
 };
 
-
-
-const FontIconExampleIcons = () => (
-    <div>
-        <DoneIcon style={iconStyles} color={greenA200} />
-    </div>
-);
 
 export class MaterialItemGrid extends Component {
     constructor ( props ) {
@@ -38,8 +59,10 @@ export class MaterialItemGrid extends Component {
     utilityRenderColumnNames() {
         return(
             <TableRow style={Constants.tableRowHeightStyle}>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}></TableHeaderColumn>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={Constants.tableRowHeightStyle}>
+                    <HamburgIcon iconStyle={styles.smallIcon} style={styles.small} > </HamburgIcon>
+                </TableHeaderColumn>
+                <TableHeaderColumn style={Constants.tableRowHeightStyle}>Id</TableHeaderColumn>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>Summary</TableHeaderColumn>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>Description</TableHeaderColumn>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>Unit Cost</TableHeaderColumn>
@@ -61,8 +84,6 @@ export class MaterialItemGrid extends Component {
 
         return (
             <span>
-                <FontIconExampleIcons/>
-                <br/>
                 <Table multiSelectable={false} onRowSelection={this.onRowSelection}>
                 <TableHeader adjustForCheckbox={false}
                              displaySelectAll={false}>
@@ -76,10 +97,13 @@ export class MaterialItemGrid extends Component {
                             <TableRow key={item.id}
                                       style={Constants.tableRowHeightStyle}>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <FontIcon className="material-icons" style={iconStyles}>home</FontIcon>
-                                    </TableRowColumn>
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    {item.id}</TableRowColumn>
+                                    <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}>
+                                        <DeleteIcon/>
+                                    </IconButton>
+                                    <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}>
+                                        <EditIcon/>
+                                    </IconButton>
+                                </TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.description}</TableRowColumn>

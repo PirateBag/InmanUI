@@ -84,7 +84,7 @@ export class MaterialItemGrid extends Component {
 
         return (
             <span>
-                <Table multiSelectable={false} onRowSelection={this.onRowSelection}>
+                <Table multiSelectable={false} >
                 <TableHeader adjustForCheckbox={false}
                              displaySelectAll={false}>
                         {this.utilityRenderColumnNames() }
@@ -97,10 +97,12 @@ export class MaterialItemGrid extends Component {
                             <TableRow key={item.id}
                                       style={Constants.tableRowHeightStyle}>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}>
+                                    <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}
+                                        href={item.id}>
                                         <DeleteIcon/>
                                     </IconButton>
-                                    <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}>
+                                    <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}
+                                                href={item.id}>
                                         <EditIcon/>
                                     </IconButton>
                                 </TableRowColumn>

@@ -53,6 +53,7 @@ export class MaterialItemGrid extends Component {
         super( props );
         this.onRowSelection = this.onRowSelection.bind(this);
         this.utilityRenderColumnNames = this.utilityRenderColumnNames.bind(this);
+        this.onButtonActivation = this.onButtonActivation.bind(this);
 
     };
 
@@ -60,7 +61,7 @@ export class MaterialItemGrid extends Component {
         return(
             <TableRow style={Constants.tableRowHeightStyle}>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>
-                    <HamburgIcon iconStyle={styles.smallIcon} style={styles.small} > </HamburgIcon>
+                    <HamburgIcon style={styles.small} > </HamburgIcon>
                 </TableHeaderColumn>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>Id</TableHeaderColumn>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>Summary</TableHeaderColumn>
@@ -72,6 +73,12 @@ export class MaterialItemGrid extends Component {
 
     onRowSelection( rows ) {
         let itemSelected = this.props.items[ rows[ 0 ]];
+        this.props.onSelectCallback( itemSelected );
+    }
+
+    onButtonActivation( event ) {
+        let itemIndex = event["[[Target]]"].currentTarget.id;
+        let itemSelected = this.props.items[ itemIndex ];
         this.props.onSelectCallback( itemSelected );
     }
 
@@ -98,11 +105,12 @@ export class MaterialItemGrid extends Component {
                                       style={Constants.tableRowHeightStyle}>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
                                     <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}
-                                        href={item.id}>
+                                         onClick={this.onButtonActivation} id={'id' + index}>
                                         <DeleteIcon/>
                                     </IconButton>
                                     <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}
-                                                href={item.id}>
+                                                onClick={this.onButtonActivation}
+                                        >
                                         <EditIcon/>
                                     </IconButton>
                                 </TableRowColumn>

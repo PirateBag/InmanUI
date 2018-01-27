@@ -2,7 +2,7 @@
  * Created by osboxes on 12/06/17.
  */
 
-export const INMAN_SERVER_IP = "http://10.1.21.97";
+export const INMAN_SERVER_IP = "http://localhost";
 export const IPPORT = ":8080";
 export const NO_TOKEN  = "No Token";
 export const NO_STATUS  = "off line.";

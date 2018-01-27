@@ -77,8 +77,9 @@ export class MaterialItemGrid extends Component {
     }
 
     onButtonActivation( event ) {
-        let itemIndex = event["[[Target]]"].currentTarget.id;
-        let itemSelected = this.props.items[ itemIndex ];
+        let currentTarget = event.currentTarget;
+        let id = currentTarget.id;
+        let itemSelected = this.props.items[ id ];
         this.props.onSelectCallback( itemSelected );
     }
 
@@ -105,7 +106,7 @@ export class MaterialItemGrid extends Component {
                                       style={Constants.tableRowHeightStyle}>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
                                     <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}
-                                         onClick={this.onButtonActivation} id={'id' + index}>
+                                         onClick={this.onButtonActivation} id={index}>
                                         <DeleteIcon/>
                                     </IconButton>
                                     <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}

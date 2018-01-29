@@ -171,6 +171,7 @@ class SearchAndDisplayBsTable extends React.Component {
     }
 
 
+
     /**
      * Handle the pressing of the delete button on the primary card.
      *

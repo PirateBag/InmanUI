@@ -71,6 +71,51 @@ export class MaterialItemGrid extends Component {
         );
     }
 
+    utilityRenderColumns( fields ) {
+        return(
+            <TableRow style={Constants.tableRowHeightStyle}>
+                { fields.map( (field,index ) => {
+                    return( field.renderHeaderColumn() )
+                }
+
+            <TableHeaderColumn style={Constants.tableRowHeightStyle}>
+                <HamburgIcon style={styles.small} > </HamburgIcon>
+            </TableHeaderColumn>
+            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Id</TableHeaderColumn>
+            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Summary</TableHeaderColumn>
+            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Description</TableHeaderColumn>
+            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Unit Cost</TableHeaderColumn>
+        </TableRow>
+    );
+
+    }
+
+                {   this.props.items.map( (item,index ) => {
+                    return(
+                    <TableRow key={item.id}
+                    style={Constants.tableRowHeightStyle}>
+                    <TableRowColumn style={Constants.tableRowHeightStyle}>
+                    <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}
+                    onClick={this.onButtonActivation} id={index}>
+                    <DeleteIcon/>
+                    </IconButton>
+                    <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}
+                    onClick={this.onButtonActivation}
+                    >
+                    <EditIcon/>
+                    </IconButton>
+                    </TableRowColumn>
+                    <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
+                    <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
+                    <TableRowColumn style={Constants.tableRowHeightStyle}>{item.description}</TableRowColumn>
+                    <TableRowColumn style={Constants.tableRowHeightStyle}>
+                    <NumberFormat value={item.unitCost} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
+                    displayType='text'/>
+                    </TableRowColumn>
+                    </TableRow>
+                    ); } ) }
+                }
+
     onRowSelection( rows ) {
         let itemSelected = this.props.items[ rows[ 0 ]];
         this.props.onSelectCallback( itemSelected );
@@ -134,6 +179,7 @@ export class MaterialItemGrid extends Component {
 MaterialItemGrid.propTypes = {
     items : PropTypes.array.isRequired,
     onSelectCallback : PropTypes.func.isRequired,
+    fields : PropTypes.array,
 };
 
 export default MaterialItemGrid;

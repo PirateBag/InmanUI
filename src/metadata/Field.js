@@ -9,7 +9,7 @@ import TextField from 'material-ui/TextField';
 export class Field{
 
     constructor( {   fieldName , tableName, lengthOf, isUpper=false,
-                     decimalPlaces=0, isCurrency=false, horizontalLabel, rules=undefined }  ) {
+                     decimalPlaces=0, isCurrency=false, horizontalLabel, rules=undefined, icon=undefined }  ) {
         this.fieldName = fieldName;
         this.tableName = tableName;
         this.lengthOf = lengthOf;
@@ -18,6 +18,7 @@ export class Field{
         this.isCurrency = isCurrency;
         this.horizontalLabel = horizontalLabel;
         this.rules = rules;
+        this.icon = icon;
     }
 
     showRowHtml( { key, value, onChange } ) {
@@ -32,6 +33,18 @@ export class Field{
                 </TableRowColumn>
             </TableRow>
         )
+    }
+    showColumnHeaderHtml( ) {
+        if ( this.icon === undefined  ) {
+            return(
+                    <TableHeaderColumn style={Constants.tableRowHeightStyle}>this.horizontalLabel</TableHeaderColumn>
+                );
+         } else {
+            return(
+                <TableHeaderColumn style={Constants.tableRowHeightStyle}>
+                    <HamburgIcon style={styles.small} > </HamburgIcon>
+                </TableHeaderColumn>
+        }
     }
 }
 

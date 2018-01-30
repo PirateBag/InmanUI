@@ -1,3 +1,5 @@
+import Field from '../metadata/Field.js'
+
 export class Item {
 
     constructor({id = 0, summaryId = 'W-0', description = '', unitCost = 0.0}) {
@@ -8,24 +10,24 @@ export class Item {
     }
 
     const
-    menuHeader = new Field( { fieldName : null, tableName : 'item', icon : 'hamberger',  })
+    menuHeader = new Field( { fieldName : null, tableName : 'item', icon : 'hamberger',  });
 
     const
-    id = new Field({
+    idField = new Field({
         fieldName: 'id', tableName: 'item', lengthOf: 10,
         horizontalLabel: "Id"
     });
 
 
     const
-    summaryId = new Field({
+    summaryIdField = new Field({
         fieldName: 'summaryId', tableName: 'item', lengthOf: 10,
         horizontalLabel: "Summary Id"
     });
 
 
     const
-    description = new Field({
+    descriptionField = new Field({
         fieldName: 'description',
         tableName: 'item',
         lengthOf: 30,
@@ -34,14 +36,15 @@ export class Item {
 
 
     const
-    unitCost = new Field({
+    unitCostField = new Field({
         fieldName: 'unitCost', tableName: 'item', lengthOf: 10,
         isUpper: false,
         decimalPlaces: 2, isCurrency: true, horizontalLabel: "Unit Cost"
     });
 
     const
-    gridWithDeleteEdit = [ menuHeader,id, summaryId, description, unitCost ];
+    gridWithDeleteEdit = [ this.menuHeader,this.idField, this.summaryIdField,
+        this.descriptionField, this.unitCostField ];
 
   }
 

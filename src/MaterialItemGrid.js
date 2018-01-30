@@ -17,35 +17,6 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete'
 import EditIcon from 'material-ui/svg-icons/image/edit'
 import HamburgIcon from 'material-ui/svg-icons/action/reorder'
 
-const styles = {
-    smallIcon: {
-        width: 16,
-        height: 16,
-    },
-    mediumIcon: {
-        width: 48,
-        height: 48,
-    },
-    largeIcon: {
-        width: 60,
-        height: 60,
-    },
-    small: {
-        width: 32,
-        height: 32,
-        padding: 6,
-    },
-    medium: {
-        width: 96,
-        height: 96,
-        padding: 24,
-    },
-    large: {
-        width: 120,
-        height: 120,
-        padding: 30,
-    },
-};
 
 
 export class MaterialItemGrid extends Component {
@@ -61,7 +32,7 @@ export class MaterialItemGrid extends Component {
         return(
             <TableRow style={Constants.tableRowHeightStyle}>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>
-                    <HamburgIcon style={styles.small} > </HamburgIcon>
+                    <HamburgIcon style={Constants.iconStyles.small} > </HamburgIcon>
                 </TableHeaderColumn>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>Id</TableHeaderColumn>
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>Summary</TableHeaderColumn>
@@ -72,49 +43,21 @@ export class MaterialItemGrid extends Component {
     }
 
     utilityRenderColumns( fields ) {
+        if ( fields === undefined ) {
+            return( this.utilityRenderColumnNames() )
+        } else {
         return(
             <TableRow style={Constants.tableRowHeightStyle}>
                 { fields.map( (field,index ) => {
-                    return( field.renderHeaderColumn() )
-                }
-
-            <TableHeaderColumn style={Constants.tableRowHeightStyle}>
-                <HamburgIcon style={styles.small} > </HamburgIcon>
-            </TableHeaderColumn>
-            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Id</TableHeaderColumn>
-            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Summary</TableHeaderColumn>
-            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Description</TableHeaderColumn>
-            <TableHeaderColumn style={Constants.tableRowHeightStyle}>Unit Cost</TableHeaderColumn>
+                    return( field.showColumnHeaderHtml() );
+                } ) }
         </TableRow>
-    );
+        );
+        }
+
 
     }
 
-                {   this.props.items.map( (item,index ) => {
-                    return(
-                    <TableRow key={item.id}
-                    style={Constants.tableRowHeightStyle}>
-                    <TableRowColumn style={Constants.tableRowHeightStyle}>
-                    <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}
-                    onClick={this.onButtonActivation} id={index}>
-                    <DeleteIcon/>
-                    </IconButton>
-                    <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}
-                    onClick={this.onButtonActivation}
-                    >
-                    <EditIcon/>
-                    </IconButton>
-                    </TableRowColumn>
-                    <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
-                    <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
-                    <TableRowColumn style={Constants.tableRowHeightStyle}>{item.description}</TableRowColumn>
-                    <TableRowColumn style={Constants.tableRowHeightStyle}>
-                    <NumberFormat value={item.unitCost} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
-                    displayType='text'/>
-                    </TableRowColumn>
-                    </TableRow>
-                    ); } ) }
-                }
 
     onRowSelection( rows ) {
         let itemSelected = this.props.items[ rows[ 0 ]];
@@ -150,11 +93,14 @@ export class MaterialItemGrid extends Component {
                             <TableRow key={item.id}
                                       style={Constants.tableRowHeightStyle}>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <IconButton tooltip='Delete' iconStyle={styles.smallIcon} style={styles.small}
+                                    <IconButton tooltip='Delete'
+                                                iconStyle={Constants.iconStyles.smallIcon}
+                                                style={Constants.iconStyles.small}
                                          onClick={this.onButtonActivation} id={index}>
                                         <DeleteIcon/>
                                     </IconButton>
-                                    <IconButton tooltip='Edit' iconStyle={styles.smallIcon} style={styles.small}
+                                    <IconButton tooltip='Edit' iconStyle={Constants.iconStyles.smallIcon}
+                                                style={Constants.iconStyles.small}
                                                 onClick={this.onButtonActivation}
                                         >
                                         <EditIcon/>

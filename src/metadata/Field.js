@@ -1,10 +1,13 @@
 import * as Constants from '../Constants.js'
 import React from "react";
-import {
-    TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
+import {
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn
+} from 'material-ui/Table';
+
+import HamburgIcon from 'material-ui/svg-icons/action/reorder'
 
 export class Field{
 
@@ -38,12 +41,13 @@ export class Field{
         if ( this.icon === undefined  ) {
             return(
                     <TableHeaderColumn style={Constants.tableRowHeightStyle}>this.horizontalLabel</TableHeaderColumn>
-                );
+                )
          } else {
             return(
                 <TableHeaderColumn style={Constants.tableRowHeightStyle}>
-                    <HamburgIcon style={styles.small} > </HamburgIcon>
+                    <HamburgIcon style={Constants.iconStyles.small} > </HamburgIcon>
                 </TableHeaderColumn>
+            )
         }
     }
 }

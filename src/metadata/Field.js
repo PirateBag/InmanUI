@@ -40,7 +40,7 @@ export class Field{
     showColumnHeaderHtml( ) {
         if ( this.icon === undefined  ) {
             return(
-                    <TableHeaderColumn style={Constants.tableRowHeightStyle}>this.horizontalLabel</TableHeaderColumn>
+                    <TableHeaderColumn style={Constants.tableRowHeightStyle}>{this.horizontalLabel}</TableHeaderColumn>
                 )
          } else {
             return(

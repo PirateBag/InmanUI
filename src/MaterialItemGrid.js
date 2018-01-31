@@ -16,6 +16,7 @@ import {red500, yellow500, blue500, greenA200} from 'material-ui/styles/colors'
 import DeleteIcon from 'material-ui/svg-icons/action/delete'
 import EditIcon from 'material-ui/svg-icons/image/edit'
 import HamburgIcon from 'material-ui/svg-icons/action/reorder'
+import Item from './model/Item'
 
 
 
@@ -83,7 +84,7 @@ export class MaterialItemGrid extends Component {
                 <Table multiSelectable={false} >
                 <TableHeader adjustForCheckbox={false}
                              displaySelectAll={false}>
-                        {this.utilityRenderColumnNames() }
+                        {this.utilityRenderColumns( this.props.fields ) }
                 </TableHeader>
                 <TableBody stripedRows={true}
                            deselectOnClickaway={false}
@@ -110,7 +111,7 @@ export class MaterialItemGrid extends Component {
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.description}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <NumberFormat value={item.unitCost} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
+                                    <NumberFormat value={Item.unitCost} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
                                               displayType='text'/>
                                 </TableRowColumn>
                             </TableRow>

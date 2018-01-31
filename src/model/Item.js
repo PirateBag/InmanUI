@@ -9,25 +9,23 @@ export class Item {
         this.unitCost = unitCost;
     }
 
-    const
-    menuHeader = new Field( { fieldName : null, tableName : 'item', icon : 'hamberger',  });
+  }
 
-    const
-    idField = new Field({
+Item.menuHeader = new Field( { fieldName : null, tableName : 'item', icon : 'hamberger',  });
+
+Item.idField = new Field({
         fieldName: 'id', tableName: 'item', lengthOf: 10,
         horizontalLabel: "Id"
     });
 
 
-    const
-    summaryIdField = new Field({
+Item.summaryIdField = new Field({
         fieldName: 'summaryId', tableName: 'item', lengthOf: 10,
-        horizontalLabel: "Summary Id"
+        horizontalLabel: "Summary Idz"
     });
 
 
-    const
-    descriptionField = new Field({
+Item.descriptionField = new Field({
         fieldName: 'description',
         tableName: 'item',
         lengthOf: 30,
@@ -35,18 +33,15 @@ export class Item {
     });
 
 
-    const
-    unitCostField = new Field({
+Item.unitCostField = new Field({
         fieldName: 'unitCost', tableName: 'item', lengthOf: 10,
         isUpper: false,
         decimalPlaces: 2, isCurrency: true, horizontalLabel: "Unit Cost"
     });
 
-    const
-    gridWithDeleteEdit = [ this.menuHeader,this.idField, this.summaryIdField,
-        this.descriptionField, this.unitCostField ];
+Item.gridWithDeleteEdit = [ Item.menuHeader,Item.idField, Item.summaryIdField,
+        Item.descriptionField, Item.unitCostField ];
 
-  }
 
 
 export default Item;

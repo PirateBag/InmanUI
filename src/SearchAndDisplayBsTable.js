@@ -255,7 +255,10 @@ class SearchAndDisplayBsTable extends React.Component {
                             <FlatButton label="Unit Tests" onClick={this.handleUnitTest}/>
                         </CardActions>
                         <MaterialItemGrid items={this.state.itemsAvailable }
-                                      onSelectCallback={this.handleMoveAvailableToSelected}/>
+                                      onSelectCallback={this.handleMoveAvailableToSelected}
+                                          fields={Item.gridWithDeleteEdit}
+
+                        />
                     </CardText>
 
                 </Card>

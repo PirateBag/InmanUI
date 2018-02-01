@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import * as Constants from '../Constants.js'
 

@@ -1,6 +1,7 @@
-import * as Constants from '../Constants.js'
+
 import React from "react";
 import TextField from 'material-ui/TextField';
+import * as Constants from '../Constants.js'
 import {
     TableHeaderColumn,
     TableRow,
@@ -25,7 +26,7 @@ export class Field{
         this.horizontalLabel = horizontalLabel;
         this.rules = rules;
         this.columnHeaderIcon = columnHeaderIcon;
-        this.rowLineButons = rowLineButtons;
+        this.rowLineButtons = rowLineButtons;
     }
 
     showRowHtml( { key, value, onChange } ) {
@@ -48,12 +49,24 @@ export class Field{
                 )
          } else {
             return(
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>
+                <TableHeaderColumn key={0} style={Constants.tableRowHeightStyle}>
                     <HamburgIcon style={Constants.iconStyles.small} > </HamburgIcon>
                 </TableHeaderColumn>
             )
         }
     }
+
+    showRowButtons( ) {
+        if ( this.rowLineButtons === undefined ) {
+            return;
+        }
+        let rValue = "";
+
+        for ( let i = 0; i < this.rowLineButtons.length; i++ ) {
+            rValue += this.rowLineButtons[ i ].showRow(null, i );
+        };
+        return( rValue );}
+
 }
 
 export default Field;

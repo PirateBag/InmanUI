@@ -1,7 +1,6 @@
 import Field from '../metadata/Field.js'
 import LineButton from '../metadata/LineButton.js'
 import DeleteIcon from 'material-ui/svg-icons/action/delete'
-import EditIcon from 'material-ui/svg-icons/image/edit'
 
 
 export class Item {
@@ -18,7 +17,8 @@ export class Item {
 Item.deleteLineButton = new LineButton( { toolTip : "Delete", icon: DeleteIcon }  );
 
 
-Item.menuHeader = new Field( { fieldName : null, tableName : 'item', icon : 'hamberger',  });
+Item.menuHeader = new Field( { fieldName : null, tableName : 'item', icon : 'hamberger',
+    rowLineButtons: [ Item.deleteLineButton]});
 
 
 Item.idField = new Field({

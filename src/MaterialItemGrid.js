@@ -48,7 +48,7 @@ export class MaterialItemGrid extends Component {
             return( this.utilityRenderColumnNames() )
         } else {
         return(
-            <TableRow style={Constants.tableRowHeightStyle}>
+            <TableRow key={999} style={Constants.tableRowHeightStyle}>
                 { fields.map( (field,index ) => {
                     return( field.showColumnHeaderHtml() );
                 } ) }
@@ -106,6 +106,7 @@ export class MaterialItemGrid extends Component {
                                         >
                                         <EditIcon/>
                                     </IconButton>
+
                                 </TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>

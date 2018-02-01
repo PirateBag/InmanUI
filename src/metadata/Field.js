@@ -12,7 +12,10 @@ import HamburgIcon from 'material-ui/svg-icons/action/reorder'
 export class Field{
 
     constructor( {   fieldName , tableName, lengthOf, isUpper=false,
-                     decimalPlaces=0, isCurrency=false, horizontalLabel, rules=undefined, icon=undefined }  ) {
+                     decimalPlaces=0, isCurrency=false, horizontalLabel,
+                     rules=undefined, columnHeaderIcon = undefined,
+                     rowLineButtons = []
+    }  ) {
         this.fieldName = fieldName;
         this.tableName = tableName;
         this.lengthOf = lengthOf;
@@ -21,7 +24,8 @@ export class Field{
         this.isCurrency = isCurrency;
         this.horizontalLabel = horizontalLabel;
         this.rules = rules;
-        this.icon = icon;
+        this.columnHeaderIcon = columnHeaderIcon;
+        this.rowLineButons = rowLineButtons;
     }
 
     showRowHtml( { key, value, onChange } ) {

@@ -69,7 +69,9 @@ export class MaterialItemGrid extends Component {
         let currentTarget = event.currentTarget;
         let id = currentTarget.id;
         let itemSelected = this.props.items[ id ];
-        this.props.onSelectCallback( itemSelected );
+        let params = { 'itemSelect' : itemSelected,
+                       'toolTip' : currentTarget.textContent };
+        this.props.onSelectCallback( params );
     }
 
     render() {
@@ -102,7 +104,7 @@ export class MaterialItemGrid extends Component {
                                     </IconButton>
                                     <IconButton tooltip='Edit' iconStyle={Constants.iconStyles.smallIcon}
                                                 style={Constants.iconStyles.small}
-                                                onClick={this.onButtonActivation}
+                                                onClick={this.onButtonActivation} id={index}
                                         >
                                         <EditIcon/>
                                     </IconButton>

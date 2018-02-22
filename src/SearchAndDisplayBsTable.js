@@ -53,6 +53,7 @@ class SearchAndDisplayBsTable extends React.Component {
         this.idIsMemberOf = this.idIsMemberOf.bind(this);
         this.queryScreenCancel = this.queryScreenCancel.bind(this);
         this.queryScreenSearch = this.queryScreenSearch.bind(this);
+        this.handleButtonsOnGrid = this.handleButtonsOnGrid( this );
     }
 
     queryScreenCancel( queryCriteria ) {
@@ -170,6 +171,11 @@ class SearchAndDisplayBsTable extends React.Component {
         this.setState( { itemsSelected : newSelected });
     }
 
+    handleButtonsOnGrid(  { itemSelect, toolTip } ) {
+        if ( toolTip === 'Delete' ) {
+            this.handleMoveAvailableToSelected( itemSelect );
+        }
+    }
 
 
     /**

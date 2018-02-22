@@ -45,11 +45,12 @@ export class Field{
     showColumnHeaderHtml( ) {
         if ( this.icon === undefined  ) {
             return(
-                    <TableHeaderColumn style={Constants.tableRowHeightStyle}>{this.horizontalLabel}</TableHeaderColumn>
+                    <TableHeaderColumn style={Constants.tableRowHeightStyle}
+                    key={'0'}>{this.horizontalLabel}</TableHeaderColumn>
                 )
          } else {
             return(
-                <TableHeaderColumn key={0} style={Constants.tableRowHeightStyle}>
+                <TableHeaderColumn key={'0'} style={Constants.tableRowHeightStyle}>
                     <HamburgIcon style={Constants.iconStyles.small} > </HamburgIcon>
                 </TableHeaderColumn>
             )

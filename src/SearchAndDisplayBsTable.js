@@ -53,7 +53,8 @@ class SearchAndDisplayBsTable extends React.Component {
         this.idIsMemberOf = this.idIsMemberOf.bind(this);
         this.queryScreenCancel = this.queryScreenCancel.bind(this);
         this.queryScreenSearch = this.queryScreenSearch.bind(this);
-        this.handleButtonsOnGrid = this.handleButtonsOnGrid( this );
+        this.handleButtonsOnSelectedGrid = this.handleButtonsOnSelectedGrid.bind( this );
+        this.handleButtonsOnAvailableGrid = this.handleButtonsOnAvailableGrid.bind( this );
     }
 
     queryScreenCancel( queryCriteria ) {
@@ -171,11 +172,17 @@ class SearchAndDisplayBsTable extends React.Component {
         this.setState( { itemsSelected : newSelected });
     }
 
-    handleButtonsOnGrid(  { itemSelect, toolTip } ) {
+    handleButtonsOnAvailableGrid(  { itemSelect, toolTip } ) {
         if ( toolTip === 'Delete' ) {
             this.handleMoveAvailableToSelected( itemSelect );
         }
     }
+    handleButtonsOnSelectedGrid(  { itemSelect, toolTip } ) {
+        if ( toolTip === 'Delete' ) {
+            this.handleMoveSelectedToAvailable( itemSelect );
+        }
+    }
+
 
 
     /**
@@ -261,7 +268,7 @@ class SearchAndDisplayBsTable extends React.Component {
                             <FlatButton label="Unit Tests" onClick={this.handleUnitTest}/>
                         </CardActions>
                         <MaterialItemGrid items={this.state.itemsAvailable }
-                                      onSelectCallback={this.handleMoveAvailableToSelected}
+                                      onSelectCallback={this.handleButtonsOnAvailableGrid}
                                           fields={Item.gridWithDeleteEdit}
 
                         />
@@ -272,8 +279,8 @@ class SearchAndDisplayBsTable extends React.Component {
                 <SelectedItemGrid expanded={this.state.showSelectCard}
                                   onExpandChange={this.handleSelectCardExpandedChange}
                                   items={this.state.itemsSelected}
-                                  onSelectCallback={this.handleMoveSelectedToAvailable}
-                                  handleAdd={this.handleAdd}/>
+                                  onSelectCallback={this.handleButtonsOnSelectedGrid}
+                />
                 </div>
             );
            }

@@ -29,7 +29,7 @@ Item.idField = new Field({
 
 Item.summaryIdField = new Field({
         fieldName: 'summaryId', tableName: 'item', lengthOf: 10,
-        horizontalLabel: "Summary Idz"
+        horizontalLabel: "Summary Id"
     });
 
 

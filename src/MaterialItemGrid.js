@@ -108,7 +108,8 @@ export class MaterialItemGrid extends Component {
                                         >
                                         <EditIcon/>
                                     </IconButton>
-
+                                    {this.props.fields["0"].rowLineButtons["0"].showRow( { onButtonActivation : null,
+                                        index : index })}
                                 </TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
@@ -129,7 +130,7 @@ export class MaterialItemGrid extends Component {
 MaterialItemGrid.propTypes = {
     items : PropTypes.array.isRequired,
     onSelectCallback : PropTypes.func.isRequired,
-    fields : PropTypes.array,
-};
+    fields : PropTypes.array
+    };
 
 export default MaterialItemGrid;

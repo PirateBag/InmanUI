@@ -1,16 +1,12 @@
 /**
  * Created by osboxes on 07/07/17.
  */
+
+import React from 'react'
 import * as Constants from './Constants.js'
 import * as newItemProperties from './metadata/Domain.js'
 import * as queryString from 'query-string'
-import React from "react";
-import {
-    Table,
-    TableBody
-
-
-} from 'material-ui/Table';
+import { Table, TableBody } from 'material-ui/Table';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import ServicePoster from "./ServicePoster.js";

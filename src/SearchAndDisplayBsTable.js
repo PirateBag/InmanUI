@@ -270,17 +270,27 @@ class SearchAndDisplayBsTable extends React.Component {
                         <MaterialItemGrid items={this.state.itemsAvailable }
                                       onSelectCallback={this.handleButtonsOnAvailableGrid}
                                           fields={Item.gridWithDeleteEdit}
-
                         />
                     </CardText>
 
                 </Card>
 
-                <SelectedItemGrid expanded={this.state.showSelectCard}
-                                  onExpandChange={this.handleSelectCardExpandedChange}
-                                  items={this.state.itemsSelected}
-                                  onSelectCallback={this.handleButtonsOnSelectedGrid}
-                />
+                    <Card expanded={this.state.itemsSelected.length >0 }
+                          zDepth={Constants.zDepth}>
+                        <CardHeader
+                            title="Items selected."
+                            actAsExpander={true}
+                            showExpandableButton={true}
+                        />
+
+                        <CardText expandable={true}>
+                            <MaterialItemGrid items={this.state.itemsSelected }
+                                              onSelectCallback={this.handleButtonsOnSelectedGrid}
+                                              fields={Item.gridWithDeleteEdit}
+                            />
+
+                        </CardText>
+                    </Card>
                 </div>
             );
            }

@@ -1,7 +1,7 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import * as Constants from '../Constants.js'
-
+import DeleteIcon from 'material-ui/svg-icons/action/delete'
 
 
 /**
@@ -20,12 +20,14 @@ constructor( { toolTip, iconStyle=Constants.iconStyles.smallIcon,
 
     showRow( { onButtonActivation, index } ) {
         return(
+
             <IconButton tooltip={this.toolTip}
-                iconStyle={this.iconStyles.smallIcon}
-                style={this.iconStyles.small}
+                iconStyle={this.iconStyle}
+                style={this.style}
                 onClick={onButtonActivation} id={index}>
                 {this.icon}
             </IconButton>
+
             );
     }
     }

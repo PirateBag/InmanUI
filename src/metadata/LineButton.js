@@ -1,8 +1,6 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import * as Constants from '../Constants.js'
-import DeleteIcon from 'material-ui/svg-icons/action/delete'
-
 
 /**
  * Describes a button to be placed in the menu column of a table.
@@ -16,15 +14,17 @@ constructor( { toolTip, iconStyle=Constants.iconStyles.smallIcon,
         this.style = style;
         this.onClick = onClick;
         this.icon = icon;
+
+        this.onButtonActivation = null;
     }
 
-    showRow( { onButtonActivation, index } ) {
+    showRow( { index } ) {
         return(
 
             <IconButton tooltip={this.toolTip}
                 iconStyle={this.iconStyle}
                 style={this.style}
-                onClick={onButtonActivation} id={index}>
+                onClick={this.onButtonActivation} id={index} key={this.toolTip}>
                 {this.icon}
             </IconButton>
 

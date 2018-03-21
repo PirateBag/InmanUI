@@ -11,10 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 import * as Constants from './Constants.js'
-import IconButton from 'material-ui/IconButton';
-import {red500, yellow500, blue500, greenA200} from 'material-ui/styles/colors'
-import DeleteIcon from 'material-ui/svg-icons/action/delete'
-import EditIcon from 'material-ui/svg-icons/image/edit'
 import HamburgIcon from 'material-ui/svg-icons/action/reorder'
 import Item from './model/Item'
 
@@ -80,6 +76,12 @@ export class MaterialItemGrid extends Component {
             return null;
         }
 
+        /*
+        Set the activation property for the row line buttons.
+         */
+        for ( let i = 0; i< this.props.fields[ 0 ].rowLineButtons.length; i++ ) {
+            this.props.fields[ 0 ].rowLineButtons[ i ].onButtonActivation = this.onButtonActivation;
+        }
 
         return (
             <span>
@@ -96,20 +98,9 @@ export class MaterialItemGrid extends Component {
                             <TableRow key={item.id}
                                       style={Constants.tableRowHeightStyle}>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <IconButton tooltip='Delete'
-                                                iconStyle={Constants.iconStyles.smallIcon}
-                                                style={Constants.iconStyles.small}
-                                         onClick={this.onButtonActivation} id={index}>
-                                        <DeleteIcon/>
-                                    </IconButton>
-                                    <IconButton tooltip='Edit' iconStyle={Constants.iconStyles.smallIcon}
-                                                style={Constants.iconStyles.small}
-                                                onClick={this.onButtonActivation} id={index}
-                                        >
-                                        <EditIcon/>
-                                    </IconButton>
-                                    {this.props.fields["0"].rowLineButtons["0"].showRow( { onButtonActivation : null,
-                                        index : index })}
+                                    {this.props.fields[ 0 ].rowLineButtons.map( (rowLineButton, index ) => {
+                                        return (
+                                            rowLineButton.showRow( { index : index } ) ); } ) }
                                 </TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
@@ -130,7 +121,7 @@ export class MaterialItemGrid extends Component {
 MaterialItemGrid.propTypes = {
     items : PropTypes.array.isRequired,
     onSelectCallback : PropTypes.func.isRequired,
-    fields : PropTypes.array
+    fields : PropTypes.array.isRequired
     };
 
 export default MaterialItemGrid;

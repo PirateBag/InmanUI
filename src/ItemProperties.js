@@ -10,8 +10,9 @@ import { Table, TableBody } from 'material-ui/Table';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import ServicePoster from "./ServicePoster.js";
+import Item from "./model/Item.js";
 
-export class ItemProperties extends React.Component {
+class ItemProperties extends React.Component {
     constructor(props) {
         super(props)
 
@@ -99,7 +100,7 @@ export class ItemProperties extends React.Component {
                                deselectOnClickaway={false}
                                displayRowCheckbox={false}>
                         return(
-                        { newItemProperties.id.showRowHtml({ key : 1,
+                        { Item.idField.showRowHtml({ key : 1,
                             value: this.state.item.id, onChange: this.handleChange })}
                         { newItemProperties.summaryId.showRowHtml({ key : 2,
                             value: this.state.item.summaryId, onChange: this.handleChange })}

@@ -13,6 +13,7 @@ import NumberFormat from 'react-number-format';
 import * as Constants from './Constants.js'
 import HamburgIcon from 'material-ui/svg-icons/action/reorder'
 import Item from './model/Item'
+import Field from './metadata/Field.js'
 
 
 
@@ -83,6 +84,8 @@ export class MaterialItemGrid extends Component {
             this.props.fields[ 0 ].rowLineButtons[ i ].onButtonActivation = this.onButtonActivation;
         }
 
+        let x = Field.searchForItemByFieldName( { fieldName: 'id', fields: this.props.fields });
+
         return (
             <span>
                 <Table multiSelectable={false} >
@@ -102,7 +105,10 @@ export class MaterialItemGrid extends Component {
                                         return (
                                             rowLineButton.showRow( { index : index } ) ); } ) }
                                 </TableRowColumn>
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>{item.id}</TableRowColumn>
+
+
+                                { x.showRowHtml( { key: index, value: item.id, onChange: null  })}
+
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>{item.description}</TableRowColumn>
                                 <TableRowColumn style={Constants.tableRowHeightStyle}>

@@ -20,33 +20,33 @@ export class DeleteModal extends Component  {
     render() {
         const actions = [
             <FlatButton
-                label="Close"
+                label="Continue"
                 primary={true}
                 onClick={this.handleClose}
             />
         ];
-        let itemsRemaining = this.props.itemsToDeleteRemaining;
+        let itemsRemaining = this.props.countOfItemsDeleted;
         if ( itemsRemaining <= 0 ) {
             itemsRemaining = "All items have been deleted.";
         } else {
-            itemsRemaining += " items have been deleted";
+            itemsRemaining = this.props.itemsToDeleteRemaining + " have been deleted";
         }
 
         return (
 
           <Dialog
-                  title={"Deleting Items"}
+                  title={"Delete status"}
                   actions={actions}
                   open={true}
                   onRequestClose={this.handleClose} >
-              {itemsRemaining} have been deleted
+              {itemsRemaining} item(s) have been deleted
           </Dialog>
           );
     }
 }
 
 DeleteModal.propTypes = {
-    itemsToDeleteRemaining : PropTypes.number.isRequired,
+    countOfItemsDeleted : PropTypes.number.isRequired,
     closeCallBack : PropTypes.func.isRequired
 }
 

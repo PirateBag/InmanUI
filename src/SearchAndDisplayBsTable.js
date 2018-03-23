@@ -14,7 +14,6 @@ import MaterialItemGrid from "./MaterialItemGrid.js";
 import ServicePoster from "./ServicePoster.js";
 import DeleteModal from './DeleteModal.js';
 import MetadataUnitTests from './MetadataUnitTests.js';
-import SelectedItemGrid from "./SelectedItemGrid";
 import Item from "./model/Item.js";
 import redWagonImage from "./images/logo.png"
 
@@ -178,7 +177,7 @@ class SearchAndDisplayBsTable extends React.Component {
         }
     }
     handleButtonsOnSelectedGrid(  { itemSelect, toolTip } ) {
-        if ( toolTip === 'Delete' ) {
+        if ( toolTip === 'Cancel' ) {
             this.handleMoveSelectedToAvailable( itemSelect );
         }
     }
@@ -221,7 +220,7 @@ class SearchAndDisplayBsTable extends React.Component {
         }  else if ( this.state.Mode === 'delete') {
             return (
             <DeleteModal
-                itemsToDeleteRemaining={this.state.itemsSelected.length}
+                countOfItemsDeleted={this.state.itemsSelected.length}
                 closeCallBack={this.handleDeleteClose}
             />
             );
@@ -284,9 +283,13 @@ class SearchAndDisplayBsTable extends React.Component {
                         />
 
                         <CardText expandable={true}>
+                            <CardActions>
+                                <FlatButton label="Delete Selected Items" onClick={this.handleDelete}/>
+                            </CardActions>
+
                             <MaterialItemGrid items={this.state.itemsSelected }
                                               onSelectCallback={this.handleButtonsOnSelectedGrid}
-                                              fields={Item.gridWithDeleteEdit}
+                                              fields={Item.gridWithCancel}
                             />
 
                         </CardText>

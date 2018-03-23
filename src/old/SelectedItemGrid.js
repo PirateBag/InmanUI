@@ -34,7 +34,7 @@ class SelectedItemGrid extends React.Component {
               onExpandChange={this.props.onExpandChange}
               zDepth={Constants.zDepth}>
             <CardHeader
-                title="Items selected."
+                title="Items selected for deletion."
                 actAsExpander={true}
                 showExpandableButton={true}
             />

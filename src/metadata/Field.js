@@ -67,7 +67,17 @@ export class Field{
             rValue += this.rowLineButtons[ i ].showRow(null, i );
         };
         return( rValue );}
+}
 
+Field.searchForItemByFieldName = function( {fieldName, fields} ) {
+    let returnValue = null;
+    for ( let i = 0; i < fields.length; i ++ ) {
+        if ( fields[ i ].fieldName === fieldName ) {
+            returnValue = fields[i];
+            break;
+        }
+    }
+    return returnValue;
 }
 
 export default Field;

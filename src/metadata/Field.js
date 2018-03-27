@@ -29,7 +29,7 @@ export class Field{
         this.rowLineButtons = rowLineButtons;
     }
 
-    showRowHtml( { key, value, onChange } ) {
+    showRowHtml( { key, value, onChange  } ) {
         return (
             <TableRow key={key}
                       style={ Constants.tableRowHeightStyle}>
@@ -42,6 +42,16 @@ export class Field{
             </TableRow>
         )
     }
+
+    showColumnValue( { key, value, onChange  } ) {
+        return (
+            <TableRowColumn style={Constants.tableRowHeightStyle}>
+
+                {value}
+            </TableRowColumn>
+        )
+    }
+
     showColumnHeaderHtml( ) {
         if ( this.icon === undefined  ) {
             return(

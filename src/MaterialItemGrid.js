@@ -40,6 +40,39 @@ export class MaterialItemGrid extends Component {
         );
     }
 
+    generateTableBody( { items, fields } )
+    {
+        return (
+        <TableBody stripedRows={true}
+                   deselectOnClickaway={false}
+                   displayRowCheckbox={false}>
+
+            {   items.map( (item,index ) => {
+                return(
+                    <TableRow key={item.id}
+                              style={Constants.tableRowHeightStyle}>
+                        <TableRowColumn style={Constants.tableRowHeightStyle}>
+                            {this.props.fields[ 0 ].rowLineButtons.map( (rowLineButton, index ) => {
+                                return (
+                                    rowLineButton.showRow( { index : index } ) ); } ) }
+                        </TableRowColumn>
+
+
+
+                    </TableRow>
+                ); } ) }
+            }
+        </TableBody>
+        )
+    }
+
+    showz( value ) {
+        return(
+            <TableRowColumn>
+                def { value }
+            </TableRowColumn>
+        );
+    }
     utilityRenderColumns( fields ) {
         if ( fields === undefined ) {
             return( this.utilityRenderColumnNames() )
@@ -89,37 +122,12 @@ export class MaterialItemGrid extends Component {
         return (
             <span>
                 <Table multiSelectable={false} >
-                <TableHeader adjustForCheckbox={false}
-                             displaySelectAll={false}>
-                        {this.utilityRenderColumns( this.props.fields ) }
-                </TableHeader>
-                <TableBody stripedRows={true}
-                           deselectOnClickaway={false}
-                           displayRowCheckbox={false}>
-                    {   this.props.items.map( (item,index ) => {
-                        return(
-                            <TableRow key={item.id}
-                                      style={Constants.tableRowHeightStyle}>
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    {this.props.fields[ 0 ].rowLineButtons.map( (rowLineButton, index ) => {
-                                        return (
-                                            rowLineButton.showRow( { index : index } ) ); } ) }
-                                </TableRowColumn>
-
-
-                                { x.showRowHtml( { key: index, value: item.id, onChange: null  })}
-
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>{item.summaryId}</TableRowColumn>
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>{item.description}</TableRowColumn>
-                                <TableRowColumn style={Constants.tableRowHeightStyle}>
-                                    <NumberFormat value={Item.unitCost} thousandSeparator={','} decimalSeparator={'.'} prefix={'$'} decimalPrecision={2}
-                                              displayType='text'/>
-                                </TableRowColumn>
-                            </TableRow>
-                        ); } ) }
-                    }
-                </TableBody>
-              </Table>
+                    <TableHeader adjustForCheckbox={false}
+                                 displaySelectAll={false}>
+                       {this.utilityRenderColumns( this.props.fields ) }
+                    </TableHeader>
+                    { this.generateTableBody( { items: this.props.items, fields: this.props.fields }) }
+                </Table>
             </span> );
         }
     }

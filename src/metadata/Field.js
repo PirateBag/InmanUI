@@ -9,9 +9,9 @@ import {
 } from 'material-ui/Table';
 
 import HamburgIcon from 'material-ui/svg-icons/action/reorder'
+import NumberFormat from 'react-number-format'
 
 export class Field{
-
     constructor( {   fieldName , tableName, lengthOf, isUpper=false,
                      decimalPlaces=0, isCurrency=false, horizontalLabel,
                      rules=undefined, columnHeaderIcon = undefined,
@@ -46,7 +46,6 @@ export class Field{
     showColumnValue( { key, value, onChange  } ) {
         return (
             <TableRowColumn style={Constants.tableRowHeightStyle}>
-
                 {value}
             </TableRowColumn>
         )
@@ -67,16 +66,17 @@ export class Field{
         }
     }
 
-    showRowButtons( ) {
-        if ( this.rowLineButtons === undefined ) {
-            return;
+    showValue( value ) {
+        if ( this.isCurrency ) {
+            return (
+                <NumberFormat value={value} decimalPrecision={this.decimalPlaces} readOnly prefix='$' outline='none'/>
+            );
+        } else {
+            return (
+                <TextField id={this.fieldName}     value={value}/>
+            );
         }
-        let rValue = "";
-
-        for ( let i = 0; i < this.rowLineButtons.length; i++ ) {
-            rValue += this.rowLineButtons[ i ].showRow(null, i );
-        };
-        return( rValue );}
+    }
 }
 
 Field.searchForItemByFieldName = function( {fieldName, fields} ) {
@@ -91,3 +91,4 @@ Field.searchForItemByFieldName = function( {fieldName, fields} ) {
 }
 
 export default Field;
+

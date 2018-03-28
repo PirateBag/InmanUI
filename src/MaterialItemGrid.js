@@ -9,13 +9,8 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
-import NumberFormat from 'react-number-format';
 import * as Constants from './Constants.js'
 import HamburgIcon from 'material-ui/svg-icons/action/reorder'
-import Item from './model/Item'
-import Field from './metadata/Field.js'
-
-
 
 export class MaterialItemGrid extends Component {
     constructor ( props ) {
@@ -40,6 +35,28 @@ export class MaterialItemGrid extends Component {
         );
     }
 
+    showButtons( field, item ) {
+        if  ( field.rowLineButtons.length === 0 ) {
+            let fieldValue = item[ field.fieldName ];
+            return (
+                <TableRowColumn style={Constants.tableRowHeightStyle} key={item.id}>
+                    { field.showValue( fieldValue ) }
+                </TableRowColumn>
+            )
+        } else {
+            return (
+                <TableRowColumn style={Constants.tableRowHeightStyle} key={item.id}>
+                    {field.rowLineButtons.map((rowLineButton, index) => {
+                        return (
+                            rowLineButton.showRow({index: index}));
+                    })}
+                </TableRowColumn>
+            );
+        }
+    }
+
+
+
     generateTableBody( { items, fields } )
     {
         return (
@@ -51,17 +68,10 @@ export class MaterialItemGrid extends Component {
                 return(
                     <TableRow key={item.id}
                               style={Constants.tableRowHeightStyle}>
-                        <TableRowColumn style={Constants.tableRowHeightStyle}>
-                            {this.props.fields[ 0 ].rowLineButtons.map( (rowLineButton, index ) => {
-                                return (
-                                    rowLineButton.showRow( { index : index } ) ); } ) }
-                        </TableRowColumn>
-
-
-
+                        { fields.map( (field, fieldIndex ) => {
+                            return ( this.showButtons( field, item ));} ) }
                     </TableRow>
                 ); } ) }
-            }
         </TableBody>
         )
     }
@@ -73,6 +83,7 @@ export class MaterialItemGrid extends Component {
             </TableRowColumn>
         );
     }
+
     utilityRenderColumns( fields ) {
         if ( fields === undefined ) {
             return( this.utilityRenderColumnNames() )
@@ -116,8 +127,6 @@ export class MaterialItemGrid extends Component {
         for ( let i = 0; i< this.props.fields[ 0 ].rowLineButtons.length; i++ ) {
             this.props.fields[ 0 ].rowLineButtons[ i ].onButtonActivation = this.onButtonActivation;
         }
-
-        let x = Field.searchForItemByFieldName( { fieldName: 'id', fields: this.props.fields });
 
         return (
             <span>

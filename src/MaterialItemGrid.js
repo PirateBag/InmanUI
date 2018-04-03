@@ -39,23 +39,19 @@ export class MaterialItemGrid extends Component {
         if  ( field.rowLineButtons.length === 0 ) {
             let fieldValue = item[ field.fieldName ];
             return (
-                <TableRowColumn style={Constants.tableRowHeightStyle} key={item.id}>
-                    { field.showValue( fieldValue ) }
-                </TableRowColumn>
+                field.showValue( { value: fieldValue, key: item.id } )
             )
         } else {
             return (
                 <TableRowColumn style={Constants.tableRowHeightStyle} key={item.id}>
                     {field.rowLineButtons.map((rowLineButton, index) => {
                         return (
-                            rowLineButton.showRow({index: index}));
+                            rowLineButton.showRow({index: index}))
                     })}
                 </TableRowColumn>
             );
         }
     }
-
-
 
     generateTableBody( { items, fields } )
     {
@@ -76,14 +72,6 @@ export class MaterialItemGrid extends Component {
         )
     }
 
-    showz( value ) {
-        return(
-            <TableRowColumn>
-                def { value }
-            </TableRowColumn>
-        );
-    }
-
     utilityRenderColumns( fields ) {
         if ( fields === undefined ) {
             return( this.utilityRenderColumnNames() )
@@ -93,10 +81,9 @@ export class MaterialItemGrid extends Component {
                 { fields.map( (field,index ) => {
                     return( field.showColumnHeaderHtml() );
                 } ) }
-        </TableRow>
+            </TableRow>
         );
         }
-
 
     }
 

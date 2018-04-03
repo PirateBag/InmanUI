@@ -174,6 +174,8 @@ class SearchAndDisplayBsTable extends React.Component {
     handleButtonsOnAvailableGrid(  { itemSelect, toolTip } ) {
         if ( toolTip === 'Delete' ) {
             this.handleMoveAvailableToSelected( itemSelect );
+        } else if ( toolTip == 'Edit'  ){
+
         }
     }
     handleButtonsOnSelectedGrid(  { itemSelect, toolTip } ) {
@@ -237,7 +239,7 @@ class SearchAndDisplayBsTable extends React.Component {
             return (
                 <div>
                 <Card expanded={this.state.showSearchCard}
-                      zDepth={2}
+                      zDepth={Constants.zDepth}
                       onExpandChange={this.handleSearchCardExpandedChange} >
 
                     <CardHeader

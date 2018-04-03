@@ -9,7 +9,7 @@ import {
 } from 'material-ui/Table';
 
 import HamburgIcon from 'material-ui/svg-icons/action/reorder'
-import NumberFormat from 'react-number-format'
+
 
 export class Field{
     constructor( {   fieldName , tableName, lengthOf, isUpper=false,
@@ -66,17 +66,17 @@ export class Field{
         }
     }
 
-    showValue( value ) {
-        if ( this.isCurrency ) {
-            return (
-                <NumberFormat value={value} decimalPrecision={this.decimalPlaces} readOnly prefix='$' outline='none'/>
-            );
-        } else {
-            return (
-                <TextField id={this.fieldName}     value={value}/>
+    showValue( { value, key } ) {
+        let styleToUse = Constants.tableRowHeightStyleLeft;
+            if ( this.isCurrency ) {
+                value = value.toFixed(2);
+         }
+         return (
+             <TableRowColumn style={styleToUse} key={key}>
+                 {value}
+             </TableRowColumn>
             );
         }
-    }
 }
 
 Field.searchForItemByFieldName = function( {fieldName, fields} ) {

@@ -31,11 +31,26 @@ class ItemProperties extends React.Component {
         if ( name === 'close') {
             this.props.closeCallback(this.state.item);
         } else if ( name === 'action' ) {
-            if ( this.props.actionLabel === 'SAVE' ) {
-                this.persistNewItem(this);
-            }
-        }
+            if ( this.props.actionLabel === 'ADD' ) {
+                 this.persistNewItem(this);
+            } else if ( this.props.actionLabel === 'SAVE CHANGES ') {
+                this.updateItem( { item: this.state.item, responseCallback: this.props.closeCallback } );
+		}
+	}
+
     }
+
+    updateItem( {item, responseCallback } ) {
+
+        let params = queryString.stringify( item );
+
+        let servicePost = new ServicePoster( { url: Constants.INMAN_SERVER_IP,
+            typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_UPDATE } );
+        servicePost.go( { parameters: params, responseCallback: this.props.closeCallback } );
+
+    }
+
+
 
     presentButtons( ) {
         if ( this.props.actionLabel === undefined ) {

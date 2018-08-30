@@ -176,6 +176,9 @@ class SearchAndDisplayBsTable extends React.Component {
             this.handleMoveAvailableToSelected( itemSelect );
         } else if ( toolTip == 'Edit'  ){
 
+		 let itemSelectedArray = [ itemSelect ];
+            this.setState( { Mode: "edit" , itemsSelected : itemSelectedArray });
+
         }
     }
     handleButtonsOnSelectedGrid(  { itemSelect, toolTip } ) {
@@ -207,15 +210,28 @@ class SearchAndDisplayBsTable extends React.Component {
         if (this.props.credentialsState.token === Constants.NO_TOKEN)
             return null;
 
-        if (this.state.Mode === 'add') {
+
+
+        if (this.state.Mode === 'edit') {
+            return (
+                <div>
+                    <ItemProperties mode={"read"}
+                                    item={this.state.itemsSelected[ 0 ] }
+                                    closeLabel={"Close"}
+                                    closeCallback={this.handleDoneWithAdding}
+                                    actionLabel={"Save Changes"}
+                                    actionCallback={this.handleDoneWithAdding}/>
+                </div>
+            );
+        } else if (this.state.Mode === 'add') {
             let newItem = new Item( {} );
             return (
                 <div>
                     <ItemProperties mode={"read"}
                                     item={newItem}
-                                    closeLabel={"Return"}
+                                    closeLabel={"Close"}
                                     closeCallback={this.handleDoneWithAdding}
-                                    actionLabel={"SAVE"}
+                                    actionLabel={"Add"}
                                     actionCallback={this.handleDoneWithAdding}/>
                 </div>
             );

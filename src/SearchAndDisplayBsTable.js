@@ -5,7 +5,6 @@ import React from 'react';
 import * as Constants from './Constants.js'
 import * as Utility   from './Utility.js'
 import * as queryString from 'query-string'
-import 'react-bootstrap-table/dist/react-bootstrap-table.min.css';
 import ItemProperties from "./ItemProperties.js";
 import {Card, CardHeader, CardText, CardActions} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';

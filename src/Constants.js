@@ -13,6 +13,7 @@ export const NO_MESSAGE  = "Please login.";
 export const SERVER_REQUEST_TYPE_ITEM_QUERY = "item/query?";
 export const SERVER_REQUEST_TYPE_ITEM_DELETE = "item/delete?";
 export const SERVER_REQUEST_TYPE_ITEM_ADD = "item/add?";
+export const SERVER_REQUEST_TYPE_ITEM_UPDATE = "item/update?";
 
 export const fetchParameters = {
         method: 'GET',

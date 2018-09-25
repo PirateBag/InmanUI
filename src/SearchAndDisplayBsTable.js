@@ -173,11 +173,12 @@ class SearchAndDisplayBsTable extends React.Component {
     handleButtonsOnAvailableGrid(  { itemSelect, toolTip } ) {
         if ( toolTip === 'Delete' ) {
             this.handleMoveAvailableToSelected( itemSelect );
-        } else if ( toolTip == 'Edit'  ){
+        } else if ( toolTip === 'Edit'  ){
 
 		 let itemSelectedArray = [ itemSelect ];
             this.setState( { Mode: "edit" , itemsSelected : itemSelectedArray });
-
+        } else {
+            throw new Error( 'An unexpected button was encountered' );
         }
     }
     handleButtonsOnSelectedGrid(  { itemSelect, toolTip } ) {

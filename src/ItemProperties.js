@@ -26,17 +26,20 @@ class ItemProperties extends React.Component {
         this.persistNewItem = this.persistNewItem.bind( this );
     }
 
-    handleButtonActiviation( evt ) {
+    handleButtonActiviation(evt) {
         let name = evt.currentTarget.name;
-        if ( name === 'close') {
+        let label = this.props.actionLabel;
+        if (name === 'close') {
             this.props.closeCallback(this.state.item);
-        } else if ( name === 'action' ) {
-            if ( this.props.actionLabel === 'ADD' ) {
-                 this.persistNewItem(this);
-            } else if ( this.props.actionLabel === 'SAVE CHANGES ') {
-                this.updateItem( { item: this.state.item, responseCallback: this.props.closeCallback } );
-		}
-	}
+        } else if (name === 'action') {
+            if (this.props.actionLabel === 'Add') {
+                this.persistNewItem(this);
+            } else if (this.props.actionLabel === 'Save Changes ') {
+                this.updateItem({item: this.state.item, responseCallback: this.props.closeCallback});
+            }
+        } else {
+            throw new Error( 'Uunable to handle button of type' + name + ' and '  + label );
+        }
 
     }
 

@@ -4,36 +4,21 @@ import {
     Table,
     TableBody,
     TableHeader,
-    TableHeaderColumn,
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
 import PropTypes from 'prop-types';
 import * as Constants from './Constants.js'
-import HamburgIcon from 'material-ui/svg-icons/action/reorder'
+
 
 export class MaterialItemGrid extends Component {
     constructor ( props ) {
         super( props );
         this.onRowSelection = this.onRowSelection.bind(this);
-        this.utilityRenderColumnNames = this.utilityRenderColumnNames.bind(this);
         this.onButtonActivation = this.onButtonActivation.bind(this);
 
     };
 
-    utilityRenderColumnNames() {
-        return(
-            <TableRow style={Constants.tableRowHeightStyle}>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>
-                    <HamburgIcon style={Constants.iconStyles.small} > </HamburgIcon>
-                </TableHeaderColumn>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>Id</TableHeaderColumn>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>Summary</TableHeaderColumn>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>Description</TableHeaderColumn>
-                <TableHeaderColumn style={Constants.tableRowHeightStyle}>Unit Cost</TableHeaderColumn>
-            </TableRow>
-        );
-    }
 
     showButtons( field, item ) {
         if  ( field.rowLineButtons.length === 0 ) {

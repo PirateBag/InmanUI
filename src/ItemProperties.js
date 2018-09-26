@@ -17,13 +17,14 @@ class ItemProperties extends React.Component {
         super(props)
 
         this.state = {
-            item : props.item
+            item : props.item,
+            status : "abc"
          };
 
         this.handleChange = this.handleChange.bind(this);
-        this.presentButtons = this.presentButtons.bind( this );
         this.handleButtonActiviation = this.handleButtonActiviation.bind( this );
         this.persistNewItem = this.persistNewItem.bind( this );
+        this.updateStatusFromResponse = this.updateItem.bind( this );
     }
 
     handleButtonActiviation(evt) {
@@ -43,6 +44,10 @@ class ItemProperties extends React.Component {
 
     }
 
+    updateStatusFromResponse( xStatus ) {
+        this.setState( { status : xStatus } );
+    }
+
     updateItem( {item, responseCallback } ) {
 
         let params = queryString.stringify( item );
@@ -55,17 +60,6 @@ class ItemProperties extends React.Component {
 
 
 
-    presentButtons( ) {
-        if ( this.props.actionLabel === undefined ) {
-            return ( <FlatButton name='close' label={this.props.closeLabel} onClick={this.handleButtonActiviation}/> )
-        }
-        return(
-            <span>
-                <FlatButton name='close' label={this.props.closeLabel} onClick={this.handleButtonActiviation}/>
-                <FlatButton name='action' label={this.props.actionLabel} onClick={this.handleButtonActiviation}/>
-            </span>
-        );
-    }
     presentButtons2() {
         return (
             <span>
@@ -132,6 +126,10 @@ class ItemProperties extends React.Component {
                 </Table>
 
                 { this.presentButtons2() }
+
+                <p>
+                    Status: {this.state.status}
+                </p>
 
             </div>
         );

@@ -29,19 +29,20 @@ class ItemProperties extends React.Component {
 
     handleButtonActiviation(evt) {
         let name = evt.currentTarget.name;
-        let label = this.props.actionLabel;
         if (name === 'close') {
             this.props.closeCallback(this.state.item);
         } else if (name === 'action') {
             if (this.props.actionLabel === 'Add') {
                 this.persistNewItem(this);
-            } else if (this.props.actionLabel === 'Save Changes ') {
+            } else if (this.props.actionLabel === 'Save Changes') {
                 this.updateItem({item: this.state.item, responseCallback: this.props.closeCallback});
             }
+            else {
+                throw new Error( 'Button of type' + name + ' has unknown actionLabel'  + this.props.actionLabel );
+            }
         } else {
-            throw new Error( 'Uunable to handle button of type' + name + ' and '  + label );
+            throw new Error( 'Uunable to handle button of type' + name + ' and '  + this.props.actionLabel );
         }
-
     }
 
     updateStatusFromResponse( xStatus ) {

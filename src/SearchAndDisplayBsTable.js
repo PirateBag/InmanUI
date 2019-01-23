@@ -25,7 +25,7 @@ class SearchAndDisplayBsTable extends React.Component {
             ItemId: '',
             SummaryId: '',
             Description: '',
-            MessageState: '',
+            MessageState: 'No State For You',
             ItemResponse: null,
             Mode: 'query',
             itemsAvailable: [],
@@ -74,9 +74,11 @@ class SearchAndDisplayBsTable extends React.Component {
 
 
     /** No-op until more robust error handling.  */
-    responseCallbackDelete( response ) {
-
+    responseCallbackStateChange( newState  ) {
+        this.setState( { MessageState: newState });
     }
+
+
 
 
     handleDeleteClose( ) {
@@ -105,7 +107,10 @@ class SearchAndDisplayBsTable extends React.Component {
         let servicePost = new ServicePoster( { url: Constants.INMAN_SERVER_IP,
             typeOfRequest: Constants.SERVER_REQUEST_TYPE_ITEM_DELETE } );
 
-        servicePost.go( { parameters: paramsJson, responseCallback: this.responseCallbackDelete } );
+        servicePost.go(
+          { parameters: paramsJson,
+            responseCallback: this.responseCallbackDelete,
+            stateChangeCallback: this.responseCallbackStateChange} );
     }
 
 
@@ -268,6 +273,7 @@ class SearchAndDisplayBsTable extends React.Component {
                     />
                     <CardText expandable={true}>
                         <ItemProperties mode={'read'} item={this.state.queryCriteria }
+                                        status={this.state.MessageState}
                         />
                     </CardText>
 

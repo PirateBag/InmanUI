@@ -129,7 +129,7 @@ class ItemProperties extends React.Component {
                 { this.presentButtons2() }
 
                 <p>
-                    Status: {this.state.status}
+                    Status: {this.props.status}
                 </p>
 
             </div>

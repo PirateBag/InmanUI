@@ -27,13 +27,11 @@ export class CredentialsModal extends Component  {
     }
 
     handleClickLogin(evt) {
-        this.credentialsValidator.go(
-            this.state.username,
-            this.state.password,
-            null,
-            this.props.updateCredentialsState );
+        this.credentialsValidator.exec(
+          { username: this.state.username,
+            password: this.state.password,
+            responseCallback : this.props.updateCredentialsState } );
     }
-
 
     render() {
         const actions = [

@@ -20,9 +20,8 @@ function rootReducer( state = [], action ) {
   } else if (action.type === Actions.CURRENT_USER_CHANGE ) {
     returnValue = Object.assign({}, state, {currentUser: action.currentUser});
     return returnValue;
-  } else {
-    return state;
   }
+  return state;
 }
 
 export const DISCONNECTED = "Inman Server Unavailabile";

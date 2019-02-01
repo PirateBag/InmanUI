@@ -7,6 +7,7 @@ import * as Constants from './Constants.js'
 import SearchAndDisplayBsTable from "./SearchAndDisplayBsTable";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { store } from './index.js'
+import { InmanStatus} from "./InmanStatus";
 
 class App extends Component {
 
@@ -18,36 +19,22 @@ class App extends Component {
                         token : Constants.NO_TOKEN,
                         message : 'Please login' } };
 
-		this.getInmanStatus();
 		this.updateCredentialsState = this.updateCredentialsState.bind(this);
+    InmanStatus();
     }
 
 
-    getInmanStatus( ) {
-        let url = Constants.INMAN_SERVER_IP + ':8080/status';
-        fetch( url, Constants.fetchParameters )
-            .then(function (response) {
-                this.setState( { serverStatus : 'sending' } );
-                return response
-            })
-            .then( function( response ) {
-                return response.json();
-            })
-            .then( function(data)
-                { this.setState( { serverStatus : data.status } ); })
-            .catch( function() { this.setState( { serverStatus : 'Inman Server Unavailable' } ); } );
-    }
 
 	updateCredentialsState( newCredentials ) {
         this.setState( {validateCredentialsResponse: newCredentials } );
     }
 
-    render() {
-
+  render() {
     let dateOfRender = new Date().toTimeString();
     let theStore = store;
-    let user = typeof theStore.getState().currentUser  == "undefined" ? "No current luser" :
-    theStore.getState().currentUser;
+    let user = typeof theStore.getState().currentUser  === "undefined" ?
+        "No current luser" :
+        "The current user is " + theStore.getState().currentUser;
 
     return (
         <MuiThemeProvider>
@@ -57,7 +44,7 @@ class App extends Component {
               clickLogout={this.updateCredentialsState}
               credentialsState={this.state.validateCredentialsResponse.message}
               serverStatus={this.state.serverStatus}/> } >
-            This is a test {theStore.getState().currentUser }
+            {user}
           </AppBar>
           <div className="mainForm">
             <CredentialsModal

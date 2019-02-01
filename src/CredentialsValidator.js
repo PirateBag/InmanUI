@@ -1,6 +1,6 @@
 import * as Constants from './Constants.js'
 import { store } from './index.js'
-import { serverAvailabilityStateChange, currentUserStateChange } from './Actions.js'
+import { currentUserStateChange } from './Actions.js'
 
 export class CredentialsValidator {
 
@@ -12,6 +12,9 @@ export class CredentialsValidator {
     let fullUrl = Constants.INMAN_SERVER_IP + ':8080/verifyCredentials';
     let body = { username : username, password : password };
     let header = new Headers( { 'Content-Type' : 'application/json'});
+
+    let stateChange = currentUserStateChange( "Please login luser" );
+    store.dispatch( stateChange );
 
     fetch( fullUrl, { method: 'post', body: JSON.stringify( body ), mode: 'cors', headers : header })
       .then(function (response) {
@@ -30,16 +33,9 @@ export class CredentialsValidator {
         if ( stateChangeCallback != null ) {
           stateChangeCallback("success");
         }
-        responseCallback( data );
-
-        let stateChange = serverAvailabilityStateChange( "Successful Login");
-        store.dispatch( stateChange);
-        stateChange = serverAvailabilityStateChange( "Failed Login");
-        store.dispatch( stateChange);
-        stateChange= currentUserStateChange( "Bags");
+        let stateChange = currentUserStateChange( username );
         store.dispatch( stateChange );
-        stateChange = serverAvailabilityStateChange( "WTF Login");
-        store.dispatch( stateChange);
+        responseCallback( data );
       });
   }
 }

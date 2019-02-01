@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import CredentialsValidator from './CredentialsValidator.js'
+import {store} from "./index"
 
 export class CredentialsModal extends Component  {
 
@@ -49,12 +50,13 @@ export class CredentialsModal extends Component  {
                   modeal={false}
                   open={true}
                   onRequestClose={this.handleClose} >
+              {store.getState().serverState}
+              <br/> <br/>
+              <label htmlFor="username">User</label>
+              <input id='username' type="text" onChange={this.handleChange} defaultValue={this.state.username}/>
 
-                  <label htmlFor="username">User</label>
-                  <input id='username' type="text" onChange={this.handleChange} defaultValue={this.state.username}/>
-
-                  <label htmlFor="password">Password</label>
-                  <input id='password' type="text" onChange={this.handleChange} defaultValue={this.state.password}/>
+              <label htmlFor="password">Password</label>
+              <input id='password' type="text" onChange={this.handleChange} defaultValue={this.state.password}/>
               </Dialog>
           );
       } else {

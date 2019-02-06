@@ -11,14 +11,17 @@ import {createStore} from "redux";
 export const store = createStore(rootReducer)
 
 function rootReducer( state = [], action ) {
+
   let returnValue = null;
   if (typeof state === 'undefined') {
     return initialState;
   } else if (action.type === Actions.SERVER_AVAILABILITY_CHANGE) {
-    returnValue = Object.assign({}, state, {serverState: action.availabilityState});
+    //  returnValue = Object.assign({}, state, {serverState: action.availabilityState});
+    returnValue = { ...state, serverState: action.availabilityState };
     return returnValue;
   } else if (action.type === Actions.CURRENT_USER_CHANGE ) {
-    returnValue = Object.assign({}, state, {currentUser: action.currentUser});
+    //  returnValue = Object.assign({}, state, {currentUser: action.currentUser});
+    returnValue = { ...state, serverState: action.currentUser };
     return returnValue;
   }
   return state;

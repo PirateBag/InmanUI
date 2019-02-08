@@ -28,23 +28,16 @@ function rootReducer( state = [], action ) {
 }
 
 export const DISCONNECTED = "Inman Server Unavailabile";
-export const UNKNOWN = "Inman Server Unknown";
+export const UNKNOWN = "Inman Server status Unknown";
 
 const initialState = {
   serverState: UNKNOWN
 }
 
-export function inmanApp( state ={}, action ) {
-  return {
-    serverState : state.serverState,
-    currentUser : "Unknown"
-  }
-}
-
 
 ReactDOM.render(
     <Provider store={store}>
-    <App />
+    <App serverState={store.getState().serverState} />
     </Provider>,
   document.getElementById('root')
 );

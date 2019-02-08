@@ -50,7 +50,7 @@ export class CredentialsModal extends Component  {
                   modeal={false}
                   open={true}
                   onRequestClose={this.handleClose} >
-              {store.getState().serverState}
+              Server Status Goes Here:  {this.props.serverStatus}
               <br/> <br/>
               <label htmlFor="username">User</label>
               <input id='username' type="text" onChange={this.handleChange} defaultValue={this.state.username}/>
@@ -67,7 +67,8 @@ export class CredentialsModal extends Component  {
 
 CredentialsModal.propTypes = {
     updateCredentialsState : PropTypes.func,
-    credentialsState : PropTypes.object
+    credentialsState : PropTypes.object,
+    serverStatus : PropTypes.string.isRequired
 }
 
 

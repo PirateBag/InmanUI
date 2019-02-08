@@ -6,18 +6,19 @@ import {LoginLogoff} from './LoginLogoff.js'
 import * as Constants from './Constants.js'
 import SearchAndDisplayBsTable from "./SearchAndDisplayBsTable";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { store } from './index.js'
 import { InmanStatus} from "./InmanStatus";
+import PropTypes from "prop-types";
 
 class App extends Component {
 
     constructor(props) {
 		super(props)
 
-		this.state = { serverStatus : "unknown",
+		this.state = { serverState : props.serverState,
                    validateCredentialsResponse : {
                         token : Constants.NO_TOKEN,
                         message : 'Please login' } };
+
 
 		this.updateCredentialsState = this.updateCredentialsState.bind(this);
     InmanStatus();
@@ -31,10 +32,6 @@ class App extends Component {
 
   render() {
     let dateOfRender = new Date().toTimeString();
-    let theStore = store;
-    let user = typeof theStore.getState().currentUser  === "undefined" ?
-        "No current luser" :
-        "The current user is " + theStore.getState().currentUser;
 
     return (
         <MuiThemeProvider>
@@ -44,12 +41,13 @@ class App extends Component {
               clickLogout={this.updateCredentialsState}
               credentialsState={this.state.validateCredentialsResponse.message}
               serverStatus={this.state.serverStatus}/> } >
-            {user}
+            Server State goes here:  {this.state.serverStatus}
           </AppBar>
           <div className="mainForm">
             <CredentialsModal
               updateCredentialsState={this.updateCredentialsState}
-              credentialsState={this.state.validateCredentialsResponse}/>
+              credentialsState={this.state.validateCredentialsResponse}
+              serverStatus={this.state.serverStatus}/>
             <br/>
             <SearchAndDisplayBsTable credentialsState={this.state.validateCredentialsResponse} />
             <h6 className="rightLayout">Last Update: {dateOfRender}</h6>
@@ -59,5 +57,10 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  serverState: PropTypes.string.isRequired
+}
+
 
 export default App;
